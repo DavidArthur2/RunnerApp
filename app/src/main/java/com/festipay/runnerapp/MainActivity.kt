@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.festipay.runnerapp.R.*
+import com.festipay.runnerapp.database.Database
 
 class MainActivity : AppCompatActivity() {
     private lateinit var barcodeScanReceiver: BarcodeScanReceiver
@@ -13,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         barcodeScanReceiver = BarcodeScanReceiver { barcode -> handleDecodeData(barcode) }
         setContentView(layout.activity_main)
-
+        Database
     }
 
     override fun onResume() {
@@ -28,7 +29,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleDecodeData(decodedData: String?) {
-        Toast.makeText(this, "Kaptam $decodedData!", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Kaptam $decodedData!", Toast.LENGTH_SHORT).show()
+        Database.readTest()
     }
 
 }
