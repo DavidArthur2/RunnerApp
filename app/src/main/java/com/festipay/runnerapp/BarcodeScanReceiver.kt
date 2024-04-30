@@ -3,9 +3,7 @@ package com.festipay.runnerapp
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import com.festipay.runnerapp.utilities.showError
-import com.festipay.runnerapp.utilities.logToFile
 
 class BarcodeScanReceiver(private val listener: (String?) -> Unit) : BroadcastReceiver() {
 

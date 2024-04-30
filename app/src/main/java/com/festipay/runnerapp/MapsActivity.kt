@@ -3,24 +3,22 @@ package com.festipay.runnerapp
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.Manifest
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.location.LocationManagerCompat.getCurrentLocation
+import com.festipay.runnerapp.utilities.showError
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.SupportMapFragment
-
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var latLng: LatLng
 
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
@@ -30,14 +28,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
+        val lat = intent.getStringExtra("lat")?.toDouble()
+        val long = intent.getStringExtra("long")?.toDouble()
+        if(lat == null || long == null) {
+            showError(this, "Long and latitude values are null when starting MapsActivity intent")
+            finish()
+            return
+        }
+        latLng = LatLng(lat, long)
+
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
     }
 
@@ -61,6 +64,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.onLowMemory()
     }
 
+
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
 
@@ -69,23 +73,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        // Enable current location button and set location listener
-        this.googleMap.isMyLocationEnabled = true
-        this.googleMap.setOnMyLocationButtonClickListener {
-            true
-        }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    val latLng = LatLng(location.latitude, location.longitude)
-                    googleMap.addMarker(MarkerOptions().position(latLng).title("Your Location"))
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
-                }
-            }
+        var lastLocation: Location? = null
+        var lastAccuracy: Double = 0.0
+        googleMap.isMyLocationEnabled = true
 
-        // Add a marker at the specified coordinates and move the camera
-        val coordinate = LatLng(37.7749, -122.4194) // San Francisco coordinates
-        googleMap.addMarker(MarkerOptions().position(coordinate).title("Marker in San Francisco"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate,12f))
+        googleMap.setOnMyLocationChangeListener { location ->
+            lastLocation = location
+            lastAccuracy = location.accuracy.toDouble()
+
+        }
+
+        googleMap.setOnMyLocationButtonClickListener {
+            if (lastLocation != null) {
+                val latLng = LatLng(lastLocation!!.latitude, lastLocation!!.longitude)
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20f))
+                true
+            }
+            false
+        }
+
+        googleMap.addMarker(MarkerOptions().position(latLng).title("Marker in San Francisco"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
     }
 }

@@ -2,10 +2,6 @@ package com.festipay.runnerapp.utilities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.SoundPool
-import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
