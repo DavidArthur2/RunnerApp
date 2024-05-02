@@ -1,4 +1,4 @@
-package com.festipay.runnerapp
+package com.festipay.runnerapp.utilities
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.festipay.runnerapp
+package com.festipay.runnerapp.activities
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.Manifest
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.festipay.runnerapp.R
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap

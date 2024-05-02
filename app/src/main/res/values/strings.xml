@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">RunnerApp</string>
+    <string name="userNameLabel">Ird be a felhasználóneved:</string>
+    <string name="userInputHint">Felhasználónév</string>
+    <string name="loginButton">Belépés</string>
+    <string name="defaultVersionString">Version: -1.0</string>
+    <string name="defaultVersionLabelString">Verzió</string>
+    <string name="error_dialog_title">Hiba történt</string>
+    <string name="error_dialog_message">Nem található ilyen felhasználónév!</string>
+    <string name="error_dialog_back_button_text">Vissza</string>
+    <string name="app_exit">Kilépés</string>
+    <string name="exit_text">Kilépés</string>
+    <string name="exit_dialog_message">Biztosan ki szeretnél lépni?</string>
+
 </resources>
