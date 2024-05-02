@@ -2,10 +2,6 @@ package com.festipay.runnerapp.utilities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.SoundPool
-import android.os.Build
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -19,7 +15,7 @@ fun logToFile(message: String) {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val todayDate = dateFormat.format(Date())
     val logFileName = "$todayDate.txt"
-    val logFile = File("/storage/emulated/0/Android/data/com.cardnet.runnerapp/files/", logFileName) // Replace "path_to_your_directory" with the actual directory path where you want to store the log file
+    val logFile = File("/storage/emulated/0/Android/data/com.festipay.runnerapp/files/", logFileName) // Replace "path_to_your_directory" with the actual directory path where you want to store the log file
 
     val timestampFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
     val timestamp = timestampFormat.format(Date())
