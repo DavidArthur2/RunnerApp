@@ -15,7 +15,7 @@ fun logToFile(message: String) {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val todayDate = dateFormat.format(Date())
     val logFileName = "$todayDate.txt"
-    val logFile = File("/storage/emulated/0/Android/data/com.cardnet.runnerapp/files/", logFileName) // Replace "path_to_your_directory" with the actual directory path where you want to store the log file
+    val logFile = File("/storage/emulated/0/Android/data/com.festipay.runnerapp/files/", logFileName) // Replace "path_to_your_directory" with the actual directory path where you want to store the log file
 
     val timestampFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
     val timestamp = timestampFormat.format(Date())
