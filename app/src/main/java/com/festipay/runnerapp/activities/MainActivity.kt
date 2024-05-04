@@ -18,49 +18,31 @@ import kotlin.system.exitProcess
 class MainActivity : AppCompatActivity() {
 
     private lateinit var loginButton: Button
+    private lateinit var userInput: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initActivity()
+        loginButton.setOnClickListener{
+            loginClick()
+        }
+    }
+
+    private fun initActivity(){
         setContentView(layout.activity_main)
         loginButton = findViewById(id.loginButton)
         val versionLabel: TextView = findViewById(id.versionLabel)
-        val userInput: EditText = findViewById(id.userInputText)
+        userInput = findViewById(id.userInputText)
 
         versionLabel.text = "${getString(string.defaultVersionLabelString)}: ${packageManager.getPackageInfo(packageName, 0).versionName}"
 
         CurrentState.userName = null
         Database
-
-        loginButton.setOnClickListener{
-
-            loginButton.isClickable = false
-            val userName: String = userInput.text.toString()
-            Database.db.collection("felhasznalok").whereEqualTo("nev", userName).get().addOnSuccessListener { result ->
-                if(!result.isEmpty){
-                    CurrentState.userName = userName
-                    launchProgramSelector()
-                    loginButton.isClickable = true
-                    userInput.clearComposingText()
-                }
-                else{
-                    setupLoginErrorDialog()
-                }
-            }.addOnFailureListener { exception ->
-                    showError(this, "Can't read documents in felhasznalok: $exception")
-                }
-        }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
 
     private fun launchProgramSelector(){
-        val nextActivity = Intent(this, ProgramSelectorActivity::class.java)
+        val nextActivity = Intent(this, SecondActivity::class.java)
         startActivity(nextActivity)
         finish()
     }
@@ -99,5 +81,22 @@ class MainActivity : AppCompatActivity() {
         dialog.setOnDismissListener{loginButton.isClickable = true}
     }
 
+    private fun loginClick(){
+        loginButton.isClickable = false
+        val userName: String = userInput.text.toString()
+        Database.db.collection("felhasznalok").whereEqualTo("nev", userName).get().addOnSuccessListener { result ->
+            if(!result.isEmpty){
+                CurrentState.userName = userName
+                launchProgramSelector()
+                loginButton.isClickable = true
+                userInput.clearComposingText()
+            }
+            else{
+                setupLoginErrorDialog()
+            }
+        }.addOnFailureListener { exception ->
+            showError(this, "Can't read documents in felhasznalok: $exception")
+        }
+    }
 
 }

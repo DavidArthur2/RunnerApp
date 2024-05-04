@@ -37,18 +37,6 @@ object Database {
 
     }
 
-    fun getProgramList(){
-        db.collection("programok").get().addOnSuccessListener { result ->
-            val programList = mutableListOf<String>()
-            for (document in result) {
-                programList.add(document.data["ProgramNev"] as String)
-            }
-        }
-            .addOnFailureListener { exception ->
-                //showError(this, "Can't read documents in getProgramList: $exception")
-            }
-    }
-
     fun mapCompanyInstall(firestoreData: Map<String, Any>): CompanyInstall {
         return CompanyInstall(
             kiadva = firestoreData["Kiadva"] as Boolean,

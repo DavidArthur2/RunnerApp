@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MapsActivity" android:launchMode="singleInstance"/>
-        <activity android:name=".activities.ProgramSelectorActivity" android:launchMode="singleInstance"/>
+        <activity android:name=".activities.SecondActivity" android:launchMode="singleInstance"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

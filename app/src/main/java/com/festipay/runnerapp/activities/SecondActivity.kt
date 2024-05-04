@@ -4,22 +4,34 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Layout
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentTransaction
+import androidx.transition.Visibility
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.database.Database
-import com.festipay.runnerapp.utilities.BarcodeScanReceiver
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlin.system.exitProcess
+import com.festipay.runnerapp.fragments.ProgramSelectorFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class ProgramSelectorActivity: AppCompatActivity() {
+class SecondActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_program_selector)
+        setContentView(R.layout.activity_second)
+        val appBar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+
+        appBar.title = getString(R.string.program_selector_title)
+
+        val b = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        b.isVisible = false
+        val programSelectorFragment = ProgramSelectorFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.frameLayout, programSelectorFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
 
     }
 
