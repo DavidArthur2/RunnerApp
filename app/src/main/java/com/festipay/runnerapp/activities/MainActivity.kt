@@ -13,6 +13,7 @@ import com.festipay.runnerapp.R.*
 import com.festipay.runnerapp.data.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.showError
+import kotlin.random.Random
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {

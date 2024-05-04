@@ -107,5 +107,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="install_title">Telepités</string>
+    <string name="kiadvaText">Kiadva:</string>
+    <string name="nem_kirakhatoText">Nem kirakható:</string>
+    <string name="kirakvaText">Kirakva:</string>
+    <string name="elosztoText">Elosztó:</string>
+    <string name="aramText">Áram:</string>
+    <string name="szoftverText">Szoftver:</string>
+    <string name="paramText">Param:</string>
+    <string name="utols_megjText">Utolsó megj.:</string>
 
 </resources>

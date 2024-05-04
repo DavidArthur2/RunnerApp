@@ -5,5 +5,5 @@
         android:width="2dp"
         android:color="#000000" />
     <!-- Set the fill color to transparent if you don't want it filled -->
-    <solid android:color="@android:color/transparent" />
+    <solid android:color="#51E1E1E1" />
 </shape>
