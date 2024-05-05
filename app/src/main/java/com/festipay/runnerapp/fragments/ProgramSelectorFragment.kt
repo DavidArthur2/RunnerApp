@@ -4,16 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.RViews.ProgramAdapter
-import com.festipay.runnerapp.RViews.ProgramItem
+import com.festipay.runnerapp.adapters.ProgramAdapter
+import com.festipay.runnerapp.data.ProgramItem
 import com.festipay.runnerapp.data.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.showError
@@ -72,9 +70,9 @@ private lateinit var programItemList: ArrayList<ProgramItem>
             override fun onItemClick(position: Int, programItem: ProgramItem) {
                 CurrentState.programName = programItem.title
 
-                val installFragment = InstallFragment()
-                parentFragmentManager.beginTransaction().replace(R.id.frameLayout, installFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+                requireActivity()
+                    .findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                    .selectedItemId = R.id.install
 
             }
         })

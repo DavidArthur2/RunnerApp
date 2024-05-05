@@ -10,6 +10,3 @@ data class CompanyDemolition(var telephelyNev: String, var eszkozszam: Int, var 
                              var autoban: Boolean, var bazisLeszereles: Boolean,
                              var utolsoMegjegyzes: Comment?,
                              var comments: Comments?, var didek: DIDS?, var docID: String = "")
-
-data class Inventory(var darabszam: Int, var sn: Boolean, var targyNev: String, var utolsoMegjegyzes: Comment?,
-                     var comments: Comments?, var didek: DIDS?, var docID: String = "")

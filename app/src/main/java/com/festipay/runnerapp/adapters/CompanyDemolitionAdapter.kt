@@ -1,4 +1,4 @@
-package com.festipay.runnerapp.RViews
+package com.festipay.runnerapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View

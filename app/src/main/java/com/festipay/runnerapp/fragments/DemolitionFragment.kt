@@ -5,23 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.RViews.CompanyDemolitionAdapter
-import com.festipay.runnerapp.RViews.CompanyInstallAdapter
+import com.festipay.runnerapp.adapters.CompanyDemolitionAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyDemolition
-import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.CurrentState
 import com.festipay.runnerapp.data.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.showError
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
@@ -98,7 +94,7 @@ class DemolitionFragment : Fragment() {
                         it.comments = Comments(comments)
                         if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
                     }
-                    setupView(view)
+                    if(companyDemolitionList.last() == it)setupView(view)
                 }
         }
     }

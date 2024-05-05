@@ -120,5 +120,6 @@
     <string name="csomagoltText">Csomagolt(szállitásra vár):</string>
     <string name="autobanText">Autóban:</string>
     <string name="bazisleszerelesText">Kell-e bázis leszerelés?:</string>
+    <string name="SNText">SN?</string>
 
 </resources>

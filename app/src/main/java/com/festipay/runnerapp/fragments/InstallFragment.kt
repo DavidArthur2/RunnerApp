@@ -3,18 +3,15 @@ package com.festipay.runnerapp.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.RViews.CompanyInstallAdapter
-import com.festipay.runnerapp.RViews.ProgramAdapter
-import com.festipay.runnerapp.RViews.ProgramItem
+import com.festipay.runnerapp.adapters.CompanyInstallAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyInstall
@@ -39,9 +36,9 @@ class InstallFragment : Fragment() {
 
         CurrentState.mode = Mode.INSTALL
 
-        requireActivity()
+        val bottomView = requireActivity()
             .findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            .isVisible = true
+        bottomView.isVisible = true
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.install_title)}"
@@ -105,7 +102,7 @@ class InstallFragment : Fragment() {
                     it.comments = Comments(comments)
                     if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
                 }
-                    setupView(view)
+                    if(companyInstallList.last() == it)setupView(view)
             }
         }
     }
