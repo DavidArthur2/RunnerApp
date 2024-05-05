@@ -5,22 +5,37 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.widget.Toast
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+private fun createDirectoryIfNotExist(directoryPath: String) {
+    val directory = File(directoryPath)
+    if (!directory.exists())directory.mkdirs()
+}
 @SuppressLint("SdCardPath")
 fun logToFile(message: String) {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val todayDate = dateFormat.format(Date())
-    val logFileName = "$todayDate.txt"
-    val logFile = File("/storage/emulated/0/Android/data/com.festipay.runnerapp/files/", logFileName) // Replace "path_to_your_directory" with the actual directory path where you want to store the log file
+    try {
+        Log.e("logToFileError:", message)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val todayDate = dateFormat.format(Date())
+        val logFileName = "$todayDate.txt"
+        val logFile = File(
+            "/storage/emulated/0/Android/data/com.festipay.runnerapp/files/",
+            logFileName
+        )
 
-    val timestampFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
-    val timestamp = timestampFormat.format(Date())
+        val timestampFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+        val timestamp = timestampFormat.format(Date())
 
-    logFile.appendText("[$timestamp] $message\n")
+        if (!logFile.exists()) logFile.createNewFile()
+        logFile.appendText("[$timestamp] $message\n")
+
+    } catch (ex: Exception){
+        print(ex.toString())
+    }
 }
 
 fun showError(context:Context?, message: String){

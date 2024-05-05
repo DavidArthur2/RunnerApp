@@ -115,5 +115,10 @@
     <string name="szoftverText">Szoftver:</string>
     <string name="paramText">Param:</string>
     <string name="utols_megjText">Utolsó megj.:</string>
+    <string name="eszkozszamText">Eszközszám:</string>
+    <string name="folyamatbanText">Folyamatban:</string>
+    <string name="csomagoltText">Csomagolt(szállitásra vár):</string>
+    <string name="autobanText">Autóban:</string>
+    <string name="bazisleszerelesText">Kell-e bázis leszerelés?:</string>
 
 </resources>

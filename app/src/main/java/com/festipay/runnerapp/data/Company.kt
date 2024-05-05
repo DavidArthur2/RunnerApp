@@ -6,7 +6,7 @@ data class CompanyInstall(var telephelyNev: String, var kiadva: Boolean, var nem
                           var utolsoMegjegyzes: Comment?,
                           var comments: Comments?, var didek: DIDS?, var docID: String = "")
 
-data class CompanyDemolition(var eszkozszam: Int, var folyamatban: Boolean, var csomagolt: Boolean,
+data class CompanyDemolition(var telephelyNev: String, var eszkozszam: Int, var folyamatban: Boolean, var csomagolt: Boolean,
                              var autoban: Boolean, var bazisLeszereles: Boolean,
                              var utolsoMegjegyzes: Comment?,
                              var comments: Comments?, var didek: DIDS?, var docID: String = "")

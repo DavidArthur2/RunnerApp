@@ -44,10 +44,11 @@ class InstallFragment : Fragment() {
             .isVisible = true
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
-
         appBar.title = "${CurrentState.programName} - ${getString(R.string.install_title)}"
 
         loadCompanyList(view)
+
+        CurrentState.fragment = com.festipay.runnerapp.utilities.Fragment.INSTALL
 
         return view
     }
@@ -103,8 +104,8 @@ class InstallFragment : Fragment() {
                     }
                     it.comments = Comments(comments)
                     if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
-                    setupView(view)
                 }
+                    setupView(view)
             }
         }
     }
@@ -128,5 +129,6 @@ class InstallFragment : Fragment() {
             }
         })
     }
+
 
 }

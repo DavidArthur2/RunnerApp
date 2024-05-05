@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -16,6 +17,7 @@ import com.festipay.runnerapp.RViews.ProgramItem
 import com.festipay.runnerapp.data.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.showError
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProgramSelectorFragment : Fragment() {
 private lateinit var programSelectorRecyclerView: RecyclerView
@@ -26,12 +28,20 @@ private lateinit var programItemList: ArrayList<ProgramItem>
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_program_selector, container, false)
-
+        initFragment()
         loadProgramList(view)
-
         return view
     }
 
+    private fun initFragment(){
+        val b = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        b.isVisible = false
+
+        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        appBar.title = getString(R.string.program_selector_title)
+
+        CurrentState.fragment = com.festipay.runnerapp.utilities.Fragment.PROGRAM
+    }
     private fun loadProgramList(view: View){
         programItemList = arrayListOf<ProgramItem>()
         Database.db.collection("programok").get().addOnSuccessListener { result ->

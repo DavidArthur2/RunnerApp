@@ -4,17 +4,17 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.text.Layout
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
-import androidx.transition.Visibility
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.data.CurrentState
+import com.festipay.runnerapp.fragments.DemolitionFragment
+import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
+import com.festipay.runnerapp.utilities.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SecondActivity: AppCompatActivity() {
@@ -23,12 +23,25 @@ class SecondActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_second)
-        val appBar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
 
-        appBar.title = getString(R.string.program_selector_title)
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            val fragment: androidx.fragment.app.Fragment = when (item.itemId) {
+                R.id.install -> {
+                    InstallFragment()
+                }
 
-        val b = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        b.isVisible = false
+                R.id.demolition -> {
+                    DemolitionFragment()
+                }
+
+                else -> InstallFragment()
+            }
+            supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+            true
+        }
+
         val programSelectorFragment = ProgramSelectorFragment()
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, programSelectorFragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
@@ -38,7 +51,16 @@ class SecondActivity: AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        setupLogoutDialog("Kijelentkezés", "Biztosan ki szeretnél jelentkezni?")
+        when(CurrentState.fragment){
+            in listOf(Fragment.INSTALL, Fragment.INVENTORY, Fragment.DEMOLITION) ->{
+                val programSelectorFragment = ProgramSelectorFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.frameLayout, programSelectorFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+            }
+
+            Fragment.PROGRAM -> setupLogoutDialog("Kijelentkezés", "Biztosan ki szeretnél jelentkezni?")
+            else -> setupLogoutDialog("Kijelentkezés", "Biztosan ki szeretnél jelentkezni?")
+        }
     }
 
     fun setupLogoutDialog(title:String, message:String){
