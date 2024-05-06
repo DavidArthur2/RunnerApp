@@ -16,6 +16,7 @@ import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.fragments.InventoryFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 import com.festipay.runnerapp.utilities.FragmentType
+import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SecondActivity : AppCompatActivity() {
@@ -101,6 +102,7 @@ class SecondActivity : AppCompatActivity() {
 
                 else -> InstallFragment()
             }
+            showLoadingScreen(this)
             supportFragmentManager.beginTransaction()
                 //.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
                 .replace(R.id.frameLayout, fragment)

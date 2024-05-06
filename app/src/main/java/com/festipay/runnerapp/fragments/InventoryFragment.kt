@@ -17,6 +17,8 @@ import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.Functions
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.showError
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
@@ -68,7 +70,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
                     }
                     else{
-                        showError(requireContext(), "Nincs felvéve egy tárgy se")
+                        showError(requireContext(), "Nincs felvéve tárgy!")
                     }
                 }catch(ex: Exception){
                     showError(requireContext(), "Error in loadInventoryList: $ex")
@@ -111,6 +113,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
         val adapt = InventoryAdapter(itemList)
         recyclerView.adapter = adapt
+        hideLoadingScreen()
 
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {

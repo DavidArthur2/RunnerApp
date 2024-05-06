@@ -13,6 +13,7 @@ import com.festipay.runnerapp.adapters.ProgramAdapter
 import com.festipay.runnerapp.data.Program
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -49,7 +50,7 @@ override lateinit var itemList: ArrayList<Program>
                 setupView(view)
             }
             else{
-                showError(requireContext(), "Nincs felvéve egy program se")
+                showError(requireContext(), "Nincs felvéve program!")
             }
         }.addOnFailureListener { exception ->
             showError(requireContext(), "Can't read documents in programok: $exception")
@@ -65,6 +66,7 @@ override lateinit var itemList: ArrayList<Program>
 
         val adapt = ProgramAdapter(itemList)
         recyclerView.adapter = adapt
+        hideLoadingScreen()
 
         adapt.setOnItemClickListener(object : ProgramAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, program: Program) {
@@ -76,6 +78,7 @@ override lateinit var itemList: ArrayList<Program>
 
             }
         })
+
     }
 
     override fun loadComments(view: View) {

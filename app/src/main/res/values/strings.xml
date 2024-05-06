@@ -11,13 +11,13 @@
     <string name="app_exit">Kilépés</string>
     <string name="exit_text">Kilépés</string>
     <string name="exit_dialog_message">Biztosan ki szeretnél lépni?</string>
-    <string name="install_string">Telepités</string>
+    <string name="install_string">Telepítés</string>
     <string name="demolition_string">Bontás</string>
     <string name="inventory_string">Leltár</string>
     <string name="program_selector_title">Program választó</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="install_title">Telepités</string>
+    <string name="install_title">Telepítés</string>
     <string name="kiadvaText">Kiadva:</string>
     <string name="nem_kirakhatoText">Nem kirakható:</string>
     <string name="kirakvaText">Kirakva:</string>

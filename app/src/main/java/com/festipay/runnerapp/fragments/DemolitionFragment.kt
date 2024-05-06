@@ -17,6 +17,8 @@ import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.Functions
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.showError
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
@@ -70,7 +72,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
                 }
                 else{
-                    showError(requireContext(), "Nincs felvéve egy telephely se")
+                    showError(requireContext(), "Nincs felvéve telephely!")
                 }
             }.addOnFailureListener { exception ->
                 showError(requireContext(), "Can't read documents in telephelyek_bontas: $exception")
@@ -108,6 +110,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
         val adapt = CompanyDemolitionAdapter(itemList)
         recyclerView.adapter = adapt
+        hideLoadingScreen()
 
         adapt.setOnItemClickListener(object : CompanyDemolitionAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyDemolition: CompanyDemolition) {

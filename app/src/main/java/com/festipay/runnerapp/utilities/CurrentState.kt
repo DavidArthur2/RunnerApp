@@ -1,5 +1,7 @@
 package com.festipay.runnerapp.utilities
 
+import android.app.Dialog
+
 enum class Mode{
     INSTALL,
     DEMOLITION,
@@ -12,4 +14,5 @@ object CurrentState{
     var companySite: String? = null
     var userName: String? = null
     var fragmentType: FragmentType? = null
+    var loadingScreen: Dialog? = null
 }

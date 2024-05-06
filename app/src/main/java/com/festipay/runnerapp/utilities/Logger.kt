@@ -7,6 +7,8 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.widget.Toast
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.Functions.showErrorDialog
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,10 +41,11 @@ fun logToFile(message: String) {
 }
 
 fun showError(context:Context?, message: String){
-    val toastMessage = SpannableString(message)
-    toastMessage.setSpan(ForegroundColorSpan(Color.RED), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-    Toast.makeText(context, "Hiba történt: $toastMessage", Toast.LENGTH_LONG).show()
-    logToFile("showError: $toastMessage")
+    hideLoadingScreen()
+    if (context != null)
+        showErrorDialog(context, message)
+
+    logToFile("showError: $message")
 }
 
 fun showWarning(context:Context?, message: String){

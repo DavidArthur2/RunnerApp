@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.festipay.runnerapp.R.*
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.showError
 import kotlin.system.exitProcess
 
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.show()
         dialog.findViewById<Button>(id.back_button).setOnClickListener {
+            hideLoadingScreen()
             dialog.dismiss()
         }
         dialog.setOnDismissListener{loginButton.isClickable = true}
@@ -82,13 +85,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginClick(){
-        loginButton.isClickable = false
+        showLoadingScreen(this)
         val userName: String = userInput.text.toString()
         Database.db.collection("felhasznalok").whereEqualTo("nev", userName).get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 CurrentState.userName = userName
                 launchProgramSelector()
-                loginButton.isClickable = true
                 userInput.clearComposingText()
             }
             else{
@@ -98,5 +100,6 @@ class MainActivity : AppCompatActivity() {
             showError(this, "Can't read documents in felhasznalok: $exception")
         }
     }
+
 
 }
