@@ -11,12 +11,12 @@ import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.DateFormatter
 
 
-class InventoryAdapter(private val inventoryItemList: ArrayList<Inventory>) :
-    RecyclerView.Adapter<InventoryAdapter.InventoryViewHolder>() {
+class InventoryAdapter(private val itemList: ArrayList<Inventory>) :
+    RecyclerView.Adapter<InventoryAdapter.ItemViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
 
-    inner class InventoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val darabszam: TextView = itemView.findViewById(R.id.firstValue)
         val sn: CheckBox = itemView.findViewById(R.id.secondCheckbox)
         val targyNev: TextView = itemView.findViewById(R.id.itemTitle)
@@ -26,24 +26,24 @@ class InventoryAdapter(private val inventoryItemList: ArrayList<Inventory>) :
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    mListener?.onItemClick(position, inventoryItemList[position])
+                    mListener?.onItemClick(position, itemList[position])
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InventoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.inventory_items_listitem, parent, false)
-        return InventoryViewHolder(itemView)
+        return ItemViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        return inventoryItemList.size
+        return itemList.size
     }
 
-    override fun onBindViewHolder(holder: InventoryViewHolder, position: Int) {
-        val currentItem = inventoryItemList[position]
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val currentItem = itemList[position]
         holder.targyNev.text = currentItem.targyNev
         holder.sn.isChecked = currentItem.sn
         holder.darabszam.text = currentItem.darabszam.toString()

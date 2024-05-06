@@ -6,20 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.ProgramAdapter
-import com.festipay.runnerapp.data.ProgramItem
-import com.festipay.runnerapp.data.CurrentState
+import com.festipay.runnerapp.data.Program
+import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class ProgramSelectorFragment : Fragment() {
-private lateinit var programSelectorRecyclerView: RecyclerView
-private lateinit var programItemList: ArrayList<ProgramItem>
+class ProgramSelectorFragment : Fragment(), IFragment<Program> {
+override lateinit var recyclerView: RecyclerView
+override lateinit var itemList: ArrayList<Program>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +26,7 @@ private lateinit var programItemList: ArrayList<ProgramItem>
     ): View? {
         val view = inflater.inflate(R.layout.fragment_program_selector, container, false)
         initFragment()
-        loadProgramList(view)
+        loadList(view)
         return view
     }
 
@@ -38,14 +37,14 @@ private lateinit var programItemList: ArrayList<ProgramItem>
         val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = getString(R.string.program_selector_title)
 
-        CurrentState.fragment = com.festipay.runnerapp.utilities.Fragment.PROGRAM
+        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.PROGRAM
     }
-    private fun loadProgramList(view: View){
-        programItemList = arrayListOf<ProgramItem>()
+    override fun loadList(view: View){
+        itemList = arrayListOf<Program>()
         Database.db.collection("programok").get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 for(doc in result){
-                    programItemList.add(ProgramItem(doc.data["ProgramNev"] as String))
+                    itemList.add(Program(doc.data["ProgramNev"] as String))
                 }
                 setupView(view)
             }
@@ -56,19 +55,20 @@ private lateinit var programItemList: ArrayList<ProgramItem>
             showError(requireContext(), "Can't read documents in programok: $exception")
         }
     }
-    private fun setupView(view: View){
 
-        programSelectorRecyclerView = view.findViewById(R.id.programSelectorRecyclerView)
-        programSelectorRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        programSelectorRecyclerView.setHasFixedSize(true)
+    override fun setupView(view: View){
+
+        recyclerView = view.findViewById(R.id.programSelectorRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
 
 
-        val adapt = ProgramAdapter(programItemList)
-        programSelectorRecyclerView.adapter = adapt
+        val adapt = ProgramAdapter(itemList)
+        recyclerView.adapter = adapt
 
         adapt.setOnItemClickListener(object : ProgramAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int, programItem: ProgramItem) {
-                CurrentState.programName = programItem.title
+            override fun onItemClick(position: Int, program: Program) {
+                CurrentState.programName = program.title
 
                 requireActivity()
                     .findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -76,6 +76,10 @@ private lateinit var programItemList: ArrayList<ProgramItem>
 
             }
         })
+    }
+
+    override fun loadComments(view: View) {
+
     }
 }
 

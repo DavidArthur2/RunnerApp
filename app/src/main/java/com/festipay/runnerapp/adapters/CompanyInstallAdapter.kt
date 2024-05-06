@@ -10,12 +10,12 @@ import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.DateFormatter.LocalDateTimeToString
 
-class CompanyInstallAdapter(private val companyInstallList: ArrayList<CompanyInstall>) :
-    RecyclerView.Adapter<CompanyInstallAdapter.CompanyInstallViewHolder>() {
+class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
+    RecyclerView.Adapter<CompanyInstallAdapter.ItemViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
 
-    inner class CompanyInstallViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val telephelyNev: TextView = itemView.findViewById(R.id.companyTitle)
         val kiadva: CheckBox = itemView.findViewById(R.id.firstCheckbox)
         val nemKirakhato: CheckBox = itemView.findViewById(R.id.secondCheckbox)
@@ -33,24 +33,24 @@ class CompanyInstallAdapter(private val companyInstallList: ArrayList<CompanyIns
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    mListener?.onItemClick(position, companyInstallList[position])
+                    mListener?.onItemClick(position, itemList[position])
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompanyInstallViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.install_companysite_listitem, parent, false)
-        return CompanyInstallViewHolder(itemView)
+        return ItemViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        return companyInstallList.size
+        return itemList.size
     }
 
-    override fun onBindViewHolder(holder: CompanyInstallViewHolder, position: Int) {
-        val currentItem = companyInstallList[position]
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val currentItem = itemList[position]
         holder.telephelyNev.text = currentItem.telephelyNev
         holder.kiadva.isChecked = currentItem.kiadva
         holder.nemKirakhato.isChecked = currentItem.nemKirakhato

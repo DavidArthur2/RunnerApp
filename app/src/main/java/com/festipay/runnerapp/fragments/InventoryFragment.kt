@@ -5,29 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.adapters.CompanyInstallAdapter
 import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
-import com.festipay.runnerapp.data.CompanyInstall
-import com.festipay.runnerapp.data.CurrentState
+import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.data.Inventory
-import com.festipay.runnerapp.data.Mode
+import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.showError
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
-class InventoryFragment : Fragment() {
-    private lateinit var inventorySelectorRecyclerView: RecyclerView
-    private lateinit var inventoryList: ArrayList<Inventory>
+class InventoryFragment : Fragment(), IFragment<Inventory> {
+    override lateinit var recyclerView: RecyclerView
+    override lateinit var itemList: ArrayList<Inventory>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,15 +36,15 @@ class InventoryFragment : Fragment() {
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.inventory_string)}"
 
-        loadInventoryList(view)
+        loadList(view)
 
-        CurrentState.fragment = com.festipay.runnerapp.utilities.Fragment.INVENTORY
+        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
 
         return view
     }
 
-    private fun loadInventoryList(view: View){
-        inventoryList = arrayListOf<Inventory>()
+    override fun loadList(view: View){
+        itemList = arrayListOf<Inventory>()
         Database.db.collection("leltar")
             .whereEqualTo("Program", CurrentState.programName)
             .orderBy("TargyNev", Query.Direction.ASCENDING)
@@ -56,7 +52,7 @@ class InventoryFragment : Fragment() {
                 try{
                     if(!result.isEmpty){
                         for(doc in result){
-                            inventoryList.add(
+                            itemList.add(
                                 Inventory(
                                     (doc.data["Darabszam"] as Long).toInt(),
                                     doc.data["SN"] as Boolean,
@@ -83,8 +79,8 @@ class InventoryFragment : Fragment() {
             }
     }
 
-    private fun loadComments(view: View){
-        for(it in inventoryList) {
+    override fun loadComments(view: View){
+        for(it in itemList) {
             Database.db.collection("leltar").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
@@ -100,21 +96,21 @@ class InventoryFragment : Fragment() {
                         it.comments = Comments(comments)
                         if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
                     }
-                    if(inventoryList.last() == it)
+                    if(itemList.last() == it)
                         setupView(view)
                 }
         }
     }
 
-    private fun setupView(view: View){
+    override fun setupView(view: View){
 
-        inventorySelectorRecyclerView = view.findViewById(R.id.inventoryRecyclerView)
-        inventorySelectorRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        inventorySelectorRecyclerView.setHasFixedSize(true)
+        recyclerView = view.findViewById(R.id.inventoryRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
 
 
-        val adapt = InventoryAdapter(inventoryList)
-        inventorySelectorRecyclerView.adapter = adapt
+        val adapt = InventoryAdapter(itemList)
+        recyclerView.adapter = adapt
 
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {

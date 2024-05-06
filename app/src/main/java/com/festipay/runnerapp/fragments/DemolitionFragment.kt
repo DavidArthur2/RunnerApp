@@ -13,17 +13,17 @@ import com.festipay.runnerapp.adapters.CompanyDemolitionAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyDemolition
-import com.festipay.runnerapp.data.CurrentState
-import com.festipay.runnerapp.data.Mode
+import com.festipay.runnerapp.utilities.CurrentState
+import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.showError
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
-class DemolitionFragment : Fragment() {
-    private lateinit var companySelectorRecyclerView: RecyclerView
-    private lateinit var companyDemolitionList: ArrayList<CompanyDemolition>
+class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
+    override lateinit var recyclerView: RecyclerView
+    override lateinit var itemList: ArrayList<CompanyDemolition>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,22 +36,22 @@ class DemolitionFragment : Fragment() {
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.demolition_string)}"
 
-        loadCompanyList(view)
+        loadList(view)
 
-        CurrentState.fragment = com.festipay.runnerapp.utilities.Fragment.DEMOLITION
+        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.DEMOLITION
 
         return view
     }
 
-    private fun loadCompanyList(view: View){
-        companyDemolitionList = arrayListOf<CompanyDemolition>()
+    override fun loadList(view: View){
+        itemList = arrayListOf<CompanyDemolition>()
         Database.db.collection("telephely_bontas")
             .whereEqualTo("Program", CurrentState.programName)
             .orderBy("TelephelyNev", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
                 if(!result.isEmpty){
                     for(doc in result){
-                        companyDemolitionList.add(
+                        itemList.add(
                             CompanyDemolition(
                                 doc.data["TelephelyNev"] as String,
                                 (doc.data["Eszkozszam"] as Long).toInt(),
@@ -77,8 +77,8 @@ class DemolitionFragment : Fragment() {
             }
     }
 
-    private fun loadComments(view: View){
-        for(it in companyDemolitionList) {
+    override fun loadComments(view: View){
+        for(it in itemList) {
             Database.db.collection("telephely_bontas").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
@@ -94,20 +94,20 @@ class DemolitionFragment : Fragment() {
                         it.comments = Comments(comments)
                         if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
                     }
-                    if(companyDemolitionList.last() == it)setupView(view)
+                    if(itemList.last() == it)setupView(view)
                 }
         }
     }
 
-    private fun setupView(view: View){
+    override fun setupView(view: View){
 
-        companySelectorRecyclerView = view.findViewById(R.id.companyDemolitionRecyclerView)
-        companySelectorRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        companySelectorRecyclerView.setHasFixedSize(true)
+        recyclerView = view.findViewById(R.id.companyDemolitionRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.setHasFixedSize(true)
 
 
-        val adapt = CompanyDemolitionAdapter(companyDemolitionList)
-        companySelectorRecyclerView.adapter = adapt
+        val adapt = CompanyDemolitionAdapter(itemList)
+        recyclerView.adapter = adapt
 
         adapt.setOnItemClickListener(object : CompanyDemolitionAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyDemolition: CompanyDemolition) {

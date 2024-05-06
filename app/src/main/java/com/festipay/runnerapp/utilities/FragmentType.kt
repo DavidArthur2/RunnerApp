@@ -1,6 +1,6 @@
 package com.festipay.runnerapp.utilities
 
-enum class Fragment {
+enum class FragmentType {
     INSTALL,
     DEMOLITION,
     INVENTORY,

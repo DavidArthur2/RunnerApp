@@ -10,12 +10,12 @@ import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.utilities.DateFormatter
 
-class CompanyDemolitionAdapter(private val companyDemolitionList: ArrayList<CompanyDemolition>) :
-    RecyclerView.Adapter<CompanyDemolitionAdapter.CompanyDemolitionViewHolder>() {
+class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition>) :
+    RecyclerView.Adapter<CompanyDemolitionAdapter.ItemViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
 
-    inner class CompanyDemolitionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val telephelyNev: TextView = itemView.findViewById(R.id.companyTitle)
         val eszkozszam: TextView = itemView.findViewById(R.id.firstValue)
         val folyamatban: CheckBox = itemView.findViewById(R.id.secondCheckbox)
@@ -30,24 +30,24 @@ class CompanyDemolitionAdapter(private val companyDemolitionList: ArrayList<Comp
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    mListener?.onItemClick(position, companyDemolitionList[position])
+                    mListener?.onItemClick(position, itemList[position])
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompanyDemolitionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.demolition_companysite_listitem, parent, false)
-        return CompanyDemolitionViewHolder(itemView)
+        return ItemViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        return companyDemolitionList.size
+        return itemList.size
     }
 
-    override fun onBindViewHolder(holder: CompanyDemolitionViewHolder, position: Int) {
-        val currentItem = companyDemolitionList[position]
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val currentItem = itemList[position]
         holder.telephelyNev.text = currentItem.telephelyNev
         holder.folyamatban.isChecked = currentItem.folyamatban
         holder.eszkozszam.text = currentItem.eszkozszam.toString()

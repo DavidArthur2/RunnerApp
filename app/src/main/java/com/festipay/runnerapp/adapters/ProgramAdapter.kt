@@ -7,37 +7,37 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.data.ProgramItem
+import com.festipay.runnerapp.data.Program
 
-class ProgramAdapter(private val programItemList: ArrayList<ProgramItem>) :
-    RecyclerView.Adapter<ProgramAdapter.ProgramViewHolder>() {
+class ProgramAdapter(private val itemList: ArrayList<Program>) :
+    RecyclerView.Adapter<ProgramAdapter.ItemViewHolder>() {
 
     private var mListener: OnItemClickListener? = null
 
-    inner class ProgramViewHolder(itemView: View) : ViewHolder(itemView) {
+    inner class ItemViewHolder(itemView: View) : ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.programTitle)
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    mListener?.onItemClick(position, programItemList[position])
+                    mListener?.onItemClick(position, itemList[position])
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProgramViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.program_selector_listitem, parent, false)
-        return ProgramViewHolder(itemView)
+        return ItemViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
-        return programItemList.size
+        return itemList.size
     }
 
-    override fun onBindViewHolder(holder: ProgramViewHolder, position: Int) {
-        val currentItem = programItemList[position]
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val currentItem = itemList[position]
         holder.title.text = currentItem.title
     }
 
@@ -46,6 +46,6 @@ class ProgramAdapter(private val programItemList: ArrayList<ProgramItem>) :
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int, programItem: ProgramItem)
+        fun onItemClick(position: Int, program: Program)
     }
 }
