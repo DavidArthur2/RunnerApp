@@ -25,6 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:theme="@style/Base.Theme.RunnerApp"
+        android:backgroundTint="@color/secondaryColor"
+        app:itemRippleColor="@color/secondaryColor"
         app:menu="@menu/bottom_nav_menu"/>
 
     <FrameLayout

@@ -12,6 +12,11 @@ object DateFormatter {
         return LocalDateTime.ofInstant(javaDate.toInstant(), ZoneId.systemDefault())
     }
 
+    fun LocalDateTimeToTimestamp(input: LocalDateTime): Timestamp {
+        val instant = input.atZone(ZoneId.systemDefault()).toInstant()
+        return Timestamp(instant.epochSecond, instant.nano)
+    }
+
     fun LocalDateTimeToString(input: LocalDateTime?): String{
         val pattern = "yyyy.MM.dd - HH:mm"
         val formatter = DateTimeFormatter.ofPattern(pattern)

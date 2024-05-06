@@ -3,9 +3,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primaryColor">#1D9121</color>
+    <color name="primaryColorDark">#136015</color>
+    <color name="secondaryColor">#89D18B</color>
+    <color name="secondaryColorDark">#568358</color>
     <color name="purple">#673AB7</color>
     <color name="darkGray">#4E4E4E</color>
     <color name="lightGray">#878787</color>
     <color name="lightRed">#DD4034</color>
     <color name="veryLightGray">#FFE3E3E3</color>
+
 </resources>

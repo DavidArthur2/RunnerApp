@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
@@ -20,6 +21,7 @@ import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.showError
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
@@ -41,6 +43,14 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         loadList(view)
 
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
+
+        view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                .replace(R.id.frameLayout, InventoryAddFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+        }
 
         return view
     }
@@ -118,8 +128,6 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
                 CurrentState.companySite = inventoryItem.targyNev
-
-
 
 
             }

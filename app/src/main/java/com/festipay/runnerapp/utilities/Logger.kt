@@ -40,12 +40,12 @@ fun logToFile(message: String) {
     }
 }
 
-fun showError(context:Context?, message: String){
+fun showError(context:Context?, message: String, log: String = ""){
     hideLoadingScreen()
     if (context != null)
         showErrorDialog(context, message)
 
-    logToFile("showError: $message")
+    logToFile("showError: $message $log")
 }
 
 fun showWarning(context:Context?, message: String){
