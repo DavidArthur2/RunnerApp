@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +41,9 @@ override lateinit var itemList: ArrayList<Program>
 
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.PROGRAM
     }
+    override fun onViewLoaded(){
+        hideLoadingScreen()
+    }
     override fun loadList(view: View){
         itemList = arrayListOf<Program>()
         Database.db.collection("programok").get().addOnSuccessListener { result ->
@@ -66,7 +70,13 @@ override lateinit var itemList: ArrayList<Program>
 
         val adapt = ProgramAdapter(itemList)
         recyclerView.adapter = adapt
-        hideLoadingScreen()
+
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                onViewLoaded()
+                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
 
         adapt.setOnItemClickListener(object : ProgramAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, program: Program) {

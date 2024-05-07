@@ -37,9 +37,15 @@ class SecondActivity : AppCompatActivity() {
     override fun onBackPressed() {
         when (CurrentState.fragmentType) {
             in listOf(FragmentType.INSTALL, FragmentType.INVENTORY, FragmentType.DEMOLITION) -> {
-                val programSelectorFragment = ProgramSelectorFragment()
+                showLoadingScreen(this)
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.frameLayout, programSelectorFragment)
+                    .replace(R.id.frameLayout, ProgramSelectorFragment())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+            }
+            FragmentType.INVENTORY_ITEM_ADD ->{
+                showLoadingScreen(this)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frameLayout, InventoryFragment())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
             }
 

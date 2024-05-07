@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,7 +45,9 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
         return view
     }
-
+    override fun onViewLoaded(){
+        hideLoadingScreen()
+    }
     override fun loadList(view: View){
         itemList = arrayListOf<CompanyDemolition>()
         Database.db.collection("telephely_bontas")
@@ -110,7 +113,13 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
         val adapt = CompanyDemolitionAdapter(itemList)
         recyclerView.adapter = adapt
-        hideLoadingScreen()
+
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                onViewLoaded()
+                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
 
         adapt.setOnItemClickListener(object : CompanyDemolitionAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyDemolition: CompanyDemolition) {

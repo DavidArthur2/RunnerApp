@@ -9,4 +9,6 @@ interface IFragment<T> {
     fun loadList(view: View)
     fun loadComments(view: View)
     fun setupView(view: View)
+
+    fun onViewLoaded()
 }

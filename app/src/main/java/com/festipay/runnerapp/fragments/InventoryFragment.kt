@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -54,7 +55,9 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
         return view
     }
-
+    override fun onViewLoaded(){
+        hideLoadingScreen()
+    }
     override fun loadList(view: View){
         itemList = arrayListOf<Inventory>()
         Database.db.collection("leltar")
@@ -123,7 +126,13 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
         val adapt = InventoryAdapter(itemList)
         recyclerView.adapter = adapt
-        hideLoadingScreen()
+
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                onViewLoaded()
+                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
 
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
