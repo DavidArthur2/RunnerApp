@@ -16,6 +16,7 @@ import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.fragments.InventoryFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 import com.festipay.runnerapp.utilities.FragmentType
+import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -28,7 +29,7 @@ class SecondActivity : AppCompatActivity() {
 
         navigationViewListener()
 
-        launchProgramSelector()
+        launchFragment(this, supportFragmentManager, ProgramSelectorFragment())
 
     }
 
@@ -36,18 +37,11 @@ class SecondActivity : AppCompatActivity() {
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         when (CurrentState.fragmentType) {
-            in listOf(FragmentType.INSTALL, FragmentType.INVENTORY, FragmentType.DEMOLITION) -> {
-                showLoadingScreen(this)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frameLayout, ProgramSelectorFragment())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-            }
-            FragmentType.INVENTORY_ITEM_ADD ->{
-                showLoadingScreen(this)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frameLayout, InventoryFragment())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-            }
+            in listOf(FragmentType.INSTALL, FragmentType.INVENTORY, FragmentType.DEMOLITION) ->
+                launchFragment(this, supportFragmentManager, ProgramSelectorFragment())
+
+            FragmentType.INVENTORY_ITEM_ADD ->
+                launchFragment(this, supportFragmentManager, InventoryFragment())
 
             FragmentType.PROGRAM -> setupLogoutDialog()
 
@@ -81,40 +75,23 @@ class SecondActivity : AppCompatActivity() {
         startActivity(nextActivity)
         finish()
     }
-
-    private fun launchProgramSelector(){
-        val programSelectorFragment = ProgramSelectorFragment()
-        supportFragmentManager.beginTransaction()
-            //.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-            .replace(R.id.frameLayout, programSelectorFragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
-    }
-
     private fun navigationViewListener(){
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.setOnItemSelectedListener { item ->
-            val fragment: androidx.fragment.app.Fragment = when (item.itemId) {
-                R.id.install -> {
-                    InstallFragment()
-                }
+            when (item.itemId) {
+                R.id.install ->
+                    launchFragment(this, supportFragmentManager, InstallFragment())
 
-                R.id.demolition -> {
-                    DemolitionFragment()
-                }
 
-                R.id.inventory -> {
-                    InventoryFragment()
-                }
+                R.id.demolition ->
+                    launchFragment(this, supportFragmentManager, DemolitionFragment())
 
-                else -> InstallFragment()
+
+                R.id.inventory ->
+                    launchFragment(this, supportFragmentManager, InventoryFragment())
+
+                else -> launchFragment(this, supportFragmentManager, InstallFragment())
             }
-            showLoadingScreen(this)
-            supportFragmentManager.beginTransaction()
-                //.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-                .replace(R.id.frameLayout, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit()
-
             true
         }
     }

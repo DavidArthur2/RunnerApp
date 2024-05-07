@@ -8,39 +8,6 @@
     android:paddingBottom="5dp">
 
     <TextView
-        android:id="@+id/thirdCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="82dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/csomagoltText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/thirdCheckbox"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/thirdCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="248dp"
-        android:layout_marginTop="72dp"
-        android:enabled="false"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/fourthCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/autobanText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/fourthCheckbox"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/fifthCheckboxTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,40 +22,18 @@
         android:id="@+id/fifthCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="344dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginStart="316dp"
+        android:layout_marginTop="106dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/fourthCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="104dp"
-        android:enabled="false"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/secondCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/folyamatbanText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/secondCheckbox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/firstTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="48dp"
         android:text="@string/eszkozszamText"
         android:textSize="20sp"
@@ -102,9 +47,64 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:text="25"
-        android:textStyle="bold|italic"
         android:textSize="20sp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toEndOf="@+id/firstTitle"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/thirdCheckboxTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="-6dp"
+        android:text="@string/csomagoltText"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/thirdCheckbox"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fourthCheckboxTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="-6dp"
+        android:text="@string/autobanText"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/fourthCheckbox"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/thirdCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="72dp"
+        android:enabled="false"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/fourthCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="106dp"
+        android:enabled="false"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/secondCheckboxTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="-6dp"
+        android:text="@string/folyamatbanText"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/secondCheckbox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox

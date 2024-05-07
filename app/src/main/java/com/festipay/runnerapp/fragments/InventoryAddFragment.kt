@@ -14,6 +14,7 @@ import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
@@ -126,20 +127,6 @@ class InventoryAddFragment : Fragment() {
         return Pair(item, comment)
     }
 
-    private fun launchInventoryFragment() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayout, InventoryFragment())
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
-    }
-
-    private fun launchInventoryAddFragment() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.frameLayout, InventoryAddFragment())
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
-    }
-
     private fun addData(item: Inventory, comment: String, exit: Boolean) {
         var data = hashMapOf(
             "Darabszam" to item.darabszam,
@@ -150,8 +137,8 @@ class InventoryAddFragment : Fragment() {
         Database.db.collection("leltar").add(data).addOnSuccessListener { doc ->
 
             if (comment.isEmpty()) {
-                if (exit) launchInventoryFragment()
-                else launchInventoryAddFragment()
+                if (exit) launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryFragment())
+                else launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryAddFragment())
                 showInfoDialog(
                     requireActivity(),
                     "Hozzáadás",
@@ -166,8 +153,8 @@ class InventoryAddFragment : Fragment() {
                 )
                 Database.db.collection("leltar").document(doc.id).collection("Comments").add(data)
                     .addOnSuccessListener {
-                        if (exit) launchInventoryFragment()
-                        else launchInventoryAddFragment()
+                        if (exit) launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryFragment())
+                        else launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryAddFragment())
                         showInfoDialog(
                             requireActivity(),
                             "Hozzáadás",

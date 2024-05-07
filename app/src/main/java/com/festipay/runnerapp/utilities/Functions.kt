@@ -6,7 +6,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getDrawable
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 
 object Functions {
     fun showLoadingScreen(context: Context){
@@ -47,5 +51,12 @@ object Functions {
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    fun launchFragment(context:Context, fragmentManager: FragmentManager, fragment: Fragment){
+        showLoadingScreen(context)
+        fragmentManager.beginTransaction()
+            .replace(R.id.frameLayout, fragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
     }
 }

@@ -30,7 +30,7 @@
     <string name="folyamatbanText">Folyamatban:</string>
     <string name="csomagoltText">Csomagolt(szállitásra vár):</string>
     <string name="autobanText">Autóban:</string>
-    <string name="bazisleszerelesText">Kell-e bázis leszerelés?:</string>
+    <string name="bazisleszerelesText">Kell bázis leszerelés?:</string>
     <string name="SNText">SN?</string>
     <string name="logoutText">Kijelentkezés</string>
     <string name="logoutConfirmText">Biztosan ki szeretnél jelentkezni?</string>
