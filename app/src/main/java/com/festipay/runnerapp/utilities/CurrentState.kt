@@ -13,6 +13,7 @@ object CurrentState{
     var mode: Mode? = null
     var companySite: String? = null
     var userName: String? = null
+    var operation: OperationType? = null
     var fragmentType: FragmentType? = null
     var loadingScreen: Dialog? = null
 }

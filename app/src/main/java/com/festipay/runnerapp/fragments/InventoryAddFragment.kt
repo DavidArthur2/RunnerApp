@@ -137,8 +137,8 @@ class InventoryAddFragment : Fragment() {
         Database.db.collection("leltar").add(data).addOnSuccessListener { doc ->
 
             if (comment.isEmpty()) {
-                if (exit) launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryFragment())
-                else launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryAddFragment())
+                if (exit) launchFragment(requireActivity(), InventoryFragment())
+                else launchFragment(requireActivity(), InventoryAddFragment())
                 showInfoDialog(
                     requireActivity(),
                     "Hozzáadás",
@@ -153,8 +153,8 @@ class InventoryAddFragment : Fragment() {
                 )
                 Database.db.collection("leltar").document(doc.id).collection("Comments").add(data)
                     .addOnSuccessListener {
-                        if (exit) launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryFragment())
-                        else launchFragment(requireActivity(), requireActivity().supportFragmentManager, InventoryAddFragment())
+                        if (exit) launchFragment(requireActivity(), InventoryFragment())
+                        else launchFragment(requireActivity(), InventoryAddFragment())
                         showInfoDialog(
                             requireActivity(),
                             "Hozzáadás",

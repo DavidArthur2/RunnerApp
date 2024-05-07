@@ -18,6 +18,9 @@ import com.festipay.runnerapp.utilities.showError
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
+    /**
+     * A login rész van a MainActivityben csak
+     */
 
     private lateinit var loginButton: Button
     private lateinit var userInput: EditText

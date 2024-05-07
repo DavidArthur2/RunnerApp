@@ -21,6 +21,7 @@ import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
@@ -137,7 +138,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
                 CurrentState.companySite = inventoryItem.targyNev
-
+                launchFragment(requireActivity(), OperationSelectorFragment())
 
             }
         })

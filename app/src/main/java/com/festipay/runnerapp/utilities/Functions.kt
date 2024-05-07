@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
@@ -53,9 +54,9 @@ object Functions {
         }
     }
 
-    fun launchFragment(context:Context, fragmentManager: FragmentManager, fragment: Fragment){
+    fun launchFragment(context: FragmentActivity, fragment: Fragment){
         showLoadingScreen(context)
-        fragmentManager.beginTransaction()
+        context.supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
     }

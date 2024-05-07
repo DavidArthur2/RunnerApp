@@ -45,5 +45,10 @@
     <string name="login_failed">"Login failed"</string>
     <string name="targyNevText">Tárgynév*</string>
     <string name="commentText">Megjegyzés</string>
+    <string name="status_modify">Státuszmódosítás</string>
+    <string name="comments">Megjegyzések</string>
+    <string name="did">DID kezelés</string>
+    <string name="gps">GPS koordináták</string>
+    <string name="sn">SN kezelés</string>
 
 </resources>

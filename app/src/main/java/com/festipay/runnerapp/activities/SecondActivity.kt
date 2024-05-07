@@ -29,7 +29,7 @@ class SecondActivity : AppCompatActivity() {
 
         navigationViewListener()
 
-        launchFragment(this, supportFragmentManager, ProgramSelectorFragment())
+        launchFragment(this, ProgramSelectorFragment())
 
     }
 
@@ -38,10 +38,11 @@ class SecondActivity : AppCompatActivity() {
     override fun onBackPressed() {
         when (CurrentState.fragmentType) {
             in listOf(FragmentType.INSTALL, FragmentType.INVENTORY, FragmentType.DEMOLITION) ->
-                launchFragment(this, supportFragmentManager, ProgramSelectorFragment())
+                launchFragment(this, ProgramSelectorFragment())
 
-            FragmentType.INVENTORY_ITEM_ADD ->
-                launchFragment(this, supportFragmentManager, InventoryFragment())
+            FragmentType.INVENTORY_ITEM_ADD, FragmentType.INVENTORY_ITEM ->
+                launchFragment(this, InventoryFragment())
+
 
             FragmentType.PROGRAM -> setupLogoutDialog()
 
@@ -80,17 +81,17 @@ class SecondActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.install ->
-                    launchFragment(this, supportFragmentManager, InstallFragment())
+                    launchFragment(this, InstallFragment())
 
 
                 R.id.demolition ->
-                    launchFragment(this, supportFragmentManager, DemolitionFragment())
+                    launchFragment(this, DemolitionFragment())
 
 
                 R.id.inventory ->
-                    launchFragment(this, supportFragmentManager, InventoryFragment())
+                    launchFragment(this, InventoryFragment())
 
-                else -> launchFragment(this, supportFragmentManager, InstallFragment())
+                else -> launchFragment(this, InstallFragment())
             }
             true
         }
