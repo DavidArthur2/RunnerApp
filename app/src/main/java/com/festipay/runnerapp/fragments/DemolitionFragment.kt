@@ -36,18 +36,18 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_demolition, container, false)
 
+        initFragment()
+        loadList(view)
+        return view
+    }
+    private fun initFragment(){
         CurrentState.mode = Mode.DEMOLITION
+        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.DEMOLITION
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = true
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.demolition_string)}"
-
-        loadList(view)
-
-        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.DEMOLITION
-
-        return view
     }
     override fun onViewLoaded(){
         hideLoadingScreen()
@@ -129,7 +129,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
             override fun onItemClick(position: Int, companyDemolition: CompanyDemolition) {
                 CurrentState.companySite = companyDemolition.telephelyNev
                 CurrentState.companySiteID = companyDemolition.docID
-
+                Functions.launchFragment(requireActivity(), OperationSelectorFragment())
 
 
             }

@@ -2,6 +2,9 @@ package com.festipay.runnerapp.utilities
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
@@ -30,6 +33,7 @@ object Functions {
     fun showErrorDialog(context: Context, message: String){
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.error_dialog)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         dialog.findViewById<TextView>(R.id.error_dialog_message).text = message
@@ -43,6 +47,7 @@ object Functions {
         if(hideLoading)hideLoadingScreen()
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.info_dialog)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         dialog.findViewById<TextView>(R.id.info_dialog_message).text = message

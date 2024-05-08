@@ -44,7 +44,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.inventory_string)}"
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = true
 
         loadList(view)
 

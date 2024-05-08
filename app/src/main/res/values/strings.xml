@@ -60,8 +60,8 @@
     <string name="installSeventhSwitchText">Param</string>
     <string name="installEightSwitchText">Teszt</string>
     <string name="demolitionFirstSwitchText">Folyamatban</string>
-    <string name="demolitionSecondSwitchText">Csomagolt(szállításra vár)</string>
+    <string name="demolitionSecondSwitchText">Csomagolt\n(szállításra vár)</string>
     <string name="demolitionThirdSwitchText">Autóban:</string>
-    <string name="demolitionFourthSwitchText">Kell bázis leszerelés?</string>
+    <string name="demolitionFourthSwitchText">Kell bázis\nleszerelés?</string>
 
 </resources>

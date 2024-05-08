@@ -44,8 +44,15 @@ class SecondActivity : AppCompatActivity() {
             FragmentType.INVENTORY_ITEM_ADD, FragmentType.INVENTORY_ITEM ->
                 launchFragment(this, InventoryFragment())
 
-            FragmentType.INVENTORY_ITEM_STATUS ->
+            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS ->
                 launchFragment(this, OperationSelectorFragment())
+
+            FragmentType.INSTALL_COMPANY ->
+                launchFragment(this, InstallFragment())
+
+            FragmentType.DEMOLITION_COMPANY ->
+                launchFragment(this, DemolitionFragment())
+
 
             FragmentType.PROGRAM -> setupLogoutDialog()
 

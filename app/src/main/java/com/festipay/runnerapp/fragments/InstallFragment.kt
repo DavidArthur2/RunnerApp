@@ -19,6 +19,7 @@ import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
+import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -132,7 +133,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
             override fun onItemClick(position: Int, companyInstall: CompanyInstall) {
                 CurrentState.companySite = companyInstall.telephelyNev
                 CurrentState.companySiteID = companyInstall.docID
-
+                Functions.launchFragment(requireActivity(), OperationSelectorFragment())
 
             }
         })

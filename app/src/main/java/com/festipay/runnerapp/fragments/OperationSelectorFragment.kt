@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.EditText
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
@@ -18,6 +19,7 @@ import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class OperationSelectorFragment(
 ) : Fragment(), IFragment<String> {
@@ -29,16 +31,36 @@ class OperationSelectorFragment(
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_operation_selector, container, false)
-        CurrentState.fragmentType = FragmentType.INVENTORY_ITEM
+
+        initFragment()
+        loadList(view)
+        onViewLoaded()
+        return view
+    }
+
+    private fun initFragment(){
+        val mode: String = when(CurrentState.mode){
+            Mode.INVENTORY -> {
+                CurrentState.fragmentType = FragmentType.INVENTORY_ITEM
+                getString(R.string.inventory_string)
+            }
+            Mode.INSTALL -> {
+                CurrentState.fragmentType = FragmentType.INSTALL_COMPANY
+                getString(R.string.install_string)
+            }
+            Mode.DEMOLITION -> {
+                CurrentState.fragmentType = FragmentType.DEMOLITION_COMPANY
+                getString(R.string.demolition_string)
+            }
+            else -> getString(R.string.inventory_string)
+        }
 
 
         val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title =
-            "${CurrentState.programName} - ${getString(R.string.inventory_string)} - ${CurrentState.companySite}"
+            "${CurrentState.programName} - $mode - ${CurrentState.companySite}"
 
-        loadList(view)
-        onViewLoaded()
-        return view
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
     }
 
     override fun loadList(view: View) {
