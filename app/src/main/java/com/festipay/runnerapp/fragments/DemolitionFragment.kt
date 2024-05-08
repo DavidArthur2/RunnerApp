@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.showError
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
@@ -35,6 +37,8 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         val view = inflater.inflate(R.layout.fragment_demolition, container, false)
 
         CurrentState.mode = Mode.DEMOLITION
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.demolition_string)}"
@@ -124,6 +128,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         adapt.setOnItemClickListener(object : CompanyDemolitionAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyDemolition: CompanyDemolition) {
                 CurrentState.companySite = companyDemolition.telephelyNev
+                CurrentState.companySiteID = companyDemolition.docID
 
 
 

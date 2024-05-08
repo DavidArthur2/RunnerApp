@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.Inventory
@@ -19,6 +20,7 @@ import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.showError
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
 
 class InventoryAddFragment : Fragment() {
@@ -101,6 +103,7 @@ class InventoryAddFragment : Fragment() {
     private fun initViews(view: View) {
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY_ITEM_ADD
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
         val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title =
             "${CurrentState.programName} - ${getString(R.string.inventory_string)} - Hozzáadás"

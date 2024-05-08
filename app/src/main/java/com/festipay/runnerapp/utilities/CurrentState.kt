@@ -12,6 +12,7 @@ object CurrentState{
     var programName: String? = null
     var mode: Mode? = null
     var companySite: String? = null
+    var companySiteID: String? = null
     var userName: String? = null
     var operation: OperationType? = null
     var fragmentType: FragmentType? = null

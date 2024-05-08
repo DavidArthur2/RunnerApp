@@ -131,7 +131,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         adapt.setOnItemClickListener(object : CompanyInstallAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyInstall: CompanyInstall) {
                 CurrentState.companySite = companyInstall.telephelyNev
-
+                CurrentState.companySiteID = companyInstall.docID
 
 
             }

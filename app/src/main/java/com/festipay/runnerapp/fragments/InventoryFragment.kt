@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.showError
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
@@ -41,6 +43,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.inventory_string)}"
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
 
         loadList(view)
 
@@ -138,6 +142,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
                 CurrentState.companySite = inventoryItem.targyNev
+                CurrentState.companySiteID = inventoryItem.docID
                 launchFragment(requireActivity(), OperationSelectorFragment())
 
             }
