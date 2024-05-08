@@ -50,5 +50,18 @@
     <string name="did">DID kezelés</string>
     <string name="gps">GPS koordináták</string>
     <string name="sn">SN kezelés</string>
+    <string name="telephelyNevHint">Telephely név*</string>
+    <string name="installFirstSwitchText">Kiadva</string>
+    <string name="installSecondSwitchTExt">Nem kirakható</string>
+    <string name="installThirdSwitchText">Kirakva</string>
+    <string name="installFourthSwitchText">Elosztó</string>
+    <string name="installFifthSwitchText">Áram</string>
+    <string name="installSixthSwitchText">Szoftver</string>
+    <string name="installSeventhSwitchText">Param</string>
+    <string name="installEightSwitchText">Teszt</string>
+    <string name="demolitionFirstSwitchText">Folyamatban</string>
+    <string name="demolitionSecondSwitchText">Csomagolt(szállításra vár)</string>
+    <string name="demolitionThirdSwitchText">Autóban:</string>
+    <string name="demolitionFourthSwitchText">Kell bázis leszerelés?</string>
 
 </resources>

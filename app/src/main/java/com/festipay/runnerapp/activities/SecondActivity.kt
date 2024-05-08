@@ -14,6 +14,7 @@ import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.fragments.DemolitionFragment
 import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.fragments.InventoryFragment
+import com.festipay.runnerapp.fragments.OperationSelectorFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions.launchFragment
@@ -43,8 +44,11 @@ class SecondActivity : AppCompatActivity() {
             FragmentType.INVENTORY_ITEM_ADD, FragmentType.INVENTORY_ITEM ->
                 launchFragment(this, InventoryFragment())
 
+            FragmentType.INVENTORY_ITEM_STATUS ->
+                launchFragment(this, OperationSelectorFragment())
 
             FragmentType.PROGRAM -> setupLogoutDialog()
+
 
             else -> setupLogoutDialog()
         }

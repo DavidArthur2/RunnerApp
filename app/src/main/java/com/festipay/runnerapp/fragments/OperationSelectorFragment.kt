@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
@@ -29,6 +30,11 @@ class OperationSelectorFragment(
     ): View? {
         val view = inflater.inflate(R.layout.fragment_operation_selector, container, false)
         CurrentState.fragmentType = FragmentType.INVENTORY_ITEM
+
+
+        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        appBar.title =
+            "${CurrentState.programName} - ${getString(R.string.inventory_string)} - ${CurrentState.companySite}"
 
         loadList(view)
         onViewLoaded()
@@ -64,8 +70,7 @@ class OperationSelectorFragment(
             override fun onItemClick(position: Int, operation: String) {
                 when(operation){
                     getString(R.string.status_modify) ->{
-                        CurrentState.operation = OperationType.STATUS_MODIFY
-                        //Functions.launchFragment(requireActivity(), StatusModifyFragment())
+                        Functions.launchFragment(requireActivity(), StatusModifyFragment())
                     }
                     getString(R.string.comments) ->{
                         CurrentState.operation = OperationType.COMMENTS

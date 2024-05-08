@@ -13,7 +13,7 @@
         android:paddingTop="@dimen/fragment_vertical_margin"
         android:paddingRight="@dimen/fragment_horizontal_margin"
         android:paddingBottom="@dimen/fragment_vertical_margin"
-        tools:context=".fragments.InventoryAddFragment">
+        tools:context=".fragments.StatusModifyFragment">
 
         <EditText
             android:id="@+id/targyNevInput"
@@ -28,26 +28,6 @@
             android:hint="@string/targyNevText"
             android:inputType="textCapSentences"
             android:maxLength="15"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/commentInput"
-            android:layout_width="288dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="236dp"
-            android:background="@drawable/custom_input"
-            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_-.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
-            android:drawablePadding="8dp"
-            android:ems="10"
-            android:fadingEdge="vertical"
-            android:hint="@string/commentText"
-            android:inputType="textCapSentences"
-            android:maxLength="100"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,23 +75,12 @@
             app:trackTint="@color/switch_track_selector" />
 
         <Button
-            android:id="@+id/addButton"
-            android:layout_width="wrap_content"
-            android:layout_height="64dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="372dp"
-            android:text="Hozzáadás"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/addExitButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/addExitButton"
+            android:id="@+id/modifyExitButton"
             android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="372dp"
-            android:text="Hozzáadás és kilépés"
+            android:layout_marginStart="104dp"
+            android:layout_marginTop="256dp"
+            android:text="Módosítás és kilépés"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
