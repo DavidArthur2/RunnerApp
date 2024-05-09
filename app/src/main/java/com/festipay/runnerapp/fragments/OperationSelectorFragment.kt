@@ -95,8 +95,7 @@ class OperationSelectorFragment(
                         Functions.launchFragment(requireActivity(), StatusModifyFragment())
                     }
                     getString(R.string.comments) ->{
-                        CurrentState.operation = OperationType.COMMENTS
-                        //Functions.launchFragment(requireActivity(), CommentsFragment())
+                        Functions.launchFragment(requireActivity(), CommentsFragment())
                     }
                     getString(R.string.did),getString(R.string.sn) ->{
                         CurrentState.operation = OperationType.SN_HANDLING

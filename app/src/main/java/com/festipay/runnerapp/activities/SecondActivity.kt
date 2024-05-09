@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.fragments.CommentsFragment
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.fragments.DemolitionFragment
 import com.festipay.runnerapp.fragments.InstallFragment
@@ -44,7 +45,8 @@ class SecondActivity : AppCompatActivity() {
             FragmentType.INVENTORY_ITEM_ADD, FragmentType.INVENTORY_ITEM ->
                 launchFragment(this, InventoryFragment())
 
-            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS ->
+            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS,
+            FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS->
                 launchFragment(this, OperationSelectorFragment())
 
             FragmentType.INSTALL_COMPANY ->
@@ -52,6 +54,9 @@ class SecondActivity : AppCompatActivity() {
 
             FragmentType.DEMOLITION_COMPANY ->
                 launchFragment(this, DemolitionFragment())
+
+            FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD, FragmentType.INSTALL_COMPANY_COMMENTS_ADD, FragmentType.INVENTORY_ITEM_COMMENTS_ADD ->
+                launchFragment(this, CommentsFragment())
 
 
             FragmentType.PROGRAM -> setupLogoutDialog()

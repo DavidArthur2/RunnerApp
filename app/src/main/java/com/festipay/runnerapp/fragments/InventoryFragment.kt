@@ -39,39 +39,49 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_inventory, container, false)
 
-        CurrentState.mode = Mode.INVENTORY
-
-        val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
-        appBar.title = "${CurrentState.programName} - ${getString(R.string.inventory_string)}"
-
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = true
-
+        initFragment()
+        initViews(view)
         loadList(view)
+        return view
+    }
 
-        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
-
+    private fun initViews(view: View) {
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
                 .replace(R.id.frameLayout, InventoryAddFragment())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit()
         }
-
-        return view
     }
-    override fun onViewLoaded(){
+
+    private fun initFragment() {
+        CurrentState.mode = Mode.INVENTORY
+        val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
+        appBar.title = "${CurrentState.programName} - ${getString(R.string.inventory_string)}"
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible =
+            true
+        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
+    }
+
+    override fun onViewLoaded() {
         hideLoadingScreen()
     }
-    override fun loadList(view: View){
+
+    override fun loadList(view: View) {
         itemList = arrayListOf<Inventory>()
         Database.db.collection("leltar")
             .whereEqualTo("Program", CurrentState.programName)
             .orderBy("TargyNev", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
-                try{
-                    if(!result.isEmpty){
-                        for(doc in result){
+                try {
+                    if (!result.isEmpty) {
+                        for (doc in result) {
                             itemList.add(
                                 Inventory(
                                     (doc.data["Darabszam"] as Long).toInt(),
@@ -86,11 +96,10 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                         }
                         loadComments(view)
 
-                    }
-                    else{
+                    } else {
                         showError(requireContext(), "Nincs felvéve tárgy!")
                     }
-                }catch(ex: Exception){
+                } catch (ex: Exception) {
                     showError(requireContext(), "Error in loadInventoryList: $ex")
                 }
 
@@ -99,9 +108,10 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
             }
     }
 
-    override fun loadComments(view: View){
-        for(it in itemList) {
-            Database.db.collection("leltar").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
+    override fun loadComments(view: View) {
+        for (it in itemList) {
+            Database.db.collection("leltar").document(it.docID).collection("Comments")
+                .orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
                         val comments: MutableList<Comment> = mutableListOf()
@@ -114,15 +124,16 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                             )
                         }
                         it.comments = Comments(comments)
-                        if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
+                        if (it.comments!!.megjegyzesek.isNotEmpty()) it.utolsoMegjegyzes =
+                            it.comments!!.megjegyzesek.last()
                     }
-                    if(itemList.last() == it)
+                    if (itemList.last() == it)
                         setupView(view)
                 }
         }
     }
 
-    override fun setupView(view: View){
+    override fun setupView(view: View) {
 
         recyclerView = view.findViewById(R.id.inventoryRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -132,7 +143,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         val adapt = InventoryAdapter(itemList)
         recyclerView.adapter = adapt
 
-        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 onViewLoaded()
                 recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)

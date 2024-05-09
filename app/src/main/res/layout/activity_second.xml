@@ -27,6 +27,7 @@
         android:theme="@style/Base.Theme.RunnerApp"
         android:backgroundTint="@color/secondaryColor"
         app:itemRippleColor="@color/secondaryColor"
+        app:itemActiveIndicatorStyle="@style/Widget.BottomNavigationView.ActiveIndicator"
         app:menu="@menu/bottom_nav_menu"/>
 
     <FrameLayout

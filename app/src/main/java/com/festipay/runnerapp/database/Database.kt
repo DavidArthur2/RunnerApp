@@ -5,6 +5,10 @@ import android.util.Log
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.Inventory
+import com.festipay.runnerapp.utilities.CurrentState
+import com.festipay.runnerapp.utilities.FragmentType
+import com.festipay.runnerapp.utilities.Mode
+import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,6 +25,26 @@ object Database {
 
     private fun initializeDatabase() {
         db = Firebase.firestore
+    }
+
+    fun mapCollectionModeName(): String {
+        return when (CurrentState.mode) {
+            Mode.INSTALL -> {
+                "telephely_telepites"
+            }
+
+            Mode.DEMOLITION -> {
+                "telephely_bontas"
+            }
+
+            Mode.INVENTORY -> {
+                "leltar"
+            }
+
+            else -> {
+                "leltar"
+            }
+        }
     }
 
 }

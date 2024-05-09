@@ -18,6 +18,7 @@ import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 
 object Functions {
     fun showLoadingScreen(context: Context){
+        if(CurrentState.loadingScreen != null)return
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.loading_screen)
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -28,6 +29,7 @@ object Functions {
     }
     fun hideLoadingScreen(){
         CurrentState.loadingScreen?.dismiss()
+        CurrentState.loadingScreen = null
     }
 
     fun showErrorDialog(context: Context, message: String){
@@ -44,7 +46,6 @@ object Functions {
     }
 
     fun showInfoDialog(context: Context, title: String, message: String, buttonText: String = context.getString(R.string.error_dialog_back_button_text), hideLoading: Boolean = true){
-        if(hideLoading)hideLoadingScreen()
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.info_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -55,6 +56,7 @@ object Functions {
         dialog.findViewById<Button>(R.id.back_button).text = buttonText
         dialog.show()
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
+            if(hideLoading)hideLoadingScreen()
             dialog.dismiss()
         }
     }

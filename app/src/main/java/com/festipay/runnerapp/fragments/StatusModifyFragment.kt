@@ -70,7 +70,6 @@ class StatusModifyFragment : Fragment() {
 
     private fun initFragment(view: View) {
         CurrentState.operation = OperationType.STATUS_MODIFY
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
         val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
 
         val mode: String = when(CurrentState.mode){
@@ -262,15 +261,14 @@ class StatusModifyFragment : Fragment() {
             "BazisLeszereles" to companyDemolitionItem.bazisLeszereles,
         )
         Database.db.collection("telephely_bontas").document(docID).update(data).addOnSuccessListener {
+            launchFragment(requireActivity(), DemolitionFragment())
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
                 "Telephely sikeresen módosítva!",
                 "Vissza"
             )
-            logToFile("Updated: companysitename: ${companyDemolitionItem.telephelyNev} programname: ${CurrentState.programName} docid: $docID")
-            launchFragment(requireActivity(), DemolitionFragment())
-        }
+            logToFile("Updated: companysitename: ${companyDemolitionItem.telephelyNev} programname: ${CurrentState.programName} docid: $docID") }
     }
 
     private fun modifyCompanyInstall(companyInstallItem: CompanyInstall) {
@@ -291,6 +289,7 @@ class StatusModifyFragment : Fragment() {
             "Teszt" to companyInstallItem.teszt
         )
         Database.db.collection("telephely_telepites").document(docID).update(data).addOnSuccessListener {
+            launchFragment(requireActivity(), InstallFragment())
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
@@ -298,7 +297,6 @@ class StatusModifyFragment : Fragment() {
                 "Vissza"
             )
             logToFile("Updated: companysitename: ${companyInstallItem.telephelyNev} programname: ${CurrentState.programName} docid: $docID")
-            launchFragment(requireActivity(), InstallFragment())
         }
     }
 
@@ -319,6 +317,7 @@ class StatusModifyFragment : Fragment() {
             "TargyNev" to inventoryItem.targyNev
         )
         Database.db.collection("leltar").document(docID).update(data).addOnSuccessListener {
+            launchFragment(requireActivity(), InventoryFragment())
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
@@ -326,7 +325,6 @@ class StatusModifyFragment : Fragment() {
                 "Vissza"
             )
             logToFile("Updated: itemname: ${inventoryItem.targyNev} programname: ${CurrentState.programName} docid: $docID")
-            launchFragment(requireActivity(), InventoryFragment())
         }
     }
 }

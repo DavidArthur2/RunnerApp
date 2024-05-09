@@ -63,5 +63,7 @@
     <string name="demolitionSecondSwitchText">Csomagolt\n(szállításra vár)</string>
     <string name="demolitionThirdSwitchText">Autóban:</string>
     <string name="demolitionFourthSwitchText">Kell bázis\nleszerelés?</string>
+    <string name="timestampLabelText">Időbélyeg:</string>
+    <string name="commentLabelText">Megjegyzés:</string>
 
 </resources>

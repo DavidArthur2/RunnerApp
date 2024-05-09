@@ -45,7 +45,7 @@ fun showError(context:Context?, message: String, log: String = ""){
     if (context != null)
         showErrorDialog(context, message)
 
-    logToFile("showError: $message $log")
+    logToFile("showError: $message | $log")
 }
 
 fun showWarning(context:Context?, message: String){

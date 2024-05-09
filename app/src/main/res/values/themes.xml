@@ -22,4 +22,11 @@
         <item name="cornerFamilyBottomLeft">rounded</item>
         <item name="cornerFamilyBottomRight">rounded</item>
     </style>
+
+    <style name="Widget.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="shapeAppearance">
+            @style/ShapeAppearance.M3.Comp.NavigationBar.ActiveIndicator.Shape
+        </item>
+        <item name="android:color">#7289D18B</item>
+    </style>
 </resources>
