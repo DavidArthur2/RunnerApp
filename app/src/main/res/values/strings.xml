@@ -65,5 +65,6 @@
     <string name="demolitionFourthSwitchText">Kell bázis\nleszerelés?</string>
     <string name="timestampLabelText">Időbélyeg:</string>
     <string name="commentLabelText">Megjegyzés:</string>
+    <string name="warningText">Figyelmeztetés</string>
 
 </resources>

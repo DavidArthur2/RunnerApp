@@ -100,10 +100,6 @@ class SNFragment : Fragment(), IFragment<SN> {
 
     override fun loadComments(view: View) {
     }
-    private fun loadSN(view: View) {
-
-    }
-
     override fun setupView(view: View) {
         recyclerView = view.findViewById(R.id.snRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -1,4 +1,5 @@
 package com.festipay.runnerapp.utilities
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -9,14 +10,16 @@ import android.util.Log
 import android.widget.Toast
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.showErrorDialog
+import com.festipay.runnerapp.utilities.Functions.showWarningDialog
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 private fun createDirectoryIfNotExist(directoryPath: String) {
     val directory = File(directoryPath)
-    if (!directory.exists())directory.mkdirs()
+    if (!directory.exists()) directory.mkdirs()
 }
+
 @SuppressLint("SdCardPath")
 fun logToFile(message: String) {
     try {
@@ -35,12 +38,12 @@ fun logToFile(message: String) {
         if (!logFile.exists()) logFile.createNewFile()
         logFile.appendText("[$timestamp] $message\n")
 
-    } catch (ex: Exception){
+    } catch (ex: Exception) {
         print(ex.toString())
     }
 }
 
-fun showError(context:Context?, message: String, log: String = ""){
+fun showError(context: Context?, message: String, log: String = "") {
     hideLoadingScreen()
     if (context != null)
         showErrorDialog(context, message)
@@ -48,9 +51,8 @@ fun showError(context:Context?, message: String, log: String = ""){
     logToFile("showError: $message | $log")
 }
 
-fun showWarning(context:Context?, message: String){
-    val toastMessage = SpannableString(message)
-    toastMessage.setSpan(ForegroundColorSpan(Color.rgb(255,165,0)), 0, message.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-    Toast.makeText(context, "Figyelmeztetés: $toastMessage", Toast.LENGTH_LONG).show()
-    logToFile("showWarning: $toastMessage")
+fun showWarning(context: Context?, message: String) {
+    if (context != null)
+        showWarningDialog(context, message)
+    logToFile("showWarning: $message")
 }

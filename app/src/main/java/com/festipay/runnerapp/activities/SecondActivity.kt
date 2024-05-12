@@ -2,7 +2,9 @@ package com.festipay.runnerapp.activities
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
@@ -116,4 +118,5 @@ class SecondActivity : AppCompatActivity() {
             true
         }
     }
+
 }

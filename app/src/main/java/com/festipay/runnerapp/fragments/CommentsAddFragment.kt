@@ -52,6 +52,7 @@ class CommentsAddFragment : Fragment() {
     }
 
     private fun addComment() {
+        Functions.showLoadingScreen(requireActivity())
         val data = hashMapOf(
             "Comment" to commentText.text.toString(),
             "Timestamp" to Timestamp.now().toDate()

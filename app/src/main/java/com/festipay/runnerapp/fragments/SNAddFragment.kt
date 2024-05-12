@@ -1,5 +1,7 @@
 package com.festipay.runnerapp.fragments
 
+import android.content.Context
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +11,8 @@ import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -22,6 +26,7 @@ import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Program
 import com.festipay.runnerapp.data.SN
 import com.festipay.runnerapp.database.Database
+import com.festipay.runnerapp.utilities.BarcodeScanReceiver
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.FragmentType
@@ -33,6 +38,7 @@ import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
+import com.festipay.runnerapp.utilities.showWarning
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
@@ -46,6 +52,8 @@ class SNAddFragment : Fragment(), IFragment<SN> {
     private lateinit var snInput: EditText
     private lateinit var adapt: SNAddAdapter
     private lateinit var context: FragmentActivity
+    private var barcodeScanReceiver: BarcodeScanReceiver? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,6 +66,12 @@ class SNAddFragment : Fragment(), IFragment<SN> {
     }
     private fun initFragment(){
         context = requireActivity()
+        barcodeScanReceiver = BarcodeScanReceiver { barcode ->
+            if(barcode != null)addSN(barcode)
+            else Toast.makeText(context, "Sikertelen SN olvasás!", Toast.LENGTH_LONG).show()
+        }
+        val filter = IntentFilter("android.intent.ACTION_DECODE_DATA")
+        context.registerReceiver(barcodeScanReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
         CurrentState.operation = OperationType.SN_HANDLING
         modeName = Database.mapCollectionModeName()
         CurrentState.fragmentType = when (CurrentState.mode) {
@@ -65,11 +79,13 @@ class SNAddFragment : Fragment(), IFragment<SN> {
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN_ADD
             Mode.INVENTORY -> FragmentType.INVENTORY_ITEM_SN_ADD
             else -> FragmentType.INVENTORY_ITEM_SN_ADD
-
         }
+
     }
 
     private fun addSN(sn: String){
+        if(itemList.contains(SN(sn)))
+            return showWarning(context, "'$sn' már a listában van!")
         itemList.add(SN(sn))
         hideKeyboard(context, snInput)
         adapt.notifyItemInserted(itemList.size - 1)
@@ -148,6 +164,10 @@ class SNAddFragment : Fragment(), IFragment<SN> {
                 adapt.notifyItemRemoved(position)
             }
         })
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        context.unregisterReceiver(barcodeScanReceiver)
     }
 
 }

@@ -88,6 +88,7 @@ class CommentsFragment() : Fragment(), IFragment<Comment> {
 
         adapt.setOnItemClickListener(object : CommentsAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, comment: Comment) {
+                Functions.showLoadingScreen(requireActivity())
                 Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
                     .collection("Comments").document(comment.docID).delete().addOnSuccessListener {
                         launchFragment(requireActivity(), CommentsFragment())
