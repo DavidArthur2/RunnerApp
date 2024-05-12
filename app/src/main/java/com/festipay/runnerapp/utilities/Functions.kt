@@ -5,7 +5,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getDrawable
@@ -46,6 +48,7 @@ object Functions {
     }
 
     fun showInfoDialog(context: Context, title: String, message: String, buttonText: String = context.getString(R.string.error_dialog_back_button_text), hideLoading: Boolean = true){
+        if(hideLoading)hideLoadingScreen()
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.info_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -56,7 +59,6 @@ object Functions {
         dialog.findViewById<Button>(R.id.back_button).text = buttonText
         dialog.show()
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
-            if(hideLoading)hideLoadingScreen()
             dialog.dismiss()
         }
     }
@@ -66,5 +68,10 @@ object Functions {
         context.supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit()
+    }
+
+    fun hideKeyboard(context: Context, view: View) {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

@@ -17,6 +17,7 @@ import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.fragments.InventoryFragment
 import com.festipay.runnerapp.fragments.OperationSelectorFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
+import com.festipay.runnerapp.fragments.SNFragment
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
@@ -46,7 +47,8 @@ class SecondActivity : AppCompatActivity() {
                 launchFragment(this, InventoryFragment())
 
             FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS,
-            FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS->
+            FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS,
+            FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN->
                 launchFragment(this, OperationSelectorFragment())
 
             FragmentType.INSTALL_COMPANY ->
@@ -58,6 +60,8 @@ class SecondActivity : AppCompatActivity() {
             FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD, FragmentType.INSTALL_COMPANY_COMMENTS_ADD, FragmentType.INVENTORY_ITEM_COMMENTS_ADD ->
                 launchFragment(this, CommentsFragment())
 
+            FragmentType.DEMOLITION_COMPANY_SN_ADD, FragmentType.INSTALL_COMPANY_SN_ADD, FragmentType.INVENTORY_ITEM_SN_ADD ->
+                launchFragment(this, SNFragment())
 
             FragmentType.PROGRAM -> setupLogoutDialog()
 

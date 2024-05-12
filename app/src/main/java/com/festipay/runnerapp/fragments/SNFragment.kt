@@ -21,6 +21,7 @@ import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
+import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
@@ -40,7 +41,7 @@ class SNFragment : Fragment(), IFragment<SN> {
         val view = inflater.inflate(R.layout.fragment_s_n, container, false)
         initFragment()
         initViews(view)
-        loadSN(view)
+        loadList(view)
         return view
     }
     private fun initFragment(){
@@ -65,7 +66,7 @@ class SNFragment : Fragment(), IFragment<SN> {
                         R.anim.slide_in_left,
                         R.anim.slide_out_right
                     )
-                    .replace(R.id.frameLayout, SnAddFragment())
+                    .replace(R.id.frameLayout, SNAddFragment())
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
             }
@@ -74,12 +75,6 @@ class SNFragment : Fragment(), IFragment<SN> {
         Functions.hideLoadingScreen()
     }
     override fun loadList(view: View) {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadComments(view: View) {
-    }
-    private fun loadSN(view: View) {
         itemList = arrayListOf()
         Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
             .collection("SN").get().addOnSuccessListener { result ->
@@ -103,6 +98,12 @@ class SNFragment : Fragment(), IFragment<SN> {
             }
     }
 
+    override fun loadComments(view: View) {
+    }
+    private fun loadSN(view: View) {
+
+    }
+
     override fun setupView(view: View) {
         recyclerView = view.findViewById(R.id.snRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -122,6 +123,7 @@ class SNFragment : Fragment(), IFragment<SN> {
 
         adapt.setOnItemClickListener(object : SNAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, snItem: SN) {
+                showLoadingScreen(requireActivity())
                 Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
                     .collection("SN").document(snItem.docID).delete().addOnSuccessListener {
                         Functions.launchFragment(requireActivity(), SNFragment())

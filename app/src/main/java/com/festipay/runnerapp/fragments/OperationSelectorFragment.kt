@@ -99,7 +99,7 @@ class OperationSelectorFragment(
                     }
                     getString(R.string.did),getString(R.string.sn) ->{
                         CurrentState.operation = OperationType.SN_HANDLING
-                        //Functions.launchFragment(requireActivity(), SnHandlingFragment())
+                        Functions.launchFragment(requireActivity(), SNFragment())
                     }
                     getString(R.string.gps) ->{
                         CurrentState.operation = OperationType.GPS
