@@ -25,12 +25,14 @@ object LocationGetter {
                     if (location != null) {
                         onSuccess(LatLng(location.latitude, location.longitude))
                     } else {
-                        showError(activity, "Last known location is null in getLocation")
-                        onError("Last known location is null")
+                        val errorMessage = "Last known location is null"
+                        showError(activity, errorMessage)
+                        onError(errorMessage)
                     }
                 }
                 .addOnFailureListener { e ->
-                    onError("Failed to get location: ${e.message}")
+                    val errorMessage = "Failed to get location: ${e.message}"
+                    onError(errorMessage)
                 }
         }
     }

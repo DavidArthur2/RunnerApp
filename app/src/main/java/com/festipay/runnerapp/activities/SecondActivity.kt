@@ -50,7 +50,8 @@ class SecondActivity : AppCompatActivity() {
 
             FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS,
             FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS,
-            FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN->
+            FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN,
+            FragmentType.INSTALL_COMPANY_GPS ->
                 launchFragment(this, OperationSelectorFragment())
 
             FragmentType.INSTALL_COMPANY ->
@@ -119,4 +120,12 @@ class SecondActivity : AppCompatActivity() {
         }
     }
 
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

@@ -93,7 +93,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             false
         }
 
-        googleMap.addMarker(MarkerOptions().position(latLng).title("Marker in San Francisco"))
+        googleMap.addMarker(MarkerOptions().position(latLng).title("Telephely"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
     }
 }
