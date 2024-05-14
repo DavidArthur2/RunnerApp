@@ -18,6 +18,9 @@ import com.festipay.runnerapp.utilities.showError
 import com.google.firebase.Timestamp
 
 
+/**
+ * OUT OF FUNCTION
+ */
 class CommentsAddFragment : Fragment() {
     private lateinit var commentText: EditText
     private lateinit var addButton: Button

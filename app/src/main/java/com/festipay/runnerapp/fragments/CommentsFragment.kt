@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,9 @@ class CommentsFragment() : Fragment(), IFragment<Comment> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Comment>
     private lateinit var modeName: String
+
+    private lateinit var commentText: EditText
+    private lateinit var addButton: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,19 +59,24 @@ class CommentsFragment() : Fragment(), IFragment<Comment> {
     }
 
     private fun initViews(view: View) {
-        view.findViewById<FloatingActionButton>(R.id.commentsFloatingActionButton)
-            .setOnClickListener {
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    )
-                    .replace(R.id.frameLayout, CommentsAddFragment())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
-            }
+        commentText = view.findViewById(R.id.commentInput)
+        addButton = view.findViewById(R.id.commentsAddButton)
+        addButton.setOnClickListener {
+            addComment()
+        }
+//        view.findViewById<FloatingActionButton>(R.id.commentsFloatingActionButton)
+//            .setOnClickListener {
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .setCustomAnimations(
+//                        R.anim.slide_in_right,
+//                        R.anim.slide_out_left,
+//                        R.anim.slide_in_left,
+//                        R.anim.slide_out_right
+//                    )
+//                    .replace(R.id.frameLayout, CommentsAddFragment())
+//                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                    .commit()
+//            }
     }
 
     override fun setupView(view: View) {
@@ -142,5 +152,29 @@ class CommentsFragment() : Fragment(), IFragment<Comment> {
 
     override fun loadList(view: View) {
 
+    }
+    private fun addComment() {
+        Functions.showLoadingScreen(requireActivity())
+        val data = hashMapOf(
+            "Comment" to commentText.text.toString(),
+            "Timestamp" to Timestamp.now().toDate()
+        )
+        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "").collection("Comments").add(data)
+            .addOnSuccessListener {
+                launchFragment(requireActivity(), CommentsFragment())
+                showInfoDialog(
+                    requireActivity(),
+                    "Hozzáadás",
+                    "Megjegyzés sikeresen hozzáadva!",
+                    "Rendben",
+                    false
+                )
+            }.addOnFailureListener { ex ->
+                showError(
+                    requireActivity(),
+                    "Sikertelen hozzáadás\nNézd a logot",
+                    "Error at adding comment in Comments: $data, $ex"
+                )
+            }
     }
 }

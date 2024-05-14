@@ -6,28 +6,70 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CommentsFragment">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/commentInput"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/custom_input"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm _-.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fadingEdge="vertical"
+            android:hint="@string/commentText"
+            android:inputType="textCapSentences"
+            android:maxLength="100"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/commentsAddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72dp"
+            android:text="Hozzáadás"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/commentsFloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="Add"
-        android:clickable="true"
-        android:src="@drawable/floating_button_style"
-        android:tint="@color/white"
-        app:backgroundTint="@color/primaryColor"
-        app:elevation="10dp"
-        app:fabSize="normal"
-        app:shapeAppearance="@style/FabShapeRound"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/primaryColor" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/commentsFloatingActionButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:contentDescription="Add"-->
+<!--        android:clickable="true"-->
+<!--        android:src="@drawable/floating_button_style"-->
+<!--        android:tint="@color/white"-->
+<!--        app:backgroundTint="@color/primaryColor"-->
+<!--        app:elevation="10dp"-->
+<!--        app:fabSize="normal"-->
+<!--        app:shapeAppearance="@style/FabShapeRound"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:rippleColor="@color/primaryColor" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
