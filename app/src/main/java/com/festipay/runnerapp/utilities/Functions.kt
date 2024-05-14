@@ -4,19 +4,16 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getDrawable
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 
 object Functions {
     fun showLoadingScreen(context: Context){
@@ -47,7 +44,7 @@ object Functions {
         }
     }
 
-    fun showWarningDialog(context: Context, message: String){
+    fun showWarningDialog(context: FragmentActivity, message: String, action: Fragment? = null){
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.warning_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -57,6 +54,17 @@ object Functions {
         dialog.show()
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
             dialog.dismiss()
+        }
+        if(action != null)dialog.findViewById<Button>(R.id.ok_button).setOnClickListener {
+            showLoadingScreen(context)
+            launchFragment(context, action)
+            dialog.dismiss()
+        }
+        else{
+            val back_button = dialog.findViewById<Button>(R.id.back_button)
+            val layoutParams = back_button.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.horizontalBias = 0.5f
+            back_button.layoutParams = layoutParams
         }
     }
 

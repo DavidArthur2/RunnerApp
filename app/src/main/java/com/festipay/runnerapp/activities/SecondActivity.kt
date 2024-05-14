@@ -19,6 +19,7 @@ import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.fragments.InventoryFragment
 import com.festipay.runnerapp.fragments.OperationSelectorFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
+import com.festipay.runnerapp.fragments.SNAddFragment
 import com.festipay.runnerapp.fragments.SNFragment
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions.launchFragment
@@ -63,11 +64,13 @@ class SecondActivity : AppCompatActivity() {
             FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD, FragmentType.INSTALL_COMPANY_COMMENTS_ADD, FragmentType.INVENTORY_ITEM_COMMENTS_ADD ->
                 launchFragment(this, CommentsFragment())
 
-            FragmentType.DEMOLITION_COMPANY_SN_ADD, FragmentType.INSTALL_COMPANY_SN_ADD, FragmentType.INVENTORY_ITEM_SN_ADD ->
-                launchFragment(this, SNFragment())
+            FragmentType.DEMOLITION_COMPANY_SN_ADD, FragmentType.INSTALL_COMPANY_SN_ADD, FragmentType.INVENTORY_ITEM_SN_ADD -> {
+                val fragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
+                if(fragment is SNAddFragment)
+                    fragment.onBackCalled()
+            }
 
             FragmentType.PROGRAM -> setupLogoutDialog()
-
 
             else -> setupLogoutDialog()
         }

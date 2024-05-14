@@ -170,4 +170,9 @@ class SNAddFragment : Fragment(), IFragment<SN> {
         context.unregisterReceiver(barcodeScanReceiver)
     }
 
+    fun onBackCalled(){
+        if(itemList.size > 0)
+            showWarning(context, "Nem mentettél paraszt!!", SNFragment())
+    }
+
 }

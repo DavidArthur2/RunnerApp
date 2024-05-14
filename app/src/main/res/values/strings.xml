@@ -66,5 +66,6 @@
     <string name="timestampLabelText">Időbélyeg:</string>
     <string name="commentLabelText">Megjegyzés:</string>
     <string name="warningText">Figyelmeztetés</string>
+    <string name="ok_button_text">Rendben</string>
 
 </resources>

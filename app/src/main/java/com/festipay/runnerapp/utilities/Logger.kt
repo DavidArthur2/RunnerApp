@@ -2,12 +2,9 @@ package com.festipay.runnerapp.utilities
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.util.Log
-import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.showErrorDialog
 import com.festipay.runnerapp.utilities.Functions.showWarningDialog
@@ -51,8 +48,8 @@ fun showError(context: Context?, message: String, log: String = "") {
     logToFile("showError: $message | $log")
 }
 
-fun showWarning(context: Context?, message: String) {
+fun showWarning(context: FragmentActivity?, message: String, action: Fragment? = null) {
     if (context != null)
-        showWarningDialog(context, message)
+        return showWarningDialog(context, message, action)
     logToFile("showWarning: $message")
 }
