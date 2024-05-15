@@ -46,7 +46,7 @@ override lateinit var itemList: ArrayList<Program>
     }
     override fun loadList(view: View){
         itemList = arrayListOf<Program>()
-        Database.db.collection("programok").get().addOnSuccessListener { result ->
+        Database.db.collection("programok").whereArrayContains("users", CurrentState.userName as String).get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 for(doc in result){
                     itemList.add(Program(doc.data["ProgramNev"] as String))
