@@ -67,5 +67,9 @@
     <string name="commentLabelText">Megjegyzés:</string>
     <string name="warningText">Figyelmeztetés</string>
     <string name="ok_button_text">Rendben</string>
+    <string name="commentAddHint">Megjegyzés hozzáadás</string>
+    <string name="companyNameLabel">Telephely:</string>
+    <string name="modifyExitButtonText">Módosítás és kilépés</string>
+    <string name="modifyDIDButtonText">Módosítás és DID felvétel</string>
 
 </resources>

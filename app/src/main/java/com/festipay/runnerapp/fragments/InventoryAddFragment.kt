@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toolbar
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.database.Database
@@ -18,7 +16,6 @@ import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
-import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
@@ -26,10 +23,10 @@ import com.google.firebase.Timestamp
 class InventoryAddFragment : Fragment() {
     private lateinit var addExitButton: Button
     private lateinit var addButton: Button
-    private lateinit var targyNevInput: EditText
-    private lateinit var darabSzamInput: EditText
-    private lateinit var snSwitch: com.google.android.material.switchmaterial.SwitchMaterial
-    private lateinit var commentInput: EditText
+
+    private lateinit var commentInput : EditText
+    private lateinit var itemNameInput: EditText
+    private lateinit var deviceNumberInput: EditText
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,58 +38,39 @@ class InventoryAddFragment : Fragment() {
 
         addExitButton.setOnClickListener {
             showLoadingScreen(requireActivity())
-            val (item, comment) = getValues()
-
-            if (darabSzamInput.text.isEmpty()) {
-                showError(requireActivity(), "Adj meg darabszámot!")
-                return@setOnClickListener
-            }
-            if (item.targyNev.length < 3) {
-                showError(requireActivity(), "A tárgynév legalább 3 hosszú kell legyen!")
-                return@setOnClickListener
-            }
-            Database.db.collection("leltar").whereEqualTo("TargyNev", item.targyNev)
-                .whereEqualTo("Program", CurrentState.programName).get().addOnSuccessListener {
-                    if (it.isEmpty)
-                        addData(item, comment, exit = true)
-                    else
-                        showError(
-                            requireActivity(),
-                            "Már létezik ilyen tárgynév ezen a programon!",
-                            "itemname: ${item.targyNev} programname: ${CurrentState.programName}"
-                        )
-                }
-
-
+            addButtonListener(exit = true)
         }
-
         addButton.setOnClickListener {
             showLoadingScreen(requireActivity())
-            val (item, comment) = getValues()
-
-            if (darabSzamInput.text.isEmpty()) {
-                showError(requireActivity(), "Adj meg darabszámot!")
-                return@setOnClickListener
-            }
-            if (item.targyNev.length < 3) {
-                showError(requireActivity(), "A tárgynév legalább 3 karakter hosszú kell legyen!")
-                return@setOnClickListener
-            }
-            Database.db.collection("leltar").whereEqualTo("TargyNev", item.targyNev)
-                .whereEqualTo("Program", CurrentState.programName).get().addOnSuccessListener {
-                    if (it.isEmpty)
-                        addData(item, comment, exit = false)
-                    else
-                        showError(
-                            requireActivity(),
-                            "Már létezik ilyen tárgynév ezen a programon!",
-                            "itemname: ${item.targyNev} programname: ${CurrentState.programName}"
-                        )
-                }
+            addButtonListener(exit = false)
         }
 
         return view
 
+    }
+
+    private fun addButtonListener(exit: Boolean) {
+        val (item, comment) = getValues()
+
+        if (deviceNumberInput.text.isEmpty()) {
+            showError(requireActivity(), "Adj meg darabszámot!")
+            return
+        }
+        if (item.itemName.length < 3) {
+            showError(requireActivity(), "A tárgynév legalább 3 hosszú kell legyen!")
+            return
+        }
+        Database.db.collection("leltar").whereEqualTo("TargyNev", item.itemName)
+            .whereEqualTo("ProgramName", CurrentState.programName).get().addOnSuccessListener {
+                if (it.isEmpty)
+                    addData(item, comment, exit = exit)
+                else
+                    showError(
+                        requireActivity(),
+                        "Már létezik ilyen tárgynév ezen a programon!",
+                        "itemname: ${item.itemName} programname: ${CurrentState.programName}"
+                    )
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,34 +86,31 @@ class InventoryAddFragment : Fragment() {
         appBar.title =
             "${CurrentState.programName} - ${getString(R.string.inventory_string)} - Hozzáadás"
 
-        addExitButton = view.findViewById(R.id.addExitButton)
-        addButton = view.findViewById(R.id.addButton)
-        targyNevInput = view.findViewById(R.id.targyNevInput)
-        darabSzamInput = view.findViewById(R.id.darabSzamInput)
-        snSwitch = view.findViewById(R.id.snSwitch)
+        addExitButton = view.findViewById(R.id.modifyExitButton)
+        addButton = view.findViewById(R.id.modifyButton)
+        itemNameInput = view.findViewById(R.id.itemNameInput)
+        deviceNumberInput = view.findViewById(R.id.deviceNumberInput)
         commentInput = view.findViewById(R.id.commentInput)
 
-        targyNevInput.clearComposingText()
-        darabSzamInput.clearComposingText()
-        snSwitch.clearComposingText()
+        itemNameInput.clearComposingText()
+        deviceNumberInput.clearComposingText()
+        commentInput.clearComposingText()
         commentInput.clearComposingText()
     }
 
     private fun getValues(): Pair<Inventory, String> {
-        val targyNev = targyNevInput.text.toString()
-        val darabSzam = darabSzamInput.text.toString().toIntOrNull() ?: 0
-        val SN = snSwitch.isChecked
+        val itemName = itemNameInput.text.toString()
+        val deviceNumber = deviceNumberInput.text.toString().toIntOrNull() ?: 0
         val comment = commentInput.text.toString()
-        val item = Inventory(darabSzam, SN, targyNev, null, null, null)
+        val item = Inventory(itemName, deviceNumber)
         return Pair(item, comment)
     }
 
     private fun addData(item: Inventory, comment: String, exit: Boolean) {
         var data = hashMapOf(
-            "Darabszam" to item.darabszam,
-            "Program" to CurrentState.programName,
-            "SN" to item.sn,
-            "TargyNev" to item.targyNev
+            "Quantity" to item.quantity,
+            "ProgramName" to CurrentState.programName,
+            "ItemName" to item.itemName
         )
         Database.db.collection("leltar").add(data).addOnSuccessListener { doc ->
 
@@ -145,7 +120,7 @@ class InventoryAddFragment : Fragment() {
                 showInfoDialog(
                     requireActivity(),
                     "Hozzáadás",
-                    "${item.targyNev} sikeresen hozzáadva!",
+                    "\'${item.itemName}\' sikeresen hozzáadva!",
                     "Rendben",
                     false
                 )
@@ -161,7 +136,7 @@ class InventoryAddFragment : Fragment() {
                         showInfoDialog(
                             requireActivity(),
                             "Hozzáadás",
-                            "${item.targyNev} sikeresen hozzáadva!",
+                            "${item.itemName} sikeresen hozzáadva!",
                             "Rendben",
                             false
                         )

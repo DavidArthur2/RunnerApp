@@ -1,5 +1,6 @@
 package com.festipay.runnerapp.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,11 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.CompanyInstall
+import com.festipay.runnerapp.data.DemolitionFirstItemEnum
+import com.festipay.runnerapp.data.DemolitionSecondItemEnum
+import com.festipay.runnerapp.data.InstallFirstItemEnum
+import com.festipay.runnerapp.data.InstallFourthItemEnum
+import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
@@ -25,33 +33,40 @@ import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.firebase.Timestamp
+import org.checkerframework.checker.units.qual.Current
 
 class StatusModifyFragment : Fragment() {
 
+    //Global View-ek
+    private lateinit var modifyExitButton: Button
+    private lateinit var modifyAddButton: Button
+    private lateinit var commentInput : EditText
+
     //Inventory View-ek
-    private lateinit var targyNevInput: EditText
-    private lateinit var darabSzamInput: EditText
-    private lateinit var snSwitch: SwitchMaterial
-    private lateinit var modifyButton: Button
+    private lateinit var itemNameInput: EditText
+    private lateinit var deviceNumberInput: EditText
 
     //Install View-ek
-    private lateinit var companyInstallInput: EditText
-    private lateinit var kiadva: SwitchMaterial
-    private lateinit var nemKirakhato: SwitchMaterial
-    private lateinit var kirakva: SwitchMaterial
-    private lateinit var eloszto: SwitchMaterial
-    private lateinit var aram: SwitchMaterial
-    private lateinit var szoftver: SwitchMaterial
-    private lateinit var param: SwitchMaterial
-    private lateinit var teszt: SwitchMaterial
+    private lateinit var companyName: TextView
+    private lateinit var firstItemI: Spinner
+    private lateinit var secondItemI: Spinner
+    private lateinit var thirdItemI: SwitchMaterial
+    private lateinit var fourthItemI: Spinner
+    private lateinit var fifthItemI: SwitchMaterial
+    private lateinit var sixthItemI: SwitchMaterial
+    private lateinit var seventhItemI: SwitchMaterial
+    private lateinit var eightItemI: SwitchMaterial
+    private lateinit var ninethItemI: SwitchMaterial
+    private lateinit var tenthItemI: SwitchMaterial
+    private lateinit var eleventhItemI: SwitchMaterial
 
     //Demolition View-ek
-    private lateinit var companyDemolitionInput: EditText
-    private lateinit var eszkozSzamInput: EditText
-    private lateinit var folyamatban: SwitchMaterial
-    private lateinit var csomagolt: SwitchMaterial
-    private lateinit var autoban: SwitchMaterial
-    private lateinit var bazisLeszereles: SwitchMaterial
+    private lateinit var firstItemD: Spinner
+    private lateinit var secondItemD: Spinner
+    private lateinit var thirdItemD: SwitchMaterial
+
+    private lateinit var modeName: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,13 +85,13 @@ class StatusModifyFragment : Fragment() {
 
     private fun initFragment(view: View) {
         CurrentState.operation = OperationType.STATUS_MODIFY
+        modeName = Database.mapCollectionModeName()
         val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
 
         val mode: String = when(CurrentState.mode){
             Mode.INVENTORY -> {
                 CurrentState.fragmentType = FragmentType.INVENTORY_ITEM_STATUS
                 getString(R.string.inventory_string)
-
             }
             Mode.INSTALL -> {
                 CurrentState.fragmentType = FragmentType.INSTALL_COMPANY_STATUS
@@ -100,36 +115,36 @@ class StatusModifyFragment : Fragment() {
             Mode.INVENTORY -> {
                 Database.db.collection("leltar").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
-                        targyNevInput.setText(documents.data?.get("TargyNev") as String)
-                        darabSzamInput.setText((documents.data?.get("Darabszam") as Long).toString())
-                        snSwitch.isChecked = documents.data?.get("SN") as Boolean
+                        itemNameInput.setText(documents.data?.get("ItemName") as String)
+                        deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
                         onViewLoaded()
                     }
             }
             Mode.INSTALL -> {
                 Database.db.collection("telephely_telepites").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
-                        companyInstallInput.setText(documents.data?.get("TelephelyNev") as String)
-                        kiadva.isChecked = documents.data?.get("Kiadva") as Boolean
-                        nemKirakhato.isChecked = documents.data?.get("NemKirakhato") as Boolean
-                        kirakva.isChecked = documents.data?.get("Kirakva") as Boolean
-                        eloszto.isChecked = documents.data?.get("Eloszto") as Boolean
-                        aram.isChecked = documents.data?.get("Aram") as Boolean
-                        szoftver.isChecked = documents.data?.get("Szoftver") as Boolean
-                        param.isChecked = documents.data?.get("Param") as Boolean
-                        teszt.isChecked = documents.data?.get("Teszt") as Boolean
+                        companyName.text = (documents.data?.get("CompanyName") as String)
+                        firstItemI.setSelection(InstallFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
+                        secondItemI.setSelection(InstallSecondItemEnum.valueOf(documents.data?.get("2") as String).ordinal)
+                        thirdItemI.isChecked = documents.data?.get("3") as Boolean
+                        fourthItemI.setSelection(InstallFourthItemEnum.valueOf(documents.data?.get("4") as String).ordinal)
+                        fifthItemI.isChecked = documents.data?.get("5") as Boolean
+                        sixthItemI.isChecked = documents.data?.get("6") as Boolean
+                        seventhItemI.isChecked = documents.data?.get("7") as Boolean
+                        eightItemI.isChecked = documents.data?.get("8") as Boolean
+                        ninethItemI.isChecked = documents.data?.get("9") as Boolean
+                        tenthItemI.isChecked = documents.data?.get("10") as Boolean
+                        eleventhItemI.isChecked = documents.data?.get("11") as Boolean
                         onViewLoaded()
                     }
             }
             Mode.DEMOLITION -> {
                 Database.db.collection("telephely_bontas").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
-                        companyDemolitionInput.setText(documents.data?.get("TelephelyNev") as String)
-                        eszkozSzamInput.setText((documents.data?.get("Eszkozszam") as Long).toString())
-                        folyamatban.isChecked = documents.data?.get("Folyamatban") as Boolean
-                        csomagolt.isChecked = documents.data?.get("Csomagolt") as Boolean
-                        autoban.isChecked = documents.data?.get("Autoban") as Boolean
-                        bazisLeszereles.isChecked = documents.data?.get("BazisLeszereles") as Boolean
+                        companyName.text = (documents.data?.get("CompanyName") as String)
+                        firstItemD.setSelection(InstallFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
+                        secondItemD.setSelection(InstallSecondItemEnum.valueOf(documents.data?.get("2") as String).ordinal)
+                        thirdItemD.isChecked = documents.data?.get("3") as Boolean
                         onViewLoaded()
                     }
             }
@@ -137,86 +152,82 @@ class StatusModifyFragment : Fragment() {
         }
     }
 
+    @SuppressLint("CutPasteId")
     private fun initViews(view: View) {
+        modifyAddButton = view.findViewById(R.id.modifyAddButton)
+        modifyExitButton = view.findViewById(R.id.modifyExitButton)
+        commentInput = view.findViewById(R.id.commentInput)
+
+        loadValues()
         when (CurrentState.mode) {
             Mode.INVENTORY -> {
-                targyNevInput = view.findViewById(R.id.targyNevInput)
-                darabSzamInput = view.findViewById(R.id.darabSzamInput)
-                snSwitch = view.findViewById(R.id.snSwitch)
-                modifyButton = view.findViewById(R.id.modifyExitButton)
+                itemNameInput = view.findViewById(R.id.itemNameInput)
+                deviceNumberInput = view.findViewById(R.id.deviceNumberInput)
+                val inventoryItem = Inventory(
+                    itemNameInput.text.toString(),
+                    deviceNumberInput.text.toString().toIntOrNull() ?: 0
+                )
 
-                loadValues()
-
-                modifyButton.setOnClickListener {
-                    modifyButtonListener(
-                        inventoryItem = Inventory(
-                            darabSzamInput.text.toString().toIntOrNull() ?: 0,
-                            snSwitch.isChecked,
-                            targyNevInput.text.toString(),
-                            null,
-                            null,
-                            null
-                        )
-                    )
+                modifyAddButton.setOnClickListener {
+                    modifyButtonListener(exit = false, inventoryItem = inventoryItem)
+                }
+                modifyExitButton.setOnClickListener {
+                    modifyButtonListener(exit = true, inventoryItem = inventoryItem)
                 }
             }
             Mode.INSTALL -> {
-                companyInstallInput = view.findViewById(R.id.companyInstallNevInput)
-                kiadva = view.findViewById(R.id.installFirstSwitch)
-                nemKirakhato = view.findViewById(R.id.installSecondSwitch)
-                kirakva = view.findViewById(R.id.installThirdSwitch)
-                eloszto = view.findViewById(R.id.installFourthSwitch)
-                aram = view.findViewById(R.id.installFifthSwitch)
-                szoftver = view.findViewById(R.id.installSixthSwitch)
-                param = view.findViewById(R.id.installSeventhSwitch)
-                teszt = view.findViewById(R.id.installEightSwitch)
-                modifyButton = view.findViewById(R.id.modifyExitButton)
+                companyName = view.findViewById(R.id.companyNameText)
+                firstItemI = view.findViewById(R.id.firstItem)
+                secondItemI = view.findViewById(R.id.secondItem)
+                thirdItemI = view.findViewById(R.id.thirdItem)
+                fourthItemI = view.findViewById(R.id.fourthItem)
+                fifthItemI = view.findViewById(R.id.fifthItem)
+                sixthItemI = view.findViewById(R.id.sixthItem)
+                seventhItemI = view.findViewById(R.id.seventhItem)
+                eightItemI = view.findViewById(R.id.eightItem)
+                ninethItemI = view.findViewById(R.id.ninethItem)
+                tenthItemI = view.findViewById(R.id.tenthItem)
+                eleventhItemI = view.findViewById(R.id.eleventhItem)
 
-                loadValues()
+                val companyInstallItem = CompanyInstall(
+                    CurrentState.companySite ?: "",
+                    InstallFirstItemEnum.entries[firstItemI.selectedItemPosition],
+                    InstallSecondItemEnum.entries[secondItemI.selectedItemPosition],
+                    thirdItemI.isChecked,
+                    InstallFourthItemEnum.entries[fourthItemI.selectedItemPosition],
+                    fifthItemI.isChecked,
+                    sixthItemI.isChecked,
+                    seventhItemI.isChecked,
+                    eightItemI.isChecked,
+                    ninethItemI.isChecked,
+                    tenthItemI.isChecked,
+                    eleventhItemI.isChecked
+                )
+                modifyAddButton.setOnClickListener {
+                    modifyButtonListener(exit = false, companyInstallItem = companyInstallItem)
+                }
+                modifyExitButton.setOnClickListener {
+                    modifyButtonListener(exit = true, companyInstallItem = companyInstallItem)
 
-                modifyButton.setOnClickListener {
-                    modifyButtonListener(
-                        companyInstallItem = CompanyInstall(
-                            companyInstallInput.text.toString(),
-                            kiadva.isChecked,
-                            nemKirakhato.isChecked,
-                            kirakva.isChecked,
-                            eloszto.isChecked,
-                            aram.isChecked,
-                            szoftver.isChecked,
-                            param.isChecked,
-                            teszt.isChecked,
-                            null,
-                            null,
-                            null
-                        )
-                    )
                 }
             }
             Mode.DEMOLITION -> {
-                companyDemolitionInput = view.findViewById(R.id.companyDemolitionNevInput)
-                eszkozSzamInput = view.findViewById(R.id.eszkozSzamInput)
-                folyamatban = view.findViewById(R.id.demolitionFirstSwitch)
-                csomagolt = view.findViewById(R.id.demolitionSecondSwitch)
-                autoban = view.findViewById(R.id.demolitionThirdSwitch)
-                bazisLeszereles = view.findViewById(R.id.demolitionFourthSwitch)
-                modifyButton = view.findViewById(R.id.modifyExitButton)
-                loadValues()
+                companyName = view.findViewById(R.id.companyNameText)
+                firstItemD = view.findViewById(R.id.firstItem)
+                secondItemD = view.findViewById(R.id.secondItem)
+                thirdItemD = view.findViewById(R.id.thirdItem)
 
-                modifyButton.setOnClickListener {
-                    modifyButtonListener(
-                        companyDemolitionItem = CompanyDemolition(
-                            companyDemolitionInput.text.toString(),
-                            eszkozSzamInput.text.toString().toIntOrNull() ?: 0,
-                            folyamatban.isChecked,
-                            csomagolt.isChecked,
-                            autoban.isChecked,
-                            bazisLeszereles.isChecked,
-                            null,
-                            null,
-                            null
-                        )
-                    )
+                val companyDemolitionItem = CompanyDemolition(
+                    CurrentState.companySite ?: "",
+                    DemolitionFirstItemEnum.entries[firstItemD.selectedItemPosition],
+                    DemolitionSecondItemEnum.entries[secondItemD.selectedItemPosition],
+                    thirdItemD.isChecked
+                )
+                modifyAddButton.setOnClickListener {
+                    modifyButtonListener(exit = false, companyDemolitionItem = companyDemolitionItem)
+                }
+                modifyExitButton.setOnClickListener {
+                    modifyButtonListener(exit = true, companyDemolitionItem = companyDemolitionItem)
                 }
             }
             else -> return
@@ -227,11 +238,12 @@ class StatusModifyFragment : Fragment() {
     private fun modifyButtonListener(
         inventoryItem: Inventory? = null,
         companyInstallItem: CompanyInstall? = null,
-        companyDemolitionItem: CompanyDemolition? = null
+        companyDemolitionItem: CompanyDemolition? = null,
+        exit: Boolean = false
     ) {
         Functions.showLoadingScreen(requireActivity())
         if (inventoryItem != null)
-            return modifyInventory(inventoryItem)
+            return modifyInventory(inventoryItem, exit)
         if (companyInstallItem != null)
             return modifyCompanyInstall(companyInstallItem)
         if (companyDemolitionItem != null)
@@ -242,89 +254,102 @@ class StatusModifyFragment : Fragment() {
         Functions.hideLoadingScreen()
     }
 
-    private fun modifyCompanyDemolition(companyDemolitionItem: CompanyDemolition) {
-        if (eszkozSzamInput.text.isEmpty()) {
-            showError(requireActivity(), "Adj meg eszközszámot!")
-            return
+    private fun addComment(){
+        val comment = commentInput.text.toString()
+        if(comment.isEmpty())return
+        else{
+            val data = hashMapOf(
+                "Comment" to comment,
+                "Timestamp" to Timestamp.now().toDate()
+            )
+            Database.db.collection(modeName).document(CurrentState.companySiteID ?: "").collection("Comments").add(data)
+                .addOnFailureListener { ex ->
+                    showError(
+                        requireActivity(),
+                        "Sikertelen megjegyzés hozzáadás\nNézd a logot",
+                        "Error at adding comment in StatusModify: $data, $ex"
+                    )
+                }
         }
-        if (companyDemolitionItem.telephelyNev.length < 3) {
-            showError(requireActivity(), "A Telephely legalább 3 hosszú kell legyen!")
-            return
-        }
+    }
+    private fun modifyCompanyDemolition(companyDemolitionItem: CompanyDemolition, exit: Boolean = false) {
         val docID = CurrentState.companySiteID ?: ""
         val data = hashMapOf<String, Any>(
-            "TelephelyNev" to companyDemolitionItem.telephelyNev,
-            "Eszkozszam" to companyDemolitionItem.eszkozszam,
-            "Folyamatban" to companyDemolitionItem.folyamatban,
-            "Csomagolt" to companyDemolitionItem.csomagolt,
-            "Autoban" to companyDemolitionItem.autoban,
-            "BazisLeszereles" to companyDemolitionItem.bazisLeszereles,
+            "CompanyName" to companyDemolitionItem.companyName,
+            "1" to companyDemolitionItem.firstItem.name,
+            "2" to companyDemolitionItem.secondItem.name,
+            "3" to companyDemolitionItem.thirdItem,
         )
         Database.db.collection("telephely_bontas").document(docID).update(data).addOnSuccessListener {
-            launchFragment(requireActivity(), DemolitionFragment())
+            if(exit)launchFragment(requireActivity(), DemolitionFragment())
+            else launchFragment(requireActivity(), SNAddFragment())
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
                 "Telephely sikeresen módosítva!",
                 "Vissza"
             )
-            logToFile("Updated: companysitename: ${companyDemolitionItem.telephelyNev} programname: ${CurrentState.programName} docid: $docID") }
+            logToFile("Updated: companysitename: ${companyDemolitionItem.companyName} programname: ${CurrentState.programName} docid: $docID") }
     }
 
-    private fun modifyCompanyInstall(companyInstallItem: CompanyInstall) {
-        if (companyInstallItem.telephelyNev.length < 3) {
-            showError(requireActivity(), "A Telephely legalább 3 hosszú kell legyen!")
-            return
-        }
+    private fun modifyCompanyInstall(companyInstallItem: CompanyInstall, exit: Boolean = false) {
+        addComment()
         val docID = CurrentState.companySiteID ?: ""
         val data = hashMapOf<String, Any>(
-            "TelephelyNev" to companyInstallItem.telephelyNev,
-            "Kiadva" to companyInstallItem.kiadva,
-            "NemKirakhato" to companyInstallItem.nemKirakhato,
-            "Kirakva" to companyInstallItem.kirakva,
-            "Eloszto" to companyInstallItem.eloszto,
-            "Aram" to companyInstallItem.aram,
-            "Szoftver" to companyInstallItem.szoftver,
-            "Param" to companyInstallItem.param,
-            "Teszt" to companyInstallItem.teszt
+            "CompanyName" to companyInstallItem.companyName,
+            "1" to companyInstallItem.firstItem.name,
+            "2" to companyInstallItem.secondItem.name,
+            "3" to companyInstallItem.thirdItem,
+            "4" to companyInstallItem.fourthItem.name,
+            "5" to companyInstallItem.fifthItem,
+            "6" to companyInstallItem.sixthItem,
+            "7" to companyInstallItem.seventhItem,
+            "8" to companyInstallItem.eightItem,
+            "9" to companyInstallItem.ninethItem,
+            "10" to companyInstallItem.tenthItem,
+            "11" to companyInstallItem.eleventhItem
         )
         Database.db.collection("telephely_telepites").document(docID).update(data).addOnSuccessListener {
-            launchFragment(requireActivity(), InstallFragment())
+            if(exit)launchFragment(requireActivity(), InstallFragment())
+            else launchFragment(requireActivity(), SNAddFragment())
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
                 "Telephely sikeresen módosítva!",
                 "Vissza"
             )
-            logToFile("Updated: companysitename: ${companyInstallItem.telephelyNev} programname: ${CurrentState.programName} docid: $docID")
+            logToFile("Updated: companysitename: ${companyInstallItem.companyName} programname: ${CurrentState.programName} docid: $docID")
         }
     }
 
-    private fun modifyInventory(inventoryItem: Inventory) {
+    private fun modifyInventory(inventoryItem: Inventory, exit: Boolean = false) {
 
-        if (darabSzamInput.text.isEmpty()) {
+        if (deviceNumberInput.text.isEmpty()) {
             showError(requireActivity(), "Adj meg darabszámot!")
             return
         }
-        if (inventoryItem.targyNev.length < 3) {
+        if (itemNameInput.text.length < 3) {
             showError(requireActivity(), "A tárgynév legalább 3 hosszú kell legyen!")
             return
         }
+
+        addComment()
+
         val docID = CurrentState.companySiteID ?: ""
         val data = hashMapOf<String, Any>(
-            "Darabszam" to inventoryItem.darabszam,
-            "SN" to inventoryItem.sn,
-            "TargyNev" to inventoryItem.targyNev
+            "Quantity" to inventoryItem.quantity,
+            "ItemName" to inventoryItem.itemName
         )
         Database.db.collection("leltar").document(docID).update(data).addOnSuccessListener {
-            launchFragment(requireActivity(), InventoryFragment())
+            if(exit)launchFragment(requireActivity(), InventoryFragment())
+            else launchFragment(requireActivity(), SNAddFragment())
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
                 "Tárgy sikeresen módosítva!",
-                "Vissza"
+                "Rendben"
             )
-            logToFile("Updated: itemname: ${inventoryItem.targyNev} programname: ${CurrentState.programName} docid: $docID")
+            logToFile("Updated: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
         }
     }
 }

@@ -15,44 +15,84 @@
         android:paddingBottom="@dimen/fragment_vertical_margin"
         tools:context=".fragments.StatusModifyFragment">
 
-        <EditText
-            android:id="@+id/eszkozSzamInput"
-            android:layout_width="124dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="-2dp"
-            android:layout_marginTop="96dp"
-            android:background="@drawable/custom_input"
-            android:digits="0123456789"
-            android:drawablePadding="8dp"
-            android:ems="10"
-            android:fadingEdge="vertical"
-            android:hint="Eszközszám*"
-            android:inputType="none"
-            android:maxLength="4"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+        <TextView
+            android:id="@+id/companyNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/companyNameLabel"
+            android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintHorizontal_bias="0.031"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/firstLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:text="Felderítés: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/secondLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:text="Státusz1: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/companyNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Bar 15A"
+            android:textSize="21sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintStart_toEndOf="@+id/companyNameLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
-            android:id="@+id/companyDemolitionNevInput"
+            android:id="@+id/commentInput"
             android:layout_width="288dp"
             android:layout_height="50dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="628dp"
             android:background="@drawable/custom_input"
-            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_-.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_ -.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
             android:drawablePadding="8dp"
             android:ems="10"
             android:fadingEdge="vertical"
-            android:hint="@string/telephelyNevHint"
+            android:hint="@string/commentAddHint"
             android:inputType="none"
             android:maxLength="15"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintHorizontal_bias="0.098"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/modifyAddButton"
+            android:layout_width="166dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="700dp"
+            android:text="@string/modifyDIDButtonText"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.868"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,80 +100,46 @@
             android:id="@+id/modifyExitButton"
             android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="404dp"
-            android:text="Módosítás és kilépés"
+            android:layout_marginTop="700dp"
+            android:text="@string/modifyExitButtonText"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.037"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/demolitionThirdSwitch"
+        <Spinner
+            android:id="@+id/firstItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="37dp"
-            android:layout_marginTop="264dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/demolitionThirdSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="72dp"
+            app:layout_constraintStart_toEndOf="@+id/firstLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/secondItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="132dp"
+            app:layout_constraintStart_toEndOf="@+id/secondLabel"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/demolitionFourthSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="316dp"
-            android:checked="false"
+            android:id="@+id/thirdItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="176dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
-            android:text="@string/demolitionFourthSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
+            android:text="Semmi:"
             app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:trackTint="@color/switch_track_selector"
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/demolitionFirstSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
-            android:layout_marginTop="164dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/demolitionFirstSwitchText"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/demolitionSecondSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="216dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/demolitionSecondSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="5dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

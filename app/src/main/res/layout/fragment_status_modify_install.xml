@@ -15,186 +15,257 @@
         android:paddingBottom="@dimen/fragment_vertical_margin"
         tools:context=".fragments.StatusModifyFragment">
 
+        <TextView
+            android:id="@+id/companyNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/companyNameLabel"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/firstLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:text="Felderítés: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/secondLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:text="Státusz1: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fourthLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="228dp"
+            android:text="Státusz2: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.038"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/companyNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Bar 15A"
+            android:textSize="21sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintStart_toEndOf="@+id/companyNameLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
-            android:id="@+id/companyInstallNevInput"
+            android:id="@+id/commentInput"
             android:layout_width="288dp"
             android:layout_height="50dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="628dp"
             android:background="@drawable/custom_input"
-            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_-.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_ -.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
             android:drawablePadding="8dp"
             android:ems="10"
             android:fadingEdge="vertical"
-            android:hint="@string/telephelyNevHint"
+            android:hint="@string/commentAddHint"
             android:inputType="none"
             android:maxLength="15"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintHorizontal_bias="0.098"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installFirstSwitch"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/modifyAddButton"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="108dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installFirstSwitchText"
+            android:layout_marginTop="700dp"
+            android:text="@string/modifyDIDButtonText"
             android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.868"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installSecondSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="158dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installSecondSwitchTExt"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installThirdSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="208dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installThirdSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installFourthSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="258dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installFourthSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installFifthSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="308dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installFifthSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installSixthSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="358dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installSixthSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installSeventhSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="33dp"
-            android:layout_marginTop="408dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installSeventhSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/installEightSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="458dp"
-            android:checked="false"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="@string/installEightSwitchText"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:switchPadding="15dp"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/modifyExitButton"
             android:layout_width="166dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="516dp"
-            android:text="Módosítás és kilépés"
+            android:layout_marginTop="700dp"
+            android:text="@string/modifyExitButtonText"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.037"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
+        <Spinner
+            android:id="@+id/firstItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="-5dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="72dp"
+            app:layout_constraintStart_toEndOf="@+id/firstLabel"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
+        <Spinner
+            android:id="@+id/secondItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.04136253" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="132dp"
+            app:layout_constraintStart_toEndOf="@+id/secondLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/fourthItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="232dp"
+            app:layout_constraintStart_toEndOf="@+id/fourthLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/thirdItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="176dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Kirakva:"
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/fifthItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="276dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Elosztó:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sixthItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="326dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Áram:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/seventhItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="376dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Hálozat:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/eightItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="426dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="PTG:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/ninethItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="476dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Szoftver:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/tenthItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="526dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Param:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/eleventhItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="576dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Helyszín:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -45,7 +45,7 @@ override lateinit var itemList: ArrayList<Program>
         hideLoadingScreen()
     }
     override fun loadList(view: View){
-        itemList = arrayListOf<Program>()
+        itemList = arrayListOf()
         Database.db.collection("programok").whereArrayContains("users", CurrentState.userName as String).get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 for(doc in result){

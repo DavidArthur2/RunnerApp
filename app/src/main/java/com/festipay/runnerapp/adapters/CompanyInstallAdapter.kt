@@ -19,7 +19,7 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
         val telephelyNev: TextView = itemView.findViewById(R.id.companyTitle)
         val kiadva: CheckBox = itemView.findViewById(R.id.firstCheckbox)
         val nemKirakhato: CheckBox = itemView.findViewById(R.id.secondCheckbox)
-        val kirakva: CheckBox = itemView.findViewById(R.id.thirdCheckbox)
+        val kirakva: CheckBox = itemView.findViewById(R.id.thirddCheckbox)
         val eloszto: CheckBox = itemView.findViewById(R.id.fourthCheckbox)
         val aram: CheckBox = itemView.findViewById(R.id.fifthCheckbox)
         val szoftver: CheckBox = itemView.findViewById(R.id.sixthCheckbox)

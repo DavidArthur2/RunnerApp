@@ -18,7 +18,6 @@ class InventoryAdapter(private val itemList: ArrayList<Inventory>) :
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val darabszam: TextView = itemView.findViewById(R.id.firstValue)
-        val sn: CheckBox = itemView.findViewById(R.id.secondCheckbox)
         val targyNev: TextView = itemView.findViewById(R.id.itemTitle)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
@@ -44,12 +43,11 @@ class InventoryAdapter(private val itemList: ArrayList<Inventory>) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
-        holder.targyNev.text = currentItem.targyNev
-        holder.sn.isChecked = currentItem.sn
-        holder.darabszam.text = currentItem.darabszam.toString()
-        holder.utolsoMegjegyzes.text = currentItem.utolsoMegjegyzes?.megjegyzes
+        holder.targyNev.text = currentItem.itemName
+        holder.darabszam.text = currentItem.quantity.toString()
+        holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
-            DateFormatter.LocalDateTimeToString(currentItem.utolsoMegjegyzes?.megjegyzesIdo)
+            DateFormatter.LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
 
     }
 

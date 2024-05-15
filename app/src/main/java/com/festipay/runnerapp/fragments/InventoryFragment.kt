@@ -76,21 +76,18 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     override fun loadList(view: View) {
         itemList = arrayListOf<Inventory>()
         Database.db.collection("leltar")
-            .whereEqualTo("Program", CurrentState.programName)
-            .orderBy("TargyNev", Query.Direction.ASCENDING)
+            .whereEqualTo("ProgramName", CurrentState.programName)
+            .orderBy("ItemName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
                 try {
                     if (!result.isEmpty) {
                         for (doc in result) {
                             itemList.add(
                                 Inventory(
-                                    (doc.data["Darabszam"] as Long).toInt(),
-                                    doc.data["SN"] as Boolean,
-                                    doc.data["TargyNev"] as String,
-                                    null,
-                                    null,
-                                    null,
-                                    doc.id
+                                    doc.data["ItemName"] as String,
+                                    (doc.data["Quantity"] as Long).toInt(),
+                                    doc.id,
+                                    null
                                 )
                             )
                         }
@@ -104,7 +101,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                 }
 
             }.addOnFailureListener { exception ->
-                showError(requireContext(), "Can't read documents in leltáritems: $exception")
+                showError(requireContext(), "Can't read documents in inventoryitems: $exception")
             }
     }
 
@@ -123,9 +120,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                                 )
                             )
                         }
-                        it.comments = Comments(comments)
-                        if (it.comments!!.megjegyzesek.isNotEmpty()) it.utolsoMegjegyzes =
-                            it.comments!!.megjegyzesek.last()
+                        it.lastComment = comments.first()
                     }
                     if (itemList.last() == it)
                         setupView(view)
@@ -153,7 +148,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
         adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
-                CurrentState.companySite = inventoryItem.targyNev
+                CurrentState.companySite = inventoryItem.itemName
                 CurrentState.companySiteID = inventoryItem.docID
                 launchFragment(requireActivity(), OperationSelectorFragment())
 

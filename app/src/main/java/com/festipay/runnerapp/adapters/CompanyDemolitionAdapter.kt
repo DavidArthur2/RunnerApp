@@ -19,7 +19,7 @@ class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition
         val telephelyNev: TextView = itemView.findViewById(R.id.companyTitle)
         val eszkozszam: TextView = itemView.findViewById(R.id.firstValue)
         val folyamatban: CheckBox = itemView.findViewById(R.id.secondCheckbox)
-        val csomagolt: CheckBox = itemView.findViewById(R.id.thirdCheckbox)
+        val csomagolt: CheckBox = itemView.findViewById(R.id.thirddCheckbox)
         val autoban: CheckBox = itemView.findViewById(R.id.fourthCheckbox)
         val bazisLeszereles: CheckBox = itemView.findViewById(R.id.fifthCheckbox)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)

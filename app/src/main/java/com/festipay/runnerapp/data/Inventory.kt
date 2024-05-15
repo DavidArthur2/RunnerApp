@@ -1,4 +1,3 @@
 package com.festipay.runnerapp.data
 
-data class Inventory(var darabszam: Int, var sn: Boolean, var targyNev: String, var utolsoMegjegyzes: Comment?,
-                     var comments: Comments?, var didek: SN?, var docID: String = "")
+data class Inventory(var itemName: String, var quantity: Int, var docID: String = "", var lastComment: Comment? = null)

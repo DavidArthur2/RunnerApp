@@ -50,6 +50,7 @@ class GPSFragment : Fragment() {
     }
     private fun initFragment(){
         context = requireActivity()
+        CurrentState.operation = OperationType.GPS
         CurrentState.fragmentType = FragmentType.INSTALL_COMPANY_GPS
         modeName = Database.mapCollectionModeName()
     }

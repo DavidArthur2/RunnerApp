@@ -8,18 +8,6 @@
     android:paddingBottom="5dp">
 
 
-
-    <TextView
-        android:id="@+id/secondCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/SNText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/secondCheckbox"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/firstTitle"
         android:layout_width="wrap_content"
@@ -41,17 +29,6 @@
         android:textStyle="bold|italic"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/firstTitle"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/secondCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="40dp"
-        android:enabled="false"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
