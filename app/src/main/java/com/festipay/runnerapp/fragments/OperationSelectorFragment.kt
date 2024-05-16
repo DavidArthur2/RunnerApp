@@ -98,7 +98,8 @@ class OperationSelectorFragment(
                         Functions.launchFragment(requireActivity(), CommentsFragment())
                     }
                     getString(R.string.did),getString(R.string.sn) ->{
-                        Functions.launchFragment(requireActivity(), SNFragment())
+                        if(CurrentState.mode != Mode.DEMOLITION)Functions.launchFragment(requireActivity(), SNFragment())
+                        else Functions.launchFragment(requireActivity(), SNInstantAddFragment())
                     }
                     getString(R.string.gps) ->{
                         Functions.launchFragment(requireActivity(), GPSFragment())

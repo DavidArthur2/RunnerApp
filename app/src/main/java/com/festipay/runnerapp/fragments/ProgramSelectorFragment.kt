@@ -19,8 +19,8 @@ import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ProgramSelectorFragment : Fragment(), IFragment<Program> {
-override lateinit var recyclerView: RecyclerView
-override lateinit var itemList: ArrayList<Program>
+    override lateinit var recyclerView: RecyclerView
+    override lateinit var itemList: ArrayList<Program>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,7 +32,7 @@ override lateinit var itemList: ArrayList<Program>
         return view
     }
 
-    private fun initFragment(){
+    private fun initFragment() {
         val b = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         b.isVisible = false
 
@@ -41,27 +41,30 @@ override lateinit var itemList: ArrayList<Program>
 
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.PROGRAM
     }
-    override fun onViewLoaded(){
+
+    override fun onViewLoaded() {
         hideLoadingScreen()
     }
-    override fun loadList(view: View){
+
+    override fun loadList(view: View) {
         itemList = arrayListOf()
-        Database.db.collection("programok").whereArrayContains("users", CurrentState.userName as String).get().addOnSuccessListener { result ->
-            if(!result.isEmpty){
-                for(doc in result){
-                    itemList.add(Program(doc.data["ProgramNev"] as String))
+        Database.db.collection("programok")
+            .whereArrayContains("users", CurrentState.userName as String).get()
+            .addOnSuccessListener { result ->
+                if (!result.isEmpty) {
+                    for (doc in result) {
+                        itemList.add(Program(doc.data["ProgramNev"] as String))
+                    }
+                    setupView(view)
+                } else {
+                    showError(requireContext(), "Nincs felvéve program!")
                 }
-                setupView(view)
-            }
-            else{
-                showError(requireContext(), "Nincs felvéve program!")
-            }
-        }.addOnFailureListener { exception ->
+            }.addOnFailureListener { exception ->
             showError(requireContext(), "Can't read documents in programok: $exception")
         }
     }
 
-    override fun setupView(view: View){
+    override fun setupView(view: View) {
 
         recyclerView = view.findViewById(R.id.programSelectorRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -71,12 +74,20 @@ override lateinit var itemList: ArrayList<Program>
         val adapt = ProgramAdapter(itemList)
         recyclerView.adapter = adapt
 
-        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                onViewLoaded()
-                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                try {
+                    onViewLoaded()
+                    recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                } catch (_: Exception) {
+                } finally {
+                    onViewLoaded()
+                }
             }
         })
+
 
         adapt.setOnItemClickListener(object : ProgramAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, program: Program) {

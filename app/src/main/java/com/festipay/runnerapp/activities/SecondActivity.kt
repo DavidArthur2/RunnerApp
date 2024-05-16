@@ -71,6 +71,9 @@ class SecondActivity : AppCompatActivity() {
                     fragment.onBackCalled()
             }
 
+            FragmentType.DEMOLITION_COMPANY_SN_ADD_INSTANT ->
+                launchFragment(this, OperationSelectorFragment())
+
             FragmentType.PROGRAM -> setupLogoutDialog()
 
             else -> setupLogoutDialog()

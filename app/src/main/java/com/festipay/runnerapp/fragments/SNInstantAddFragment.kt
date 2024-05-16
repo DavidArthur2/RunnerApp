@@ -32,6 +32,7 @@ import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideKeyboard
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
@@ -44,9 +45,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
-class SNAddFragment : Fragment(), IFragment<SN> {
+class SNInstantAddFragment : Fragment(), IFragment<SN> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<SN>
+
     private lateinit var modeName: String
     private lateinit var addButton: Button
     private lateinit var snInput: EditText
@@ -64,10 +66,11 @@ class SNAddFragment : Fragment(), IFragment<SN> {
         initViews(view)
         return view
     }
-    private fun initFragment(){
+
+    private fun initFragment() {
         context = requireActivity()
         barcodeScanReceiver = BarcodeScanReceiver { barcode ->
-            if(barcode != null)addSN(barcode)
+            if (barcode != null) addSN(barcode)
             else Toast.makeText(context, "Sikertelen SN olvasás!", Toast.LENGTH_LONG).show()
         }
         val filter = IntentFilter("android.intent.ACTION_DECODE_DATA")
@@ -76,66 +79,71 @@ class SNAddFragment : Fragment(), IFragment<SN> {
         modeName = Database.mapCollectionModeName()
         CurrentState.fragmentType = when (CurrentState.mode) {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_SN_ADD
-            Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN_ADD
+            Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN_ADD_INSTANT
             Mode.INVENTORY -> FragmentType.INVENTORY_ITEM_SN_ADD
             else -> FragmentType.INVENTORY_ITEM_SN_ADD
         }
 
     }
 
-    private fun addSN(sn: String){
-        if(itemList.contains(SN(sn)))
+    private fun addSN(sn: String) {
+        if (itemList.contains(SN(sn)))
             return showWarning(context, "'$sn' már a listában van!")
-        itemList.add(SN(sn))
+        saveItem(sn)
         hideKeyboard(context, snInput)
-        adapt.notifyItemInserted(itemList.size - 1)
         snInput.text.clear()
         recyclerView.requestFocus()
-        Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
+
     }
 
-    private fun saveList(){
-        var unsuccessfulCount = itemList.size
-        val unsuccessfulList = ArrayList(itemList)
+    private fun saveItem(sn: String) {
         showLoadingScreen(context)
-        for(i in itemList) {
-            val data = hashMapOf(
-                "SN" to i.sn
-            )
-            Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                .collection("SN").add(data).addOnSuccessListener {
-                unsuccessfulCount--
-                    unsuccessfulList.remove(i)
-                    if(i == itemList.last()){
-                        launchFragment(context, SNFragment())
-                        if(unsuccessfulCount == 0)
-                            showInfoDialog(context, "Hozzáadás", "SN lista sikeresen hozzáadva!")
-                        else
-                            showError(context,"$unsuccessfulCount / $itemList SN sikertelenül hozzáadva!\n$unsuccessfulList")
-                    }
+        val data = hashMapOf(
+            "SN" to sn
+        )
+        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+            .collection("SN").add(data).addOnSuccessListener {
+                adapt.notifyItemInserted(itemList.size - 1)
+                itemList.add(SN(sn))
+                Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
+                hideLoadingScreen()
             }
-        }
+
     }
+
     private fun initViews(view: View) {
         addButton = view.findViewById(R.id.snAddButton)
         snInput = view.findViewById(R.id.snInput)
+        view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton).isVisible=false
         addButton.setOnClickListener {
-            if(snInput.text.isNotEmpty())
+            if (snInput.text.isNotEmpty())
                 addSN(snInput.text.toString())
 
         }
-        view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton)
-            .setOnClickListener {
-                saveList()
-            }
     }
 
-    override fun onViewLoaded(){
+    override fun onViewLoaded() {
         Functions.hideLoadingScreen()
     }
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        setupView(view)
+        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+            .collection("SN").get().addOnSuccessListener { result ->
+                if (!result.isEmpty) {
+                    for (doc in result) {
+                        itemList.add(
+                            SN(doc.data["SN"] as String)
+                        )
+                    }
+                }
+                setupView(view)
+            }.addOnFailureListener {
+                showError(
+                    requireActivity(),
+                    "Sikertelen SN beolvasás",
+                    "companydocid: ${CurrentState.companySiteID} error: $it"
+                )
+            }
     }
 
     override fun loadComments(view: View) {
@@ -160,20 +168,28 @@ class SNAddFragment : Fragment(), IFragment<SN> {
 
         adapt.setOnItemClickListener(object : SNAddAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, snItem: SN) {
-                itemList.removeAt(position)
-                adapt.notifyItemRemoved(position)
+                showLoadingScreen(context)
+                Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+                    .collection("SN").whereEqualTo("SN", snItem.sn).get().addOnSuccessListener{
+                        if(it.documents.isNotEmpty())
+                            Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+                                .collection("SN").document(it.documents[0].id).delete().addOnSuccessListener {
+                                    Toast.makeText(context, "\'${snItem.sn}\' törölve!", Toast.LENGTH_SHORT).show()
+                                    itemList.removeAt(position)
+                                    adapt.notifyItemRemoved(position)
+                                    hideLoadingScreen()
+                                }
+                    }.addOnFailureListener {
+                        showError(context, "Hiba történt a törléskor!", it.toString())
+                    }
             }
         })
     }
+
     override fun onDestroy() {
         super.onDestroy()
         context.unregisterReceiver(barcodeScanReceiver)
     }
 
-    fun onBackCalled(){
-        if(itemList.size > 0)
-            showWarning(context, "Nem mentettél paraszt!!", SNFragment())
-        launchFragment(context, SNFragment())
-    }
 
 }

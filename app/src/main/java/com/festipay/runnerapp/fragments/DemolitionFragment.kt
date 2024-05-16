@@ -99,7 +99,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                                 )
                             )
                         }
-                        it.lastComment = comments.first()
+                        it.lastComment = comments.last()
                     }
                     if(itemList.last() == it)setupView(view)
                 }

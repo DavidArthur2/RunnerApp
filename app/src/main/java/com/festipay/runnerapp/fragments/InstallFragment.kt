@@ -104,7 +104,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                             )
                         )
                     }
-                    it.lastComment = comments.first()
+                    it.lastComment = comments.last()
                 }
                     if(itemList.last() == it)setupView(view)
             }

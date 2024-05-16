@@ -15,6 +15,20 @@
         android:paddingBottom="@dimen/fragment_vertical_margin"
         tools:context=".fragments.StatusModifyFragment">
 
+        <ImageView
+            android:id="@+id/pinGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="108dp"
+            android:scaleX="1.8"
+            android:scaleY="1.8"
+            android:src="@drawable/ic_location_pin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.41"
+            app:layout_constraintStart_toEndOf="@+id/companyNameText"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/firstLabel"
             android:layout_width="wrap_content"

@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -51,6 +52,7 @@ object Functions {
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         dialog.findViewById<TextView>(R.id.warning_dialog_message).text = message
+        if(action == null)dialog.findViewById<Button>(R.id.ok_button).isVisible=false
         dialog.show()
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
             dialog.dismiss()
