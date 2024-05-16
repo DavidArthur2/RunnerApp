@@ -16,6 +16,15 @@
         tools:context=".fragments.StatusModifyFragment">
 
         <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="220dp"
+            android:layout_height="345dp"
+            android:layout_marginTop="172dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/red_background" />
+
+        <ImageView
             android:id="@+id/pinGo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -152,7 +161,7 @@
             android:id="@+id/thirdItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="172dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -160,14 +169,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/seventhItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="372dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -176,14 +185,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:switchPadding="-15dp"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/ninethItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="472dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -192,14 +201,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:switchPadding="-15dp"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/fifthItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="272dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -207,14 +216,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/sixthItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="320dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -222,14 +231,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/eightItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="420dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -237,14 +246,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/fourthItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="220dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -252,8 +261,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <TextView
+            android:id="@+id/missingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="136dp"
+            android:text="Hiányzó dolgok:"
+            android:textColor="@color/lightRed"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
