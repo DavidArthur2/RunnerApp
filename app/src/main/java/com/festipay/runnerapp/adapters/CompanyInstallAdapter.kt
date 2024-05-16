@@ -20,14 +20,12 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
         val firstItem: TextView = itemView.findViewById(R.id.firstItem)
         val secondItem: TextView = itemView.findViewById(R.id.secondItem)
         val thirdItem: CheckBox = itemView.findViewById(R.id.thirdItem)
-        val fourthItem: TextView = itemView.findViewById(R.id.fourthItem)
+        val fourthItem: CheckBox = itemView.findViewById(R.id.fourthItem)
         val fifthItem: CheckBox = itemView.findViewById(R.id.fifthItem)
         val sixthItem: CheckBox = itemView.findViewById(R.id.sixthItem)
         val seventhItem: CheckBox = itemView.findViewById(R.id.seventhItem)
         val eightItem: CheckBox = itemView.findViewById(R.id.eightItem)
         val ninethItem: CheckBox = itemView.findViewById(R.id.ninethItem)
-        val tenthItem: CheckBox = itemView.findViewById(R.id.tenthItem)
-        val eleventhItem: CheckBox = itemView.findViewById(R.id.eleventhItem)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
 
@@ -58,14 +56,12 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
         holder.firstItem.text = currentItem.firstItem.name
         holder.secondItem.text = currentItem.secondItem.name
         holder.thirdItem.isChecked = currentItem.thirdItem
-        holder.fourthItem.text = currentItem.fourthItem.name
+        holder.fourthItem.isChecked = currentItem.fourthItem
         holder.fifthItem.isChecked = currentItem.fifthItem
         holder.sixthItem.isChecked = currentItem.sixthItem
         holder.seventhItem.isChecked = currentItem.seventhItem
         holder.eightItem.isChecked = currentItem.eightItem
         holder.ninethItem.isChecked = currentItem.ninethItem
-        holder.tenthItem.isChecked = currentItem.tenthItem
-        holder.eleventhItem.isChecked = currentItem.eleventhItem
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text = LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
     }

@@ -4,14 +4,12 @@ data class CompanyInstall(var companyName: String,
                           val firstItem: InstallFirstItemEnum,
                           val secondItem: InstallSecondItemEnum,
                           val thirdItem: Boolean,
-                          val fourthItem: InstallFourthItemEnum,
+                          val fourthItem: Boolean,
                           val fifthItem: Boolean,
                           val sixthItem: Boolean,
                           val seventhItem: Boolean,
                           val eightItem: Boolean,
                           val ninethItem: Boolean,
-                          val tenthItem: Boolean,
-                          val eleventhItem: Boolean,
                           var docID: String = "",
                           var lastComment: Comment? = null)
 
@@ -22,25 +20,18 @@ data class CompanyDemolition(var companyName: String,
                              var docID: String = "",
                              var lastComment: Comment? = null)
 enum class InstallFirstItemEnum{
-    TELEPITHETO,
-    KIRAKHATO,
     NEM_KIRAKHATO,
-    STATUSZ_NELKUL
+    KIRAKHATO,
+    TELEPITHETO,
 }
 
 enum class InstallSecondItemEnum{
-    KIADVA,
+    STATUSZ_NELKUL,
+    BAZIS_KIADVA,
     KIHELYEZESRE_VAR,
-    STATUSZ_NELKUL
+    KIRAKVA,
+    HELYSZINEN_TESZTELVE
 }
-
-enum class InstallFourthItemEnum{
-    HELYSZINEN_TESZTELVE,
-    MINOSEG_ELLENORZES,
-    HASZNALATRA_KESZ,
-    STATUSZ_NELKUL
-}
-
 enum class DemolitionFirstItemEnum{
     BONTHATO,
     BONTASRA_VAR,

@@ -12,15 +12,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.view.isVisible
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.DemolitionFirstItemEnum
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum
 import com.festipay.runnerapp.data.InstallFirstItemEnum
-import com.festipay.runnerapp.data.InstallFourthItemEnum
 import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.database.Database
@@ -33,10 +30,8 @@ import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.Timestamp
-import org.checkerframework.checker.units.qual.Current
 
 class StatusModifyFragment : Fragment() {
 
@@ -54,14 +49,12 @@ class StatusModifyFragment : Fragment() {
     private lateinit var firstItemI: Spinner
     private lateinit var secondItemI: Spinner
     private lateinit var thirdItemI: SwitchMaterial
-    private lateinit var fourthItemI: Spinner
+    private lateinit var fourthItemI: SwitchMaterial
     private lateinit var fifthItemI: SwitchMaterial
     private lateinit var sixthItemI: SwitchMaterial
     private lateinit var seventhItemI: SwitchMaterial
     private lateinit var eightItemI: SwitchMaterial
     private lateinit var ninethItemI: SwitchMaterial
-    private lateinit var tenthItemI: SwitchMaterial
-    private lateinit var eleventhItemI: SwitchMaterial
 
     //Demolition View-ek
     private lateinit var firstItemD: Spinner
@@ -129,14 +122,12 @@ class StatusModifyFragment : Fragment() {
                         firstItemI.setSelection(InstallFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
                         secondItemI.setSelection(InstallSecondItemEnum.valueOf(documents.data?.get("2") as String).ordinal)
                         thirdItemI.isChecked = documents.data?.get("3") as Boolean
-                        fourthItemI.setSelection(InstallFourthItemEnum.valueOf(documents.data?.get("4") as String).ordinal)
+                        fourthItemI.isChecked = documents.data?.get("4") as Boolean
                         fifthItemI.isChecked = documents.data?.get("5") as Boolean
                         sixthItemI.isChecked = documents.data?.get("6") as Boolean
                         seventhItemI.isChecked = documents.data?.get("7") as Boolean
                         eightItemI.isChecked = documents.data?.get("8") as Boolean
                         ninethItemI.isChecked = documents.data?.get("9") as Boolean
-                        tenthItemI.isChecked = documents.data?.get("10") as Boolean
-                        eleventhItemI.isChecked = documents.data?.get("11") as Boolean
                         onViewLoaded()
                     }
             }
@@ -193,8 +184,6 @@ class StatusModifyFragment : Fragment() {
                 seventhItemI = view.findViewById(R.id.seventhItem)
                 eightItemI = view.findViewById(R.id.eightItem)
                 ninethItemI = view.findViewById(R.id.ninethItem)
-                tenthItemI = view.findViewById(R.id.tenthItem)
-                eleventhItemI = view.findViewById(R.id.eleventhItem)
 
                 initSpinnersInstall()
 
@@ -205,14 +194,12 @@ class StatusModifyFragment : Fragment() {
                         InstallFirstItemEnum.entries[firstItemI.selectedItemPosition],
                         InstallSecondItemEnum.entries[secondItemI.selectedItemPosition],
                         thirdItemI.isChecked,
-                        InstallFourthItemEnum.entries[fourthItemI.selectedItemPosition],
+                        fourthItemI.isChecked,
                         fifthItemI.isChecked,
                         sixthItemI.isChecked,
                         seventhItemI.isChecked,
                         eightItemI.isChecked,
-                        ninethItemI.isChecked,
-                        tenthItemI.isChecked,
-                        eleventhItemI.isChecked
+                        ninethItemI.isChecked
                     )
                     modifyButtonListener(exit = false, companyInstallItem = companyInstallItem)
                 }
@@ -222,14 +209,12 @@ class StatusModifyFragment : Fragment() {
                         InstallFirstItemEnum.entries[firstItemI.selectedItemPosition],
                         InstallSecondItemEnum.entries[secondItemI.selectedItemPosition],
                         thirdItemI.isChecked,
-                        InstallFourthItemEnum.entries[fourthItemI.selectedItemPosition],
+                        fourthItemI.isChecked,
                         fifthItemI.isChecked,
                         sixthItemI.isChecked,
                         seventhItemI.isChecked,
                         eightItemI.isChecked,
                         ninethItemI.isChecked,
-                        tenthItemI.isChecked,
-                        eleventhItemI.isChecked
                     )
                     modifyButtonListener(exit = true, companyInstallItem = companyInstallItem)
 
@@ -332,14 +317,12 @@ class StatusModifyFragment : Fragment() {
             "1" to companyInstallItem.firstItem.name,
             "2" to companyInstallItem.secondItem.name,
             "3" to companyInstallItem.thirdItem,
-            "4" to companyInstallItem.fourthItem.name,
+            "4" to companyInstallItem.fourthItem,
             "5" to companyInstallItem.fifthItem,
             "6" to companyInstallItem.sixthItem,
             "7" to companyInstallItem.seventhItem,
             "8" to companyInstallItem.eightItem,
             "9" to companyInstallItem.ninethItem,
-            "10" to companyInstallItem.tenthItem,
-            "11" to companyInstallItem.eleventhItem
         )
         Database.db.collection("telephely_telepites").document(docID).update(data).addOnSuccessListener {
             if(exit)launchFragment(requireActivity(), InstallFragment())
@@ -400,12 +383,6 @@ class StatusModifyFragment : Fragment() {
         secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         secondItemI.adapter = secondArrayAdapter
 
-        val fourthArrayList = ArrayList<String>()
-        for(i in InstallFourthItemEnum.entries)
-            fourthArrayList.add(i.name)
-        val fourthArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, fourthArrayList)
-        fourthArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
-        fourthItemI.adapter = fourthArrayAdapter
     }
 
     private fun initSpinnersDemolition(){

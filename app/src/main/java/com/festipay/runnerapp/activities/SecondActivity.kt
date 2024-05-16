@@ -125,9 +125,9 @@ class SecondActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        super.onPause()
         if (!this.isFinishing){
             exitProcess(0)
         }
+        super.onPause()
     }
 }

@@ -4,22 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.festipay.runnerapp.R.*
-import com.festipay.runnerapp.data.DemolitionFirstItemEnum
-import com.festipay.runnerapp.data.DemolitionSecondItemEnum
 import com.festipay.runnerapp.data.InstallFirstItemEnum
-import com.festipay.runnerapp.data.InstallFourthItemEnum
-import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.showError
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -94,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loginClick(){
         showLoadingScreen(this)
+        manipulateDB()
         val userName: String = userInput.text.toString()
         Database.db.collection("felhasznalok").whereEqualTo("nev", userName).get().addOnSuccessListener { result ->
             if(!result.isEmpty){
@@ -109,6 +109,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun manipulateDB(){
+        val data = hashMapOf<String, Any>(
+            "1" to InstallFirstItemEnum.NEM_KIRAKHATO
+        )
+        Database.db.collection("telephely_telepites").get()
+            .addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    val documentRef = Database.db.collection("telephely_telepites").document(document.id)
+                    documentRef.update(data)
+                }
+            }
+
+    }
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
         finish()

@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.CompanyInstallAdapter
 import com.festipay.runnerapp.data.Comment
-import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.InstallFirstItemEnum
-import com.festipay.runnerapp.data.InstallFourthItemEnum
 import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
@@ -72,14 +70,12 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                         InstallFirstItemEnum.valueOf(doc.data["1"] as String),
                         InstallSecondItemEnum.valueOf(doc.data["2"] as String),
                         doc.data["3"] as Boolean,
-                        InstallFourthItemEnum.valueOf(doc.data["4"] as String),
+                        doc.data["4"] as Boolean,
                         doc.data["5"] as Boolean,
                         doc.data["6"] as Boolean,
                         doc.data["7"] as Boolean,
                         doc.data["8"] as Boolean,
                         doc.data["9"] as Boolean,
-                        doc.data["10"] as Boolean,
-                        doc.data["11"] as Boolean,
                         doc.id
                     ))
                 }
