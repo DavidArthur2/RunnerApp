@@ -136,6 +136,16 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                 Functions.launchFragment(requireActivity(), OperationSelectorFragment())
 
             }
+
+            override fun onPinGoClick(position: Int, companyInstall: CompanyInstall) {
+                CurrentState.companySite = companyInstall.companyName
+                CurrentState.companySiteID = companyInstall.docID
+                val bundle = Bundle()
+                bundle.putString("go", "go")
+                val frag = GPSFragment()
+                frag.arguments = bundle
+                Functions.launchFragment(requireActivity(), frag)
+            }
         })
     }
 

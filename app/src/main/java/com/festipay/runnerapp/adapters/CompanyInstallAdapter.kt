@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.DateFormatter.LocalDateTimeToString
+import org.w3c.dom.Text
 
 class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
     RecyclerView.Adapter<CompanyInstallAdapter.ItemViewHolder>() {
@@ -28,9 +30,16 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
         val ninethItem: CheckBox = itemView.findViewById(R.id.ninethItem)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
+        private val pinGo: ImageView = itemView.findViewById(R.id.pinGo)
 
 
         init {
+            pinGo.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    mListener?.onPinGoClick(position, itemList[position])
+                }
+            }
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -72,5 +81,6 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, companyInstall: CompanyInstall)
+        fun onPinGoClick(position: Int, companyInstall: CompanyInstall)
     }
 }

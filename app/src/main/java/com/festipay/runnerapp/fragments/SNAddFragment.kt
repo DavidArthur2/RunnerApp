@@ -173,6 +173,7 @@ class SNAddFragment : Fragment(), IFragment<SN> {
     fun onBackCalled(){
         if(itemList.size > 0)
             showWarning(context, "Nem mentettél paraszt!!", SNFragment())
+        launchFragment(context, SNFragment())
     }
 
 }

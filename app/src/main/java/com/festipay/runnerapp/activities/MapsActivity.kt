@@ -3,10 +3,12 @@ package com.festipay.runnerapp.activities
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.Manifest
+import android.content.Intent
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -63,6 +65,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onLowMemory() {
         super.onLowMemory()
         mapView.onLowMemory()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, SecondActivity::class.java)
+        startActivity(intent)
     }
 
 

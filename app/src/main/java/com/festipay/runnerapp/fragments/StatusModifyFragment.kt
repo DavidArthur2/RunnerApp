@@ -1,5 +1,6 @@
 package com.festipay.runnerapp.fragments
 
+import LocationGetter.getLocation
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import com.festipay.runnerapp.R
@@ -32,6 +34,7 @@ import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 
 class StatusModifyFragment : Fragment() {
 
@@ -45,6 +48,7 @@ class StatusModifyFragment : Fragment() {
     private lateinit var deviceNumberInput: EditText
 
     //Install View-ek
+    private lateinit var pinGo: ImageView
     private lateinit var companyName: TextView
     private lateinit var firstItemI: Spinner
     private lateinit var secondItemI: Spinner
@@ -150,6 +154,10 @@ class StatusModifyFragment : Fragment() {
         modifyAddButton = view.findViewById(R.id.modifyAddButton)
         modifyExitButton = view.findViewById(R.id.modifyExitButton)
         commentInput = view.findViewById(R.id.commentInput)
+        pinGo = view.findViewById(R.id.pinGo)
+        pinGo.setOnClickListener {
+            refreshCoords()
+        }
 
         loadValues()
         when (CurrentState.mode) {
@@ -401,5 +409,41 @@ class StatusModifyFragment : Fragment() {
         secondItemD.adapter = secondArrayAdapter
 
         Log.d("asd","asd")
+    }
+
+    private fun refreshCoords() {
+        val context = requireActivity()
+        Functions.showLoadingScreen(context)
+        getLocation(context,
+            onSuccess = { location ->
+                val geoPoint = GeoPoint(location.latitude, location.longitude)
+                var data = hashMapOf<String, Any>("coord" to geoPoint)
+                var docID: String? = null
+                Database.db.collection("koordinatak").whereEqualTo("ref", CurrentState.companySiteID).get().addOnSuccessListener{
+                    if(it.documents.isNotEmpty())
+                        docID = it.documents[0].id
+                }.addOnFailureListener {
+                    showError(context, "Sikertelen koordináta lekérés", it.toString())
+                }
+                if(docID != null)Database.db.collection("koordinatak").document(docID!!).update(data).addOnSuccessListener {
+                    showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
+                }.addOnFailureListener {
+                    showError(context, "Sikertelen koordináta rögzítés", it.toString())
+                }
+                if(docID == null) {
+                    val companyRef = Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+                    data = hashMapOf("coord" to geoPoint, "ref" to companyRef)
+
+                    Database.db.collection("koordinatak").add(data).addOnSuccessListener {
+                        showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
+                    }.addOnFailureListener {
+                        showError(context, "Sikertelen koordináta rögzítés", it.toString())
+                    }
+                }
+            },
+            onError = { errorMessage ->
+                showError(context, "Sikertelen pozíció lekérés!", errorMessage)
+            }
+        )
     }
 }

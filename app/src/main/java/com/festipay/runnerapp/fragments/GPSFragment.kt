@@ -43,6 +43,7 @@ class GPSFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_coords, container, false)
 
+
         initFragment()
         initView(view)
         loadCoords()
@@ -53,6 +54,7 @@ class GPSFragment : Fragment() {
         CurrentState.operation = OperationType.GPS
         CurrentState.fragmentType = FragmentType.INSTALL_COMPANY_GPS
         modeName = Database.mapCollectionModeName()
+
     }
     private fun initView(view: View){
         longText = view.findViewById(R.id.longText)
@@ -78,6 +80,11 @@ class GPSFragment : Fragment() {
                 longText.text = geoPoint.longitude.toString()
                 latText.text = geoPoint.latitude.toString()
                 docID = it.first().id
+
+                if(arguments?.getString("go") == "go") // Ha gyorsgombbol inditjuk el
+                    startMaps()
+                if(arguments?.getString("save") == "save")
+                    refreshCoords()
             }
             else{
                 longText.text = "-"
@@ -126,6 +133,7 @@ class GPSFragment : Fragment() {
                 putExtra("long", coord!!.longitude.toString())
             }
             startActivity(intent)
+            context.finish()
         }
         else showError(context, "Koordináták nincsenek rögzítve")
     }
