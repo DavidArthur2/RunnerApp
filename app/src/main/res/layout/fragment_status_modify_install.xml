@@ -23,7 +23,7 @@
             android:text="@string/companyNameLabel"
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.031"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +35,7 @@
             android:text="Felderítés: "
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +47,7 @@
             android:text="Státusz1: "
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.039"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,7 +59,7 @@
             android:text="Státusz2: "
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.038"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,7 +80,7 @@
             android:id="@+id/commentInput"
             android:layout_width="288dp"
             android:layout_height="50dp"
-            android:layout_marginTop="628dp"
+            android:layout_marginTop="630dp"
             android:background="@drawable/custom_input"
             android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_ -.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
             android:drawablePadding="8dp"
@@ -92,7 +92,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.098"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -102,8 +102,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="700dp"
             android:text="@string/modifyDIDButtonText"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.212"
             app:layout_constraintStart_toEndOf="@+id/modifyExitButton"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,9 +114,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="700dp"
             android:text="@string/modifyExitButtonText"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.037"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -123,11 +124,11 @@
             android:id="@+id/firstItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/gradient_spinner"
             android:layout_marginStart="10dp"
             android:layout_marginTop="72dp"
             android:scaleX="1.2"
             android:scaleY="1.2"
+            android:background="@drawable/gradient_spinner"
             android:spinnerMode="dropdown"
             app:layout_constraintStart_toEndOf="@+id/firstLabel"
             app:layout_constraintTop_toTopOf="parent" />
@@ -138,6 +139,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="132dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:background="@drawable/gradient_spinner"
+            android:spinnerMode="dropdown"
             app:layout_constraintStart_toEndOf="@+id/secondLabel"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -147,6 +152,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="232dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:background="@drawable/gradient_spinner"
+            android:spinnerMode="dropdown"
             app:layout_constraintStart_toEndOf="@+id/fourthLabel"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -154,22 +163,22 @@
             android:id="@+id/thirdItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="176dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="172dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
             android:text="Kirakva:"
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/fifthItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="276dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -184,8 +193,8 @@
             android:id="@+id/sixthItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="326dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="324dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
             android:text="Áram:"
@@ -196,10 +205,41 @@
             app:trackTint="@color/switch_track_selector" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/eightItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="424dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="PTG:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/eleventhItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="576dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Helyszín:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:switchPadding="-15dp"
+
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/seventhItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="376dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
@@ -211,32 +251,17 @@
             app:trackTint="@color/switch_track_selector" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/eightItem"
-            android:layout_width="104dp"
-            android:layout_height="39dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="426dp"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="PTG:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/ninethItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="476dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
             android:text="Szoftver:"
-            app:switchPadding="-15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:switchPadding="-15dp"
 
             app:thumbTint="@color/switch_thumb_selector"
             app:trackTint="@color/switch_track_selector" />
@@ -245,27 +270,11 @@
             android:id="@+id/tenthItem"
             android:layout_width="104dp"
             android:layout_height="39dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="526dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="524dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
             android:text="Param:"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:thumbTint="@color/switch_thumb_selector"
-            app:trackTint="@color/switch_track_selector" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/eleventhItem"
-            android:layout_width="104dp"
-            android:layout_height="39dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="576dp"
-            app:switchPadding="-15dp"
-            android:scaleX="1.4"
-            android:scaleY="1.4"
-            android:text="Helyszín:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 

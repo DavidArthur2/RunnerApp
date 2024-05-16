@@ -60,7 +60,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         itemList = arrayListOf<CompanyDemolition>()
         Database.db.collection("telephely_bontas")
             .whereEqualTo("ProgramName", CurrentState.programName)
-            .orderBy("TelephelyNev", Query.Direction.ASCENDING)
+            .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
                 if(!result.isEmpty){
                     for(doc in result){

@@ -2,6 +2,7 @@ package com.festipay.runnerapp.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -143,8 +144,8 @@ class StatusModifyFragment : Fragment() {
                 Database.db.collection("telephely_bontas").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
                         companyName.text = (documents.data?.get("CompanyName") as String)
-                        firstItemD.setSelection(InstallFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
-                        secondItemD.setSelection(InstallSecondItemEnum.valueOf(documents.data?.get("2") as String).ordinal)
+                        firstItemD.setSelection(DemolitionFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
+                        secondItemD.setSelection(DemolitionSecondItemEnum.valueOf(documents.data?.get("2") as String).ordinal)
                         thirdItemD.isChecked = documents.data?.get("3") as Boolean
                         onViewLoaded()
                     }
@@ -421,5 +422,7 @@ class StatusModifyFragment : Fragment() {
         val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, secondArrayList)
         secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         secondItemD.adapter = secondArrayAdapter
+
+        Log.d("asd","asd")
     }
 }
