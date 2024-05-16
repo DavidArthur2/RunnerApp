@@ -12,13 +12,15 @@ data class CompanyInstall(var companyName: String,
                           val ninethItem: Boolean,
                           val tenthItem: Boolean,
                           val eleventhItem: Boolean,
-                          var docID: String = "")
+                          var docID: String = "",
+                          var lastComment: Comment? = null)
 
 data class CompanyDemolition(var companyName: String,
                              val firstItem: DemolitionFirstItemEnum,
                              val secondItem: DemolitionSecondItemEnum,
                              val thirdItem: Boolean,
-                             var docID: String = "")
+                             var docID: String = "",
+                             var lastComment: Comment? = null)
 enum class InstallFirstItemEnum{
     TELEPITHETO,
     KIRAKHATO,

@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.utilities.DateFormatter
+import org.w3c.dom.Text
 
 class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition>) :
     RecyclerView.Adapter<CompanyDemolitionAdapter.ItemViewHolder>() {
@@ -16,12 +18,10 @@ class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition
     private var mListener: OnItemClickListener? = null
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val telephelyNev: TextView = itemView.findViewById(R.id.companyTitle)
-        val eszkozszam: TextView = itemView.findViewById(R.id.firstValue)
-        val folyamatban: CheckBox = itemView.findViewById(R.id.secondCheckbox)
-        val csomagolt: CheckBox = itemView.findViewById(R.id.thirddCheckbox)
-        val autoban: CheckBox = itemView.findViewById(R.id.fourthCheckbox)
-        val bazisLeszereles: CheckBox = itemView.findViewById(R.id.fifthCheckbox)
+        val companyName: TextView = itemView.findViewById(R.id.companyTitle)
+        val firstItem: TextView = itemView.findViewById(R.id.firstItem)
+        val secondItem: TextView = itemView.findViewById(R.id.secondItem)
+        val thirdItem: CheckBox = itemView.findViewById(R.id.thirdItem)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
 
@@ -48,15 +48,13 @@ class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
-        holder.telephelyNev.text = currentItem.telephelyNev
-        holder.folyamatban.isChecked = currentItem.folyamatban
-        holder.eszkozszam.text = currentItem.eszkozszam.toString()
-        holder.csomagolt.isChecked = currentItem.csomagolt
-        holder.autoban.isChecked = currentItem.autoban
-        holder.bazisLeszereles.isChecked = currentItem.bazisLeszereles
-        holder.utolsoMegjegyzes.text = currentItem.utolsoMegjegyzes?.megjegyzes
+        holder.companyName.text = currentItem.companyName
+        holder.firstItem.text = currentItem.firstItem.name
+        holder.secondItem.text = currentItem.secondItem.name
+        holder.thirdItem.isChecked = currentItem.thirdItem
+        holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
-            DateFormatter.LocalDateTimeToString(currentItem.utolsoMegjegyzes?.megjegyzesIdo)
+            DateFormatter.LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

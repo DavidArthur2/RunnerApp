@@ -104,8 +104,7 @@
             android:text="@string/modifyDIDButtonText"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/modifyExitButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
@@ -124,8 +123,12 @@
             android:id="@+id/firstItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/gradient_spinner"
             android:layout_marginStart="10dp"
             android:layout_marginTop="72dp"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:spinnerMode="dropdown"
             app:layout_constraintStart_toEndOf="@+id/firstLabel"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -231,6 +234,7 @@
             android:scaleX="1.4"
             android:scaleY="1.4"
             android:text="Szoftver:"
+            app:switchPadding="-15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
@@ -258,6 +262,7 @@
             android:layout_height="39dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="576dp"
+            app:switchPadding="-15dp"
             android:scaleX="1.4"
             android:scaleY="1.4"
             android:text="Helyszín:"

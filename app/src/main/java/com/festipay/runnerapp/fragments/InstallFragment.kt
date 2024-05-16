@@ -15,6 +15,9 @@ import com.festipay.runnerapp.adapters.CompanyInstallAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyInstall
+import com.festipay.runnerapp.data.InstallFirstItemEnum
+import com.festipay.runnerapp.data.InstallFourthItemEnum
+import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
@@ -36,7 +39,15 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
         val view = inflater.inflate(R.layout.fragment_install, container, false)
 
+        initFragment()
+        loadList(view)
+
+        return view
+    }
+
+    fun initFragment(){
         CurrentState.mode = Mode.INSTALL
+        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INSTALL
 
         val bottomView = requireActivity()
             .findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -44,37 +55,31 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.install_title)}"
-
-        loadList(view)
-
-        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INSTALL
-
-        return view
     }
     override fun onViewLoaded(){
         hideLoadingScreen()
     }
     override fun loadList(view: View){
-        itemList = arrayListOf<CompanyInstall>()
+        itemList = arrayListOf()
         Database.db.collection("telephely_telepites")
-            .whereEqualTo("Program", CurrentState.programName)
-            .orderBy("TelephelyNev", Query.Direction.ASCENDING)
+            .whereEqualTo("ProgramName", CurrentState.programName)
+            .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 for(doc in result){
                     itemList.add(CompanyInstall(
-                        doc.data["TelephelyNev"] as String,
-                        doc.data["Kiadva"] as Boolean,
-                        doc.data["NemKirakhato"] as Boolean,
-                        doc.data["Kirakva"] as Boolean,
-                        doc.data["Eloszto"] as Boolean,
-                        doc.data["Aram"] as Boolean,
-                        doc.data["Szoftver"] as Boolean,
-                        doc.data["Param"] as Boolean,
-                        doc.data["Teszt"] as Boolean,
-                        null,
-                        null,
-                        null,
+                        doc.data["CompanyName"] as String,
+                        InstallFirstItemEnum.valueOf(doc.data["1"] as String),
+                        InstallSecondItemEnum.valueOf(doc.data["2"] as String),
+                        doc.data["3"] as Boolean,
+                        InstallFourthItemEnum.valueOf(doc.data["4"] as String),
+                        doc.data["5"] as Boolean,
+                        doc.data["6"] as Boolean,
+                        doc.data["7"] as Boolean,
+                        doc.data["8"] as Boolean,
+                        doc.data["9"] as Boolean,
+                        doc.data["10"] as Boolean,
+                        doc.data["11"] as Boolean,
                         doc.id
                     ))
                 }
@@ -103,8 +108,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                             )
                         )
                     }
-                    it.comments = Comments(comments)
-                    if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
+                    it.lastComment = comments.first()
                 }
                     if(itemList.last() == it)setupView(view)
             }
@@ -131,7 +135,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
         adapt.setOnItemClickListener(object : CompanyInstallAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyInstall: CompanyInstall) {
-                CurrentState.companySite = companyInstall.telephelyNev
+                CurrentState.companySite = companyInstall.companyName
                 CurrentState.companySiteID = companyInstall.docID
                 Functions.launchFragment(requireActivity(), OperationSelectorFragment())
 

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -163,15 +164,20 @@ class StatusModifyFragment : Fragment() {
             Mode.INVENTORY -> {
                 itemNameInput = view.findViewById(R.id.itemNameInput)
                 deviceNumberInput = view.findViewById(R.id.deviceNumberInput)
-                val inventoryItem = Inventory(
-                    itemNameInput.text.toString(),
-                    deviceNumberInput.text.toString().toIntOrNull() ?: 0
-                )
+
 
                 modifyAddButton.setOnClickListener {
+                    val inventoryItem = Inventory(
+                        itemNameInput.text.toString(),
+                        deviceNumberInput.text.toString().toIntOrNull() ?: 0
+                    )
                     modifyButtonListener(exit = false, inventoryItem = inventoryItem)
                 }
                 modifyExitButton.setOnClickListener {
+                    val inventoryItem = Inventory(
+                        itemNameInput.text.toString(),
+                        deviceNumberInput.text.toString().toIntOrNull() ?: 0
+                    )
                     modifyButtonListener(exit = true, inventoryItem = inventoryItem)
                 }
             }
@@ -189,24 +195,41 @@ class StatusModifyFragment : Fragment() {
                 tenthItemI = view.findViewById(R.id.tenthItem)
                 eleventhItemI = view.findViewById(R.id.eleventhItem)
 
-                val companyInstallItem = CompanyInstall(
-                    CurrentState.companySite ?: "",
-                    InstallFirstItemEnum.entries[firstItemI.selectedItemPosition],
-                    InstallSecondItemEnum.entries[secondItemI.selectedItemPosition],
-                    thirdItemI.isChecked,
-                    InstallFourthItemEnum.entries[fourthItemI.selectedItemPosition],
-                    fifthItemI.isChecked,
-                    sixthItemI.isChecked,
-                    seventhItemI.isChecked,
-                    eightItemI.isChecked,
-                    ninethItemI.isChecked,
-                    tenthItemI.isChecked,
-                    eleventhItemI.isChecked
-                )
+                initSpinnersInstall()
+
+
                 modifyAddButton.setOnClickListener {
+                    val companyInstallItem = CompanyInstall(
+                        CurrentState.companySite ?: "",
+                        InstallFirstItemEnum.entries[firstItemI.selectedItemPosition],
+                        InstallSecondItemEnum.entries[secondItemI.selectedItemPosition],
+                        thirdItemI.isChecked,
+                        InstallFourthItemEnum.entries[fourthItemI.selectedItemPosition],
+                        fifthItemI.isChecked,
+                        sixthItemI.isChecked,
+                        seventhItemI.isChecked,
+                        eightItemI.isChecked,
+                        ninethItemI.isChecked,
+                        tenthItemI.isChecked,
+                        eleventhItemI.isChecked
+                    )
                     modifyButtonListener(exit = false, companyInstallItem = companyInstallItem)
                 }
                 modifyExitButton.setOnClickListener {
+                    val companyInstallItem = CompanyInstall(
+                        CurrentState.companySite ?: "",
+                        InstallFirstItemEnum.entries[firstItemI.selectedItemPosition],
+                        InstallSecondItemEnum.entries[secondItemI.selectedItemPosition],
+                        thirdItemI.isChecked,
+                        InstallFourthItemEnum.entries[fourthItemI.selectedItemPosition],
+                        fifthItemI.isChecked,
+                        sixthItemI.isChecked,
+                        seventhItemI.isChecked,
+                        eightItemI.isChecked,
+                        ninethItemI.isChecked,
+                        tenthItemI.isChecked,
+                        eleventhItemI.isChecked
+                    )
                     modifyButtonListener(exit = true, companyInstallItem = companyInstallItem)
 
                 }
@@ -217,16 +240,24 @@ class StatusModifyFragment : Fragment() {
                 secondItemD = view.findViewById(R.id.secondItem)
                 thirdItemD = view.findViewById(R.id.thirdItem)
 
-                val companyDemolitionItem = CompanyDemolition(
-                    CurrentState.companySite ?: "",
-                    DemolitionFirstItemEnum.entries[firstItemD.selectedItemPosition],
-                    DemolitionSecondItemEnum.entries[secondItemD.selectedItemPosition],
-                    thirdItemD.isChecked
-                )
+                initSpinnersDemolition()
+
                 modifyAddButton.setOnClickListener {
+                    val companyDemolitionItem = CompanyDemolition(
+                        CurrentState.companySite ?: "",
+                        DemolitionFirstItemEnum.entries[firstItemD.selectedItemPosition],
+                        DemolitionSecondItemEnum.entries[secondItemD.selectedItemPosition],
+                        thirdItemD.isChecked
+                    )
                     modifyButtonListener(exit = false, companyDemolitionItem = companyDemolitionItem)
                 }
                 modifyExitButton.setOnClickListener {
+                    val companyDemolitionItem = CompanyDemolition(
+                        CurrentState.companySite ?: "",
+                        DemolitionFirstItemEnum.entries[firstItemD.selectedItemPosition],
+                        DemolitionSecondItemEnum.entries[secondItemD.selectedItemPosition],
+                        thirdItemD.isChecked
+                    )
                     modifyButtonListener(exit = true, companyDemolitionItem = companyDemolitionItem)
                 }
             }
@@ -245,9 +276,9 @@ class StatusModifyFragment : Fragment() {
         if (inventoryItem != null)
             return modifyInventory(inventoryItem, exit)
         if (companyInstallItem != null)
-            return modifyCompanyInstall(companyInstallItem)
+            return modifyCompanyInstall(companyInstallItem, exit)
         if (companyDemolitionItem != null)
-            return modifyCompanyDemolition(companyDemolitionItem)
+            return modifyCompanyDemolition(companyDemolitionItem, exit)
     }
 
     private fun onViewLoaded() {
@@ -351,5 +382,44 @@ class StatusModifyFragment : Fragment() {
             )
             logToFile("Updated: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
         }
+    }
+
+    private fun initSpinnersInstall(){
+        val firstArrayList = ArrayList<String>()
+        for(i in InstallFirstItemEnum.entries)
+            firstArrayList.add(i.name)
+        val firstArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, firstArrayList)
+        firstArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        firstItemI.adapter = firstArrayAdapter
+
+        val secondArrayList = ArrayList<String>()
+        for(i in InstallSecondItemEnum.entries)
+            secondArrayList.add(i.name)
+        val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, secondArrayList)
+        secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        secondItemI.adapter = secondArrayAdapter
+
+        val fourthArrayList = ArrayList<String>()
+        for(i in InstallFourthItemEnum.entries)
+            fourthArrayList.add(i.name)
+        val fourthArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, fourthArrayList)
+        fourthArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        fourthItemI.adapter = fourthArrayAdapter
+    }
+
+    private fun initSpinnersDemolition(){
+        val firstArrayList = ArrayList<String>()
+        for(i in DemolitionFirstItemEnum.entries)
+            firstArrayList.add(i.name)
+        val firstArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, firstArrayList)
+        firstArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        firstItemD.adapter = firstArrayAdapter
+
+        val secondArrayList = ArrayList<String>()
+        for(i in DemolitionSecondItemEnum.entries)
+            secondArrayList.add(i.name)
+        val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, secondArrayList)
+        secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
+        secondItemD.adapter = secondArrayAdapter
     }
 }

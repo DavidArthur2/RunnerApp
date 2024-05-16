@@ -25,6 +25,7 @@ import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.system.exitProcess
 
 class SecondActivity : AppCompatActivity() {
 
@@ -123,12 +124,10 @@ class SecondActivity : AppCompatActivity() {
         }
     }
 
-    override fun onUserLeaveHint() {
-        super.onUserLeaveHint()
-        finish()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
+        if (!this.isFinishing){
+            exitProcess(0)
+        }
     }
 }

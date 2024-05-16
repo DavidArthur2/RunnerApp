@@ -7,25 +7,62 @@
     android:layout_height="wrap_content"
     android:paddingBottom="5dp">
 
-    <TextView
-        android:id="@+id/fifthCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/bazisleszerelesText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/fifthCheckbox"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <CheckBox
-        android:id="@+id/fifthCheckbox"
+        android:id="@+id/thirdItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="316dp"
-        android:layout_marginTop="106dp"
+        android:layout_marginStart="356dp"
+        android:layout_marginTop="70dp"
         android:enabled="false"
         android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/thirdTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/bazisleszerelesText"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/thirdItem"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/lastCommentLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="124dp"
+        android:text="@string/utols_megjText"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lastCommentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="160dp"
+        android:text="Zárva volt tegnap, ma nyit"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lastCommentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="124dp"
+        android:text="2024.07.16 - 13:45"
+        android:textColor="@color/lightGray"
+        android:textSize="18sp"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,88 +70,62 @@
         android:id="@+id/firstTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:text="@string/eszkozszamText"
+        android:text="Felderítés:"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/firstValue"
+        android:id="@+id/firstItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="48dp"
+        android:text="Bontható"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/secondTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
-        android:text="25"
+        android:layout_marginTop="80dp"
+        android:text="Státusz1:"
         android:textSize="20sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintStart_toEndOf="@+id/firstTitle"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/thirdCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="82dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/csomagoltText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/thirddCheckbox"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/fourthCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/autobanText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/fourthCheckbox"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/thirddCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="240dp"
-        android:layout_marginTop="72dp"
-        android:enabled="false"
-        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/fourthCheckbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="106dp"
-        android:enabled="false"
-        android:text=""
+    <View
+        android:layout_width="200dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="41dp"
+        android:background="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/secondCheckboxTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="-6dp"
-        android:text="@string/folyamatbanText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/secondCheckbox"
+    <View
+        android:layout_width="300dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="115dp"
+        android:background="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/secondCheckbox"
+
+    <TextView
+        android:id="@+id/secondItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="40dp"
-        android:enabled="false"
-        android:text=""
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="80dp"
+        android:text="Bontható"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -128,42 +139,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/lastCommentLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="152dp"
-        android:text="@string/utols_megjText"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/lastCommentDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="154dp"
-        android:text="2024.07.16 - 13:45"
-        android:textColor="@color/lightGray"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/lastCommentText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="188dp"
-        android:text="Zárva volt tegnap, ma nyit"
-        android:textSize="20sp"
-        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

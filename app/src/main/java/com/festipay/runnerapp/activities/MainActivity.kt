@@ -10,6 +10,11 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.festipay.runnerapp.R.*
+import com.festipay.runnerapp.data.DemolitionFirstItemEnum
+import com.festipay.runnerapp.data.DemolitionSecondItemEnum
+import com.festipay.runnerapp.data.InstallFirstItemEnum
+import com.festipay.runnerapp.data.InstallFourthItemEnum
+import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen

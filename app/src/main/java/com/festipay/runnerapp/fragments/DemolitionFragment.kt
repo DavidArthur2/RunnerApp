@@ -15,6 +15,10 @@ import com.festipay.runnerapp.adapters.CompanyDemolitionAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyDemolition
+import com.festipay.runnerapp.data.DemolitionFirstItemEnum
+import com.festipay.runnerapp.data.DemolitionSecondItemEnum
+import com.festipay.runnerapp.data.InstallFirstItemEnum
+import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
@@ -55,23 +59,18 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
     override fun loadList(view: View){
         itemList = arrayListOf<CompanyDemolition>()
         Database.db.collection("telephely_bontas")
-            .whereEqualTo("Program", CurrentState.programName)
+            .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("TelephelyNev", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
                 if(!result.isEmpty){
                     for(doc in result){
                         itemList.add(
                             CompanyDemolition(
-                                doc.data["TelephelyNev"] as String,
-                                (doc.data["Eszkozszam"] as Long).toInt(),
-                            doc.data["Folyamatban"] as Boolean,
-                            doc.data["Csomagolt"] as Boolean,
-                            doc.data["Autoban"] as Boolean,
-                            doc.data["BazisLeszereles"] as Boolean,
-                            null,
-                            null,
-                            null,
-                            doc.id
+                                doc.data["CompanyName"] as String,
+                                DemolitionFirstItemEnum.valueOf(doc.data["1"] as String),
+                                DemolitionSecondItemEnum.valueOf(doc.data["2"] as String),
+                                doc.data["3"] as Boolean,
+                                doc.id
                         )
                         )
                     }
@@ -100,8 +99,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                                 )
                             )
                         }
-                        it.comments = Comments(comments)
-                        if(it.comments!!.megjegyzesek.isNotEmpty())it.utolsoMegjegyzes = it.comments!!.megjegyzesek.last()
+                        it.lastComment = comments.first()
                     }
                     if(itemList.last() == it)setupView(view)
                 }
@@ -127,7 +125,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
         adapt.setOnItemClickListener(object : CompanyDemolitionAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, companyDemolition: CompanyDemolition) {
-                CurrentState.companySite = companyDemolition.telephelyNev
+                CurrentState.companySite = companyDemolition.companyName
                 CurrentState.companySiteID = companyDemolition.docID
                 Functions.launchFragment(requireActivity(), OperationSelectorFragment())
 

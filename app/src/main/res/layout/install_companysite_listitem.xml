@@ -11,11 +11,10 @@
         android:id="@+id/thirdItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="70dp"
         android:enabled="false"
         android:text=""
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -23,7 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/kirakvaText"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/thirdItem"
@@ -45,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="344dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="138dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +65,8 @@
         android:id="@+id/tenthItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="206dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="224dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="206dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -107,17 +105,17 @@
         app:layout_constraintEnd_toStartOf="@+id/tenthItem"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <CheckBox
         android:id="@+id/fifthItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="138dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/fifthTitle"
@@ -170,7 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="212dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="174dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -180,8 +178,8 @@
         android:id="@+id/eightItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="174dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -203,7 +201,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="208dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="138dp"
         android:enabled="false"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
@@ -263,6 +261,33 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="300dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="144dp"
+        android:background="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:layout_width="300dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="247dp"
+        android:background="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="200dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="41dp"
+        android:background="@color/lightGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/fourthItem"

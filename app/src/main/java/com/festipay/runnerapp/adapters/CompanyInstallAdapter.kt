@@ -16,15 +16,18 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
     private var mListener: OnItemClickListener? = null
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val telephelyNev: TextView = itemView.findViewById(R.id.companyTitle)
-        val kiadva: CheckBox = itemView.findViewById(R.id.firstCheckbox)
-        val nemKirakhato: CheckBox = itemView.findViewById(R.id.secondCheckbox)
-        val kirakva: CheckBox = itemView.findViewById(R.id.thirddCheckbox)
-        val eloszto: CheckBox = itemView.findViewById(R.id.fourthCheckbox)
-        val aram: CheckBox = itemView.findViewById(R.id.fifthCheckbox)
-        val szoftver: CheckBox = itemView.findViewById(R.id.sixthCheckbox)
-        val param: CheckBox = itemView.findViewById(R.id.seventhCheckbox)
-        val teszt: CheckBox = itemView.findViewById(R.id.eightCheckbox)
+        val companyName: TextView = itemView.findViewById(R.id.companyTitle)
+        val firstItem: TextView = itemView.findViewById(R.id.firstItem)
+        val secondItem: TextView = itemView.findViewById(R.id.secondItem)
+        val thirdItem: CheckBox = itemView.findViewById(R.id.thirdItem)
+        val fourthItem: TextView = itemView.findViewById(R.id.fourthItem)
+        val fifthItem: CheckBox = itemView.findViewById(R.id.fifthItem)
+        val sixthItem: CheckBox = itemView.findViewById(R.id.sixthItem)
+        val seventhItem: CheckBox = itemView.findViewById(R.id.seventhItem)
+        val eightItem: CheckBox = itemView.findViewById(R.id.eightItem)
+        val ninethItem: CheckBox = itemView.findViewById(R.id.ninethItem)
+        val tenthItem: CheckBox = itemView.findViewById(R.id.tenthItem)
+        val eleventhItem: CheckBox = itemView.findViewById(R.id.eleventhItem)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
 
@@ -51,17 +54,20 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
-        holder.telephelyNev.text = currentItem.telephelyNev
-        holder.kiadva.isChecked = currentItem.kiadva
-        holder.nemKirakhato.isChecked = currentItem.nemKirakhato
-        holder.kirakva.isChecked = currentItem.kirakva
-        holder.eloszto.isChecked = currentItem.eloszto
-        holder.aram.isChecked = currentItem.aram
-        holder.szoftver.isChecked = currentItem.szoftver
-        holder.param.isChecked = currentItem.param
-        holder.teszt.isChecked = currentItem.teszt
-        holder.utolsoMegjegyzes.text = currentItem.utolsoMegjegyzes?.megjegyzes
-        holder.utolsoMegjegyzesDatum.text = LocalDateTimeToString(currentItem.utolsoMegjegyzes?.megjegyzesIdo)
+        holder.companyName.text = currentItem.companyName
+        holder.firstItem.text = currentItem.firstItem.name
+        holder.secondItem.text = currentItem.secondItem.name
+        holder.thirdItem.isChecked = currentItem.thirdItem
+        holder.fourthItem.text = currentItem.fourthItem.name
+        holder.fifthItem.isChecked = currentItem.fifthItem
+        holder.sixthItem.isChecked = currentItem.sixthItem
+        holder.seventhItem.isChecked = currentItem.seventhItem
+        holder.eightItem.isChecked = currentItem.eightItem
+        holder.ninethItem.isChecked = currentItem.ninethItem
+        holder.tenthItem.isChecked = currentItem.tenthItem
+        holder.eleventhItem.isChecked = currentItem.eleventhItem
+        holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
+        holder.utolsoMegjegyzesDatum.text = LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
