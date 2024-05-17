@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract.Data
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -92,10 +93,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginClick(){
+
         showLoadingScreen(this)
         manipulateDB()
         val userName: String = userInput.text.toString()
-        Database.db.collection("felhasznalok").whereEqualTo("nev", userName).get().addOnSuccessListener { result ->
+        Database.db.collection("Users").whereEqualTo("Name", userName).get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 CurrentState.userName = userName
                 launchProgramSelector()
@@ -105,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                 setupLoginErrorDialog()
             }
         }.addOnFailureListener { exception ->
-            showError(this, "Can't read documents in felhasznalok: $exception")
+            showError(this, "Can't read documents in users: $exception")
         }
     }
 
@@ -113,15 +115,17 @@ class MainActivity : AppCompatActivity() {
         val data = hashMapOf<String, Any>(
             "1" to InstallFirstItemEnum.NEM_KIRAKHATO
         )
-        Database.db.collection("telephely_telepites").get()
+        Database.db.collection("Company_Install").get()
             .addOnSuccessListener { querySnapshot ->
                 for (document in querySnapshot.documents) {
-                    val documentRef = Database.db.collection("telephely_telepites").document(document.id)
+                    val documentRef = Database.db.collection("Company_Install").document(document.id)
                     documentRef.update(data)
                 }
             }
 
     }
+
+
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
         finish()

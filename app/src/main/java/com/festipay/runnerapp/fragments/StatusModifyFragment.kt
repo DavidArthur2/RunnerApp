@@ -117,7 +117,7 @@ class StatusModifyFragment : Fragment() {
     private fun loadValues(){
         when (CurrentState.mode) {
             Mode.INVENTORY -> {
-                Database.db.collection("leltar").document(CurrentState.companySiteID ?: "").get()
+                Database.db.collection("Inventory").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
                         itemNameInput.setText(documents.data?.get("ItemName") as String)
                         deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
@@ -125,7 +125,7 @@ class StatusModifyFragment : Fragment() {
                     }
             }
             Mode.FINAL_INVENTORY -> {
-                Database.db.collection("zaro_leltar").document(CurrentState.companySiteID ?: "").get()
+                Database.db.collection("Final_Inventory").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
                         itemNameInput.setText(documents.data?.get("ItemName") as String)
                         deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
@@ -133,7 +133,7 @@ class StatusModifyFragment : Fragment() {
                     }
             }
             Mode.INSTALL -> {
-                Database.db.collection("telephely_telepites").document(CurrentState.companySiteID ?: "").get()
+                Database.db.collection("Company_Install").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
                         companyName.text = (documents.data?.get("CompanyName") as String)
                         firstItemI.setSelection(InstallFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
@@ -149,7 +149,7 @@ class StatusModifyFragment : Fragment() {
                     }
             }
             Mode.DEMOLITION -> {
-                Database.db.collection("telephely_bontas").document(CurrentState.companySiteID ?: "").get()
+                Database.db.collection("Company_Demolition").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
                         companyName.text = (documents.data?.get("CompanyName") as String)
                         firstItemD.setSelection(DemolitionFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
@@ -322,7 +322,7 @@ class StatusModifyFragment : Fragment() {
             "2" to companyDemolitionItem.secondItem.name,
             "3" to companyDemolitionItem.thirdItem,
         )
-        Database.db.collection("telephely_bontas").document(docID).update(data).addOnSuccessListener {
+        Database.db.collection("Company_Demolition").document(docID).update(data).addOnSuccessListener {
             if(exit)launchFragment(requireActivity(), DemolitionFragment())
             else launchFragment(requireActivity(), SNAddFragment())
             showInfoDialog(
@@ -349,7 +349,7 @@ class StatusModifyFragment : Fragment() {
             "8" to companyInstallItem.eightItem,
             "9" to companyInstallItem.ninethItem,
         )
-        Database.db.collection("telephely_telepites").document(docID).update(data).addOnSuccessListener {
+        Database.db.collection("Company_Install").document(docID).update(data).addOnSuccessListener {
             if(exit)launchFragment(requireActivity(), InstallFragment())
             else launchFragment(requireActivity(), SNAddFragment())
             showInfoDialog(
@@ -439,13 +439,13 @@ class StatusModifyFragment : Fragment() {
                 val geoPoint = GeoPoint(location.latitude, location.longitude)
                 var data = hashMapOf<String, Any>("coord" to geoPoint)
                 var docID: String? = null
-                Database.db.collection("koordinatak").whereEqualTo("ref", CurrentState.companySiteID).get().addOnSuccessListener{
+                Database.db.collection("Coordinates").whereEqualTo("ref", CurrentState.companySiteID).get().addOnSuccessListener{
                     if(it.documents.isNotEmpty())
                         docID = it.documents[0].id
                 }.addOnFailureListener {
                     showError(context, "Sikertelen koordináta lekérés", it.toString())
                 }
-                if(docID != null)Database.db.collection("koordinatak").document(docID!!).update(data).addOnSuccessListener {
+                if(docID != null)Database.db.collection("Coordinates").document(docID!!).update(data).addOnSuccessListener {
                     showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                 }.addOnFailureListener {
                     showError(context, "Sikertelen koordináta rögzítés", it.toString())
@@ -454,7 +454,7 @@ class StatusModifyFragment : Fragment() {
                     val companyRef = Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
                     data = hashMapOf("coord" to geoPoint, "ref" to companyRef)
 
-                    Database.db.collection("koordinatak").add(data).addOnSuccessListener {
+                    Database.db.collection("Coordinates").add(data).addOnSuccessListener {
                         showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                     }.addOnFailureListener {
                         showError(context, "Sikertelen koordináta rögzítés", it.toString())

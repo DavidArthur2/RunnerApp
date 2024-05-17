@@ -30,22 +30,22 @@ object Database {
     fun mapCollectionModeName(): String {
         return when (CurrentState.mode) {
             Mode.INSTALL -> {
-                "telephely_telepites"
+                "Company_Install"
             }
 
             Mode.DEMOLITION -> {
-                "telephely_bontas"
+                "Company_Demolition"
             }
 
             Mode.INVENTORY -> {
-                "leltar"
+                "Inventory"
             }
             Mode.FINAL_INVENTORY -> {
-                "zaro_leltar"
+                "Final_Inventory"
             }
 
             else -> {
-                "leltar"
+                "Inventory"
             }
         }
     }

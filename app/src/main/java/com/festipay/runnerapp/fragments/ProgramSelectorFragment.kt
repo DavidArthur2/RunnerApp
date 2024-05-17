@@ -49,19 +49,19 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        Database.db.collection("programok")
+        Database.db.collection("Programs")
             .whereArrayContains("users", CurrentState.userName as String).get()
             .addOnSuccessListener { result ->
                 if (!result.isEmpty) {
                     for (doc in result) {
-                        itemList.add(Program(doc.data["ProgramNev"] as String))
+                        itemList.add(Program(doc.data["ProgramName"] as String))
                     }
                     setupView(view)
                 } else {
                     showError(requireContext(), "Nincs felvéve program!")
                 }
             }.addOnFailureListener { exception ->
-            showError(requireContext(), "Can't read documents in programok: $exception")
+            showError(requireContext(), "Can't read documents in programs: $exception")
         }
     }
 
@@ -96,7 +96,7 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
 
                 val bottomView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-                Database.db.collection("zaroleltar_enable").whereEqualTo("ProgramName", program.title).get().addOnSuccessListener {
+                Database.db.collection("Final_Inventory_enable").whereEqualTo("ProgramName", program.title).get().addOnSuccessListener {
                     if(!it.isEmpty) {
                         val v = it.documents[0].data?.get("enable") as Boolean
                         bottomView.menu.findItem(R.id.finalInventory).isVisible = v

@@ -33,7 +33,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Inventory>
     private var final: Boolean = false
-    private var modeName: String = "leltar"
+    private var modeName: String = "Inventory"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +70,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     private fun initFragment() {
         if(arguments?.getString("final") != null) {
             final = true
-            modeName = "zaro_leltar"
+            modeName = "Final_Inventory"
         }
 
         if(!final)CurrentState.mode = Mode.INVENTORY
