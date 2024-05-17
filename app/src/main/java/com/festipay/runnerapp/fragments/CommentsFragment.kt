@@ -53,6 +53,7 @@ class CommentsFragment() : Fragment(), IFragment<Comment> {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_COMMENTS
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_COMMENTS
             Mode.INVENTORY -> FragmentType.INVENTORY_ITEM_COMMENTS
+            Mode.FINAL_INVENTORY -> FragmentType.FINAL_INVENTORY_ITEM_COMMENTS
             else -> FragmentType.INVENTORY_ITEM_COMMENTS
 
         }

@@ -44,15 +44,19 @@ class SecondActivity : AppCompatActivity() {
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         when (CurrentState.fragmentType) {
-            in listOf(FragmentType.INSTALL, FragmentType.INVENTORY, FragmentType.DEMOLITION) ->
+            in listOf(FragmentType.INSTALL, FragmentType.INVENTORY, FragmentType.DEMOLITION, FragmentType.FINAL_INVENTORY) ->
                 launchFragment(this, ProgramSelectorFragment())
 
             FragmentType.INVENTORY_ITEM_ADD, FragmentType.INVENTORY_ITEM ->
                 launchFragment(this, InventoryFragment())
 
-            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS,
-            FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS,
-            FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN,
+            FragmentType.FINAL_INVENTORY_ITEM_ADD, FragmentType.FINAL_INVENTORY_ITEM ->{
+                launchFragment(this, InventoryFragment(), true)
+            }
+
+            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS, FragmentType.FINAL_INVENTORY_ITEM_STATUS,
+            FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS, FragmentType.FINAL_INVENTORY_ITEM_COMMENTS,
+            FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN, FragmentType.FINAL_INVENTORY_ITEM_SN,
             FragmentType.INSTALL_COMPANY_GPS ->
                 launchFragment(this, OperationSelectorFragment())
 
@@ -62,10 +66,10 @@ class SecondActivity : AppCompatActivity() {
             FragmentType.DEMOLITION_COMPANY ->
                 launchFragment(this, DemolitionFragment())
 
-            FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD, FragmentType.INSTALL_COMPANY_COMMENTS_ADD, FragmentType.INVENTORY_ITEM_COMMENTS_ADD ->
+            FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD, FragmentType.INSTALL_COMPANY_COMMENTS_ADD, FragmentType.INVENTORY_ITEM_COMMENTS_ADD, FragmentType.FINAL_INVENTORY_ITEM_COMMENTS_ADD ->
                 launchFragment(this, CommentsFragment())
 
-            FragmentType.DEMOLITION_COMPANY_SN_ADD, FragmentType.INSTALL_COMPANY_SN_ADD, FragmentType.INVENTORY_ITEM_SN_ADD -> {
+            FragmentType.DEMOLITION_COMPANY_SN_ADD, FragmentType.INSTALL_COMPANY_SN_ADD, FragmentType.INVENTORY_ITEM_SN_ADD, FragmentType.FINAL_INVENTORY_ITEM_SN_ADD -> {
                 val fragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
                 if(fragment is SNAddFragment)
                     fragment.onBackCalled()
@@ -120,6 +124,11 @@ class SecondActivity : AppCompatActivity() {
 
                 R.id.inventory ->
                     launchFragment(this, InventoryFragment())
+
+
+                R.id.finalInventory -> {
+                    launchFragment(this, InventoryFragment(), true)
+                }
 
                 else -> launchFragment(this, InstallFragment())
             }

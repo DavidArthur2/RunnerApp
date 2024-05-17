@@ -15,6 +15,7 @@ import com.festipay.runnerapp.data.Program
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -93,9 +94,18 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
             override fun onItemClick(position: Int, program: Program) {
                 CurrentState.programName = program.title
 
-                requireActivity()
-                    .findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-                    .selectedItemId = R.id.install
+                val bottomView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+                Database.db.collection("zaroleltar_enable").whereEqualTo("ProgramName", program.title).get().addOnSuccessListener {
+                    if(!it.isEmpty) {
+                        val v = it.documents[0].data?.get("enable") as Boolean
+                        bottomView.menu.findItem(R.id.finalInventory).isVisible = v
+                    }
+                }.addOnFailureListener {
+                    logToFile(it.toString())
+                }.addOnCompleteListener {
+                    bottomView.selectedItemId = R.id.install
+                }
 
             }
         })

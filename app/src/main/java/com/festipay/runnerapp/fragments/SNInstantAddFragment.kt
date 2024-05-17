@@ -81,6 +81,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_SN_ADD
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN_ADD_INSTANT
             Mode.INVENTORY -> FragmentType.INVENTORY_ITEM_SN_ADD
+            Mode.FINAL_INVENTORY -> FragmentType.FINAL_INVENTORY_ITEM_SN_ADD
             else -> FragmentType.INVENTORY_ITEM_SN_ADD
         }
 

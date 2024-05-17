@@ -52,6 +52,10 @@ class OperationSelectorFragment(
                 CurrentState.fragmentType = FragmentType.DEMOLITION_COMPANY
                 getString(R.string.demolition_string)
             }
+            Mode.FINAL_INVENTORY -> {
+                CurrentState.fragmentType = FragmentType.FINAL_INVENTORY_ITEM
+                "Záró leltár"
+            }
             else -> getString(R.string.inventory_string)
         }
 
@@ -71,7 +75,7 @@ class OperationSelectorFragment(
             itemList.add(getString(R.string.did))
             itemList.add(getString(R.string.gps))
         }
-        if(CurrentState.mode == Mode.INVENTORY) itemList.add(getString(R.string.sn))
+        if(CurrentState.mode == Mode.INVENTORY || CurrentState.mode == Mode.FINAL_INVENTORY) itemList.add(getString(R.string.sn))
         setupView(view)
     }
 

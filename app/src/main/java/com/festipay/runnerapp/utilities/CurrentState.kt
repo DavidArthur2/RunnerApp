@@ -5,7 +5,8 @@ import android.app.Dialog
 enum class Mode{
     INSTALL,
     DEMOLITION,
-    INVENTORY
+    INVENTORY,
+    FINAL_INVENTORY
 }
 
 object CurrentState{
@@ -17,4 +18,5 @@ object CurrentState{
     var operation: OperationType? = null
     var fragmentType: FragmentType? = null
     var loadingScreen: Dialog? = null
+    var finalInventoryEnabled: Boolean = false
 }

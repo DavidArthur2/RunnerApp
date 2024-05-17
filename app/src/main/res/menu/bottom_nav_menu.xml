@@ -21,4 +21,11 @@
         android:title="@string/inventory_string"
         android:icon="@drawable/inventory_icon"
         android:id="@+id/inventory"/>
+
+    <item
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/final_inventory_string"
+        android:icon="@drawable/ic_fast_check"
+        android:id="@+id/finalInventory"/>
 </menu>

@@ -32,6 +32,8 @@ import com.google.firebase.firestore.Query
 class InventoryFragment : Fragment(), IFragment<Inventory> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Inventory>
+    private var final: Boolean = false
+    private var modeName: String = "leltar"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,6 +49,11 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
     private fun initViews(view: View) {
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
+            val frag = InventoryAddFragment()
+            val args = Bundle()
+            args.putString("final", "final")
+            if(final)frag.arguments = args
+
             requireActivity().supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.slide_in_right,
@@ -54,19 +61,27 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
-                .replace(R.id.frameLayout, InventoryAddFragment())
+                .replace(R.id.frameLayout, frag)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit()
         }
     }
 
     private fun initFragment() {
-        CurrentState.mode = Mode.INVENTORY
+        if(arguments?.getString("final") != null) {
+            final = true
+            modeName = "zaro_leltar"
+        }
+
+        if(!final)CurrentState.mode = Mode.INVENTORY
+        else CurrentState.mode = Mode.FINAL_INVENTORY
+
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
-        appBar.title = "${CurrentState.programName} - ${getString(R.string.inventory_string)}"
+        appBar.title = "${CurrentState.programName} - ${if(final)"Záró" else ""} ${getString(R.string.inventory_string)}"
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible =
             true
-        CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
+        if(!final)CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
+        else CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.FINAL_INVENTORY
     }
 
     override fun onViewLoaded() {
@@ -75,7 +90,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf<Inventory>()
-        Database.db.collection("leltar")
+        Database.db.collection(modeName)
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("ItemName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
@@ -97,17 +112,17 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                         showError(requireContext(), "Nincs felvéve tárgy!")
                     }
                 } catch (ex: Exception) {
-                    showError(requireContext(), "Error in loadInventoryList: $ex")
+                    showError(requireContext(), "Error in $modeName loadInventoryList: $ex")
                 }
 
             }.addOnFailureListener { exception ->
-                showError(requireContext(), "Can't read documents in inventoryitems: $exception")
+                showError(requireContext(), "Can't read documents in $modeName inventoryitems: $exception")
             }
     }
 
     override fun loadComments(view: View) {
         for (it in itemList) {
-            Database.db.collection("leltar").document(it.docID).collection("Comments")
+            Database.db.collection(modeName).document(it.docID).collection("Comments")
                 .orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {

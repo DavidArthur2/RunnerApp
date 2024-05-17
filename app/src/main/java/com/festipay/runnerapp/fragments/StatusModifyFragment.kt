@@ -75,6 +75,7 @@ class StatusModifyFragment : Fragment() {
             Mode.INVENTORY -> inflater.inflate(R.layout.fragment_status_modify_inventory, container, false)
             Mode.INSTALL -> inflater.inflate(R.layout.fragment_status_modify_install, container, false)
             Mode.DEMOLITION -> inflater.inflate(R.layout.fragment_status_modify_demolition, container, false)
+            Mode.FINAL_INVENTORY -> inflater.inflate(R.layout.fragment_status_modify_inventory, container, false)
             else -> inflater.inflate(R.layout.fragment_status_modify_inventory, container, false)
         }
 
@@ -100,6 +101,10 @@ class StatusModifyFragment : Fragment() {
                 CurrentState.fragmentType = FragmentType.DEMOLITION_COMPANY_STATUS
                 getString(R.string.demolition_string)
             }
+            Mode.FINAL_INVENTORY -> {
+                CurrentState.fragmentType = FragmentType.FINAL_INVENTORY_ITEM_STATUS
+                "Záró leltár"
+            }
             else -> getString(R.string.inventory_string)
         }
 
@@ -113,6 +118,14 @@ class StatusModifyFragment : Fragment() {
         when (CurrentState.mode) {
             Mode.INVENTORY -> {
                 Database.db.collection("leltar").document(CurrentState.companySiteID ?: "").get()
+                    .addOnSuccessListener { documents ->
+                        itemNameInput.setText(documents.data?.get("ItemName") as String)
+                        deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
+                        onViewLoaded()
+                    }
+            }
+            Mode.FINAL_INVENTORY -> {
+                Database.db.collection("zaro_leltar").document(CurrentState.companySiteID ?: "").get()
                     .addOnSuccessListener { documents ->
                         itemNameInput.setText(documents.data?.get("ItemName") as String)
                         deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
@@ -154,14 +167,10 @@ class StatusModifyFragment : Fragment() {
         modifyAddButton = view.findViewById(R.id.modifyAddButton)
         modifyExitButton = view.findViewById(R.id.modifyExitButton)
         commentInput = view.findViewById(R.id.commentInput)
-        pinGo = view.findViewById(R.id.pinGo)
-        pinGo.setOnClickListener {
-            refreshCoords()
-        }
 
         loadValues()
         when (CurrentState.mode) {
-            Mode.INVENTORY -> {
+            Mode.INVENTORY, Mode.FINAL_INVENTORY -> {
                 itemNameInput = view.findViewById(R.id.itemNameInput)
                 deviceNumberInput = view.findViewById(R.id.deviceNumberInput)
 
@@ -192,6 +201,10 @@ class StatusModifyFragment : Fragment() {
                 seventhItemI = view.findViewById(R.id.seventhItem)
                 eightItemI = view.findViewById(R.id.eightItem)
                 ninethItemI = view.findViewById(R.id.ninethItem)
+                pinGo = view.findViewById(R.id.pinGo)
+                pinGo.setOnClickListener {
+                    refreshCoords()
+                }
 
                 initSpinnersInstall()
 
@@ -233,6 +246,10 @@ class StatusModifyFragment : Fragment() {
                 firstItemD = view.findViewById(R.id.firstItem)
                 secondItemD = view.findViewById(R.id.secondItem)
                 thirdItemD = view.findViewById(R.id.thirdItem)
+                pinGo = view.findViewById(R.id.pinGo)
+                pinGo.setOnClickListener {
+                    refreshCoords()
+                }
 
                 initSpinnersDemolition()
 
@@ -363,16 +380,19 @@ class StatusModifyFragment : Fragment() {
             "Quantity" to inventoryItem.quantity,
             "ItemName" to inventoryItem.itemName
         )
-        Database.db.collection("leltar").document(docID).update(data).addOnSuccessListener {
-            if(exit)launchFragment(requireActivity(), InventoryFragment())
-            else launchFragment(requireActivity(), SNAddFragment())
+        var final = false
+        if(CurrentState.mode == Mode.FINAL_INVENTORY)
+            final = true
+        Database.db.collection(modeName).document(docID).update(data).addOnSuccessListener {
+            if(exit)launchFragment(requireActivity(), InventoryFragment(), final)
+            else launchFragment(requireActivity(), SNAddFragment(), final)
             showInfoDialog(
                 requireActivity(),
                 "Módosítás",
                 "Tárgy sikeresen módosítva!",
                 "Rendben"
             )
-            logToFile("Updated: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
+            logToFile("Updated $modeName: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
         }
     }
 

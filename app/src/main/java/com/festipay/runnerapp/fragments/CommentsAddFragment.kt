@@ -41,6 +41,7 @@ class CommentsAddFragment : Fragment() {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_COMMENTS_ADD
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD
             Mode.INVENTORY -> FragmentType.INVENTORY_ITEM_COMMENTS_ADD
+            Mode.FINAL_INVENTORY -> FragmentType.FINAL_INVENTORY_ITEM_COMMENTS_ADD
             else -> FragmentType.INVENTORY_ITEM_COMMENTS_ADD
 
         }

@@ -40,6 +40,9 @@ object Database {
             Mode.INVENTORY -> {
                 "leltar"
             }
+            Mode.FINAL_INVENTORY -> {
+                "zaro_leltar"
+            }
 
             else -> {
                 "leltar"

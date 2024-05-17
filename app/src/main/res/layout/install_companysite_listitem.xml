@@ -99,10 +99,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
-        android:layout_marginEnd="-4dp"
         android:text="Szoftver:"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/ninethItem"
+        app:layout_constraintEnd_toStartOf="@+id/seventhItem"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -208,7 +207,7 @@
         android:id="@+id/thirdItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
+        android:layout_marginStart="74dp"
         android:layout_marginTop="114dp"
         android:enabled="false"
         android:text=""

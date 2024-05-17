@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.fragments.InventoryAddFragment
 
 object Functions {
     fun showLoadingScreen(context: Context){
@@ -86,7 +88,12 @@ object Functions {
         }
     }
 
-    fun launchFragment(context: FragmentActivity, fragment: Fragment){
+    fun launchFragment(context: FragmentActivity, fragment: Fragment, final: Boolean = false){
+        val args = Bundle()
+        args.putString("final", "final")
+        if(final)fragment.arguments = args
+
+
         showLoadingScreen(context)
         context.supportFragmentManager.beginTransaction()
             .replace(R.id.frameLayout, fragment)

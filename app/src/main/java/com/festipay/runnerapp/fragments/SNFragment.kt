@@ -51,6 +51,7 @@ class SNFragment : Fragment(), IFragment<SN> {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_SN
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN
             Mode.INVENTORY -> FragmentType.INVENTORY_ITEM_SN
+            Mode.FINAL_INVENTORY -> FragmentType.FINAL_INVENTORY_ITEM_SN
             else -> FragmentType.INVENTORY_ITEM_SN
 
         }

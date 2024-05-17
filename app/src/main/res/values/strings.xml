@@ -71,5 +71,6 @@
     <string name="companyNameLabel">Telephely:</string>
     <string name="modifyExitButtonText">Mentés és kilépés</string>
     <string name="modifyDIDButtonText">Mentés és DID felvétel</string>
+    <string name="final_inventory_string">Záró leltár</string>
 
 </resources>
