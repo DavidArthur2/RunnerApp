@@ -59,7 +59,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
     }
     override fun loadList(view: View){
         itemList = arrayListOf()
-        Database.db.collection("telephely_telepites")
+        Database.db.collection("Company_Install")
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
@@ -92,7 +92,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
     override fun loadComments(view: View){
         for(it in itemList) {
-            Database.db.collection("telephely_telepites").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
+            Database.db.collection("Company_Install").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                 if (!result.isEmpty) {
                     val comments: MutableList<Comment> = mutableListOf()

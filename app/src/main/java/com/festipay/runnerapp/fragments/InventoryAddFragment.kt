@@ -27,7 +27,7 @@ class InventoryAddFragment : Fragment() {
     private lateinit var commentInput : EditText
     private lateinit var itemNameInput: EditText
     private lateinit var deviceNumberInput: EditText
-    private var modeName: String = "leltar"
+    private var modeName: String = "Inventory"
     private var final: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +63,7 @@ class InventoryAddFragment : Fragment() {
             showError(requireActivity(), "A tárgynév legalább 3 hosszú kell legyen!")
             return
         }
-        Database.db.collection("leltar").whereEqualTo("TargyNev", item.itemName)
+        Database.db.collection("Inventory").whereEqualTo("TargyNev", item.itemName)
             .whereEqualTo("ProgramName", CurrentState.programName).get().addOnSuccessListener {
                 if (it.isEmpty)
                     addData(item, comment, exit = exit)
@@ -84,7 +84,7 @@ class InventoryAddFragment : Fragment() {
     private fun initViews(view: View) {
         if(arguments?.getString("final") != null){
             final = true
-            modeName = "zaro_leltar"
+            modeName = "Final_Inventory"
         }
         if(!final)CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY_ITEM_ADD
         else CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.FINAL_INVENTORY_ITEM_ADD

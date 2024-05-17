@@ -73,7 +73,7 @@ class GPSFragment : Fragment() {
     private fun loadCoords(){
         val companyRef = Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
 
-        Database.db.collection("koordinatak").whereEqualTo("ref", companyRef).get().addOnSuccessListener {
+        Database.db.collection("Coordinates").whereEqualTo("ref", companyRef).get().addOnSuccessListener {
             if(!it.isEmpty){
                 val geoPoint = it.first().data["coord"] as GeoPoint
                 coord = LatLng(geoPoint.latitude, geoPoint.longitude)
@@ -102,7 +102,7 @@ class GPSFragment : Fragment() {
             onSuccess = { location ->
                 val geoPoint = GeoPoint(location.latitude, location.longitude)
                 var data = hashMapOf<String, Any>("coord" to geoPoint)
-                if(docID != null)Database.db.collection("koordinatak").document(docID!!).update(data).addOnSuccessListener {
+                if(docID != null)Database.db.collection("Coordinates").document(docID!!).update(data).addOnSuccessListener {
                     launchFragment(context, OperationSelectorFragment())
                     showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                 }.addOnFailureListener {
@@ -112,7 +112,7 @@ class GPSFragment : Fragment() {
                     val companyRef = Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
                     data = hashMapOf("coord" to geoPoint, "ref" to companyRef)
 
-                    Database.db.collection("koordinatak").add(data).addOnSuccessListener {
+                    Database.db.collection("Coordinates").add(data).addOnSuccessListener {
                         launchFragment(context, OperationSelectorFragment())
                         showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                     }.addOnFailureListener {
