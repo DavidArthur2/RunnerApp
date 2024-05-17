@@ -400,14 +400,14 @@ class StatusModifyFragment : Fragment() {
         val firstArrayList = ArrayList<String>()
         for(i in InstallFirstItemEnum.entries)
             firstArrayList.add(i.name)
-        val firstArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, firstArrayList)
+        val firstArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.spinner_item, firstArrayList)
         firstArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         firstItemI.adapter = firstArrayAdapter
 
         val secondArrayList = ArrayList<String>()
         for(i in InstallSecondItemEnum.entries)
             secondArrayList.add(i.name)
-        val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, secondArrayList)
+        val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.spinner_item, secondArrayList)
         secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         secondItemI.adapter = secondArrayAdapter
 
