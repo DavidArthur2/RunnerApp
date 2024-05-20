@@ -22,6 +22,7 @@ import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
@@ -105,6 +106,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                         )
                     }
                     it.lastComment = comments.last()
+                    logToFile("COMMENTS LOG: ${it.lastComment}, ${comments.size}")
                 }
                     if(itemList.last() == it)setupView(view)
             }
