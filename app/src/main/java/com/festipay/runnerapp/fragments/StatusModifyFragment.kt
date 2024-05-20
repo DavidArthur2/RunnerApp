@@ -108,8 +108,7 @@ class StatusModifyFragment : Fragment() {
             else -> getString(R.string.inventory_string)
         }
 
-        if(appBar.title.length < 21)appBar.title =
-            "${CurrentState.programName} - $mode - ${CurrentState.companySite} - Módosítás"
+        appBar.title = "${CurrentState.companySite} - Módosítás"
 
         initViews(view)
     }

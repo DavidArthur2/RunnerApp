@@ -54,6 +54,8 @@ class GPSFragment : Fragment() {
         CurrentState.operation = OperationType.GPS
         CurrentState.fragmentType = FragmentType.INSTALL_COMPANY_GPS
         modeName = Database.mapCollectionModeName()
+        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        appBar.title = "${CurrentState.companySite} - GPS koord."
 
     }
     private fun initView(view: View){

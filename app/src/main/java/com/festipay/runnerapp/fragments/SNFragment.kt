@@ -47,6 +47,7 @@ class SNFragment : Fragment(), IFragment<SN> {
     private fun initFragment(){
         CurrentState.operation = OperationType.SN_HANDLING
         modeName = Database.mapCollectionModeName()
+        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
         CurrentState.fragmentType = when (CurrentState.mode) {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_SN
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN
@@ -55,6 +56,8 @@ class SNFragment : Fragment(), IFragment<SN> {
             else -> FragmentType.INVENTORY_ITEM_SN
 
         }
+        appBar.title = "${CurrentState.companySite} - DID kezelés"
+
     }
 
     private fun initViews(view: View) {

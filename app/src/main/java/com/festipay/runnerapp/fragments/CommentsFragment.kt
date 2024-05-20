@@ -57,6 +57,9 @@ class CommentsFragment() : Fragment(), IFragment<Comment> {
             else -> FragmentType.INVENTORY_ITEM_COMMENTS
 
         }
+
+        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        appBar.title = "${CurrentState.companySite} - Megjegyzések"
     }
 
     private fun initViews(view: View) {

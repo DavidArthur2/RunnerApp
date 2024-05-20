@@ -67,7 +67,7 @@
             android:fadingEdge="vertical"
             android:hint="@string/commentAddHint"
             android:inputType="none"
-            android:maxLength="15"
+            android:maxLength="40"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="252dp"
             android:text="@string/modifyExitButtonText"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.037"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +94,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="252dp"
             android:text="@string/modifyDIDButtonText"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/modifyExitButton"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
