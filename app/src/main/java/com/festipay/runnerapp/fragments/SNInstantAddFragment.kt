@@ -104,8 +104,8 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
         )
         Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
             .collection("SN").add(data).addOnSuccessListener {
-                adapt.notifyItemInserted(itemList.size - 1)
                 itemList.add(SN(sn))
+                adapt.notifyItemInserted(itemList.size - 1)
                 Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
                 hideLoadingScreen()
             }
