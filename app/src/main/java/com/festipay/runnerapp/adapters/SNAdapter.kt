@@ -7,9 +7,10 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.SN
 
-class SNAdapter(private val itemList: ArrayList<SN>) :
+class SNAdapter(private var itemList: ArrayList<SN>) :
     RecyclerView.Adapter<SNAdapter.ItemViewHolder>() {
 
     private var mListener: OnItemDeleteListener? = null
@@ -31,6 +32,11 @@ class SNAdapter(private val itemList: ArrayList<SN>) :
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_s_n_listitem, parent, false)
         return ItemViewHolder(itemView)
+    }
+
+    fun filterList(filterlist: List<SN>) {
+        itemList = filterlist as ArrayList<SN>
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

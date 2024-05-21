@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.DateFormatter.LocalDateTimeToString
-import org.w3c.dom.Text
 
-class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
-    RecyclerView.Adapter<CompanyInstallAdapter.ItemViewHolder>() {
+
+class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
+    RecyclerView.Adapter<CompanyInstallAdapter.ItemViewHolder>(), IAdapter {
 
     private var mListener: OnItemClickListener? = null
 
@@ -53,6 +53,11 @@ class CompanyInstallAdapter(private val itemList: ArrayList<CompanyInstall>) :
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.install_companysite_listitem, parent, false)
         return ItemViewHolder(itemView)
+    }
+
+    fun filterList(filterlist: List<CompanyInstall>) {
+        itemList = filterlist as ArrayList<CompanyInstall>
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

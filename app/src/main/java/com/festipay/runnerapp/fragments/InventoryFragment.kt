@@ -2,9 +2,12 @@ package com.festipay.runnerapp.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -32,6 +35,7 @@ import com.google.firebase.firestore.Query
 class InventoryFragment : Fragment(), IFragment<Inventory> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Inventory>
+    private lateinit var adapter: InventoryAdapter
     private var final: Boolean = false
     private var modeName: String = "Inventory"
     override fun onCreateView(
@@ -78,6 +82,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${if(final)"Záró" else ""} ${getString(R.string.inventory_string)}"
+        setHasOptionsMenu(true)
+
         requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible =
             true
         if(!final)CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
@@ -150,8 +156,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         recyclerView.setHasFixedSize(true)
 
 
-        val adapt = InventoryAdapter(itemList)
-        recyclerView.adapter = adapt
+        adapter = InventoryAdapter(itemList)
+        recyclerView.adapter = adapter
 
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
@@ -161,12 +167,36 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
             }
         })
 
-        adapt.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
+        adapter.setOnItemClickListener(object : InventoryAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
                 CurrentState.companySite = inventoryItem.itemName
                 CurrentState.companySiteID = inventoryItem.docID
                 launchFragment(requireActivity(), OperationSelectorFragment())
 
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        val filteredList = itemList.filter {
+            it.itemName.lowercase().contains(text.lowercase())
+        }
+        adapter.filterList(filteredList)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+        val searchItem = menu.findItem(R.id.actionSearch)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText ?: "")
+                return true
             }
         })
     }

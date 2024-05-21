@@ -3,15 +3,19 @@ package com.festipay.runnerapp.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.CommentsAdapter
+import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.adapters.SNAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Program
@@ -33,6 +37,7 @@ import com.google.firebase.firestore.Query
 class SNFragment : Fragment(), IFragment<SN> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<SN>
+    private lateinit var adapter: SNAdapter
     private lateinit var modeName: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +62,7 @@ class SNFragment : Fragment(), IFragment<SN> {
 
         }
         appBar.title = "${CurrentState.companySite} - DID kezelés"
+        setHasOptionsMenu(true)
 
     }
 
@@ -110,8 +116,8 @@ class SNFragment : Fragment(), IFragment<SN> {
         recyclerView.setHasFixedSize(true)
 
 
-        val adapt = SNAdapter(itemList)
-        recyclerView.adapter = adapt
+        adapter = SNAdapter(itemList)
+        recyclerView.adapter = adapter
 
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
@@ -121,7 +127,7 @@ class SNFragment : Fragment(), IFragment<SN> {
             }
         })
 
-        adapt.setOnItemClickListener(object : SNAdapter.OnItemDeleteListener {
+        adapter.setOnItemClickListener(object : SNAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, snItem: SN) {
                 showLoadingScreen(requireActivity())
                 Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
@@ -145,4 +151,27 @@ class SNFragment : Fragment(), IFragment<SN> {
         })
     }
 
+    private fun filter(text: String) {
+        val filteredList = itemList.filter {
+            it.sn.lowercase().contains(text.lowercase())
+        }
+        adapter.filterList(filteredList)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+        val searchItem = menu.findItem(R.id.actionSearch)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filter(newText ?: "")
+                return true
+            }
+        })
+    }
 }

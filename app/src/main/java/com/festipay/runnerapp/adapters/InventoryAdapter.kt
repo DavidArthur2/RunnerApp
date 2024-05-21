@@ -7,12 +7,13 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.DateFormatter
 
 
-class InventoryAdapter(private val itemList: ArrayList<Inventory>) :
-    RecyclerView.Adapter<InventoryAdapter.ItemViewHolder>() {
+class InventoryAdapter(private var itemList: ArrayList<Inventory>) :
+    RecyclerView.Adapter<InventoryAdapter.ItemViewHolder>(), IAdapter {
 
     private var mListener: OnItemClickListener? = null
 
@@ -35,6 +36,11 @@ class InventoryAdapter(private val itemList: ArrayList<Inventory>) :
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.inventory_items_listitem, parent, false)
         return ItemViewHolder(itemView)
+    }
+
+    fun filterList(filterlist: List<Inventory>) {
+        itemList = filterlist as ArrayList<Inventory>
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {

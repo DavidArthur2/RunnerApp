@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.fragments.CommentsFragment
@@ -31,8 +32,10 @@ class SecondActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_second)
+
+        val appBar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(appBar)
 
         navigationViewListener()
 

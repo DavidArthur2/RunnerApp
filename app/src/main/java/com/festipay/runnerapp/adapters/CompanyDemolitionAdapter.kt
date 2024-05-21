@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
+import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.DateFormatter
 import org.w3c.dom.Text
 
-class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition>) :
-    RecyclerView.Adapter<CompanyDemolitionAdapter.ItemViewHolder>() {
+class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition>) :
+    RecyclerView.Adapter<CompanyDemolitionAdapter.ItemViewHolder>(), IAdapter {
 
     private var mListener: OnItemClickListener? = null
 
@@ -40,6 +41,11 @@ class CompanyDemolitionAdapter(private val itemList: ArrayList<CompanyDemolition
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.demolition_companysite_listitem, parent, false)
         return ItemViewHolder(itemView)
+    }
+
+    fun filterList(filterlist: List<CompanyDemolition>) {
+        itemList = filterlist as ArrayList<CompanyDemolition>
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
