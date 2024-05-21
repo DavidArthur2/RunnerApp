@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginClick(){
-
         showLoadingScreen(this)
         manipulateDB()
         val userName: String = userInput.text.toString()
