@@ -24,8 +24,10 @@ import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
+import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.InstallFilter
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
@@ -38,6 +40,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
     override lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CompanyInstallAdapter
     override lateinit var itemList: ArrayList<CompanyInstall>
+    private lateinit var filter: Filter<CompanyInstall>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +67,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         setHasOptionsMenu(true)
     }
     override fun onViewLoaded(){
+        filter = Filter(adapter, itemList)
         hideLoadingScreen()
     }
     override fun loadList(view: View){
@@ -159,29 +163,13 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         })
     }
 
-    private fun filter(text: String = "", option: String = "") {
-        val filteredList = itemList.filter {
-            it.companyName.lowercase().contains(text.lowercase())
-        }
-        adapter.filterList(filteredList)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu.findItem(R.id.actionSearch)
         val searchView = searchItem.actionView as SearchView
 
         val filterItem = menu.findItem(R.id.actionFilter)
-        filterItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
 
-            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                return true
-            }
-        })
         filterItem.setOnMenuItemClickListener {
             showFilterDialog()
             true
@@ -192,25 +180,19 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filter(newText ?: "")
+                filter.filterList(text = newText ?: "")
                 return true
             }
         })
     }
 
     private fun showFilterDialog() {
-        val filterOptions = arrayOf("Option 1", "Option 2", "Option 3", "Option 4")
+        val filterOptions = InstallFilter.toCharSequence()
 
         val builder = AlertDialog.Builder(requireActivity())
-        builder.setTitle("Choose a filter")
+        builder.setTitle("Válassz egy szűrőt")
             .setItems(filterOptions) { _, which ->
-                // Perform filter action based on the selected option
-                when (which) {
-                    0 -> filter("Option 1")
-                    1 -> filter("Option 2")
-                    2 -> filter("Option 3")
-                    3 -> filter("Option 4")
-                }
+                filter.filterList(option = InstallFilter.valueOfOrdinal(which))
             }
 
         val dialog = builder.create()

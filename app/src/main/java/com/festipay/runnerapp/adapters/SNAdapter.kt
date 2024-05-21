@@ -11,7 +11,7 @@ import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.SN
 
 class SNAdapter(private var itemList: ArrayList<SN>) :
-    RecyclerView.Adapter<SNAdapter.ItemViewHolder>() {
+    RecyclerView.Adapter<SNAdapter.ItemViewHolder>(), IAdapter {
 
     private var mListener: OnItemDeleteListener? = null
 

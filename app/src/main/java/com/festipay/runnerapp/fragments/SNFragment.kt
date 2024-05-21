@@ -18,11 +18,13 @@ import com.festipay.runnerapp.adapters.CommentsAdapter
 import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.adapters.SNAdapter
 import com.festipay.runnerapp.data.Comment
+import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.data.Program
 import com.festipay.runnerapp.data.SN
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
@@ -39,6 +41,7 @@ class SNFragment : Fragment(), IFragment<SN> {
     override lateinit var itemList: ArrayList<SN>
     private lateinit var adapter: SNAdapter
     private lateinit var modeName: String
+    private lateinit var filter: Filter<SN>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,6 +85,7 @@ class SNFragment : Fragment(), IFragment<SN> {
             }
     }
     override fun onViewLoaded(){
+        filter = Filter(adapter, itemList)
         Functions.hideLoadingScreen()
     }
     override fun loadList(view: View) {
@@ -151,12 +155,6 @@ class SNFragment : Fragment(), IFragment<SN> {
         })
     }
 
-    private fun filter(text: String) {
-        val filteredList = itemList.filter {
-            it.sn.lowercase().contains(text.lowercase())
-        }
-        adapter.filterList(filteredList)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
@@ -169,7 +167,7 @@ class SNFragment : Fragment(), IFragment<SN> {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filter(newText ?: "")
+                filter.filterList(text = newText ?: "")
                 return true
             }
         })

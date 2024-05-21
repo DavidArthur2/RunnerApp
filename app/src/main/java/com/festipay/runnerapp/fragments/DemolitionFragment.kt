@@ -1,5 +1,6 @@
 package com.festipay.runnerapp.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -19,6 +20,7 @@ import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.data.CompanyDemolition
+import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.DemolitionFirstItemEnum
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum
 import com.festipay.runnerapp.data.InstallFirstItemEnum
@@ -27,8 +29,11 @@ import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.DemolitionFilter
+import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.InstallFilter
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
@@ -38,6 +43,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<CompanyDemolition>
     private lateinit var adapter: CompanyDemolitionAdapter
+    private lateinit var filter: Filter<CompanyDemolition>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +66,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         setHasOptionsMenu(true)
     }
     override fun onViewLoaded(){
+        filter = Filter(adapter, itemList)
         hideLoadingScreen()
     }
     override fun loadList(view: View){
@@ -140,28 +147,41 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         })
     }
 
-    private fun filter(text: String) {
-        val filteredList = itemList.filter {
-            it.companyName.lowercase().contains(text.lowercase())
-        }
-        adapter.filterList(filteredList)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu.findItem(R.id.actionSearch)
         val searchView = searchItem.actionView as SearchView
 
+        val filterItem = menu.findItem(R.id.actionFilter)
+
+        filterItem.setOnMenuItemClickListener {
+            showFilterDialog()
+            true
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filter(newText ?: "")
+                filter.filterList(text = newText ?: "")
                 return true
             }
         })
+    }
+
+    private fun showFilterDialog() {
+        val filterOptions = DemolitionFilter.toCharSequence()
+
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Válassz egy szűrőt")
+            .setItems(filterOptions) { _, which ->
+                filter.filterList(option = DemolitionFilter.valueOfOrdinal(which))
+            }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 

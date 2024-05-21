@@ -23,6 +23,7 @@ import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
@@ -36,6 +37,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Inventory>
     private lateinit var adapter: InventoryAdapter
+    private lateinit var filter: Filter<Inventory>
     private var final: Boolean = false
     private var modeName: String = "Inventory"
     override fun onCreateView(
@@ -91,6 +93,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     }
 
     override fun onViewLoaded() {
+        filter = Filter(adapter, itemList)
         hideLoadingScreen()
     }
 
@@ -177,13 +180,6 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         })
     }
 
-    private fun filter(text: String) {
-        val filteredList = itemList.filter {
-            it.itemName.lowercase().contains(text.lowercase())
-        }
-        adapter.filterList(filteredList)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu.findItem(R.id.actionSearch)
@@ -195,7 +191,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filter(newText ?: "")
+                filter.filterList(text = newText ?: "")
                 return true
             }
         })
