@@ -19,27 +19,43 @@ data class CompanyDemolition(var companyName: String,
                              val thirdItem: Boolean,
                              var docID: String = "",
                              var lastComment: Comment? = null)
-enum class InstallFirstItemEnum{
-    NEM_KIRAKHATO,
-    KIRAKHATO,
-    TELEPITHETO,
+enum class InstallFirstItemEnum(private var displayName: String){
+    NEM_KIRAKHATO("Nem kirakható"),
+    KIRAKHATO("Kirakható"),
+    TELEPITHETO("Telepíthető");
+
+    override fun toString(): String {
+        return displayName
+    }
 }
 
-enum class InstallSecondItemEnum{
-    STATUSZ_NELKUL,
-    BAZIS_KIADVA,
-    KIHELYEZESRE_VAR,
-    KIRAKVA,
-    HELYSZINEN_TESZTELVE
+enum class InstallSecondItemEnum(private var displayName: String){
+    STATUSZ_NELKUL("Státusz nélkül"),
+    BAZIS_KIADVA("Bázison kiadva"),
+    KIHELYEZESRE_VAR("Kihelyezésre vár"),
+    KIRAKVA("Kirakva"),
+    HELYSZINEN_TESZTELVE("Helyszínen tesztelve");
+
+    override fun toString(): String {
+        return displayName
+    }
 }
-enum class DemolitionFirstItemEnum{
-    BONTHATO,
-    BONTASRA_VAR,
-    STATUSZ_NELKUL
+enum class DemolitionFirstItemEnum(private var displayName: String){
+    BONTHATO("Bontható"),
+    BONTASRA_VAR("Bontásra vár"),
+    STATUSZ_NELKUL("Státusz nélkül");
+
+    override fun toString(): String {
+        return displayName
+    }
 }
 
-enum class DemolitionSecondItemEnum{
-    CSOMAGOLT_TEREPEN,
-    ELSZALLITVA,
-    STATUSZ_NELKUL
+enum class DemolitionSecondItemEnum(private var displayName: String){
+    CSOMAGOLT_TEREPEN("Csomagolt terepen"),
+    ELSZALLITVA("Elszállítva"),
+    STATUSZ_NELKUL("Státusz nélkül");
+
+    override fun toString(): String {
+        return displayName
+    }
 }

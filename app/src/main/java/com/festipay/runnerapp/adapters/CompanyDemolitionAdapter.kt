@@ -55,8 +55,8 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.companyName.text = currentItem.companyName
-        holder.firstItem.text = currentItem.firstItem.name
-        holder.secondItem.text = currentItem.secondItem.name
+        holder.firstItem.text = currentItem.firstItem.toString()
+        holder.secondItem.text = currentItem.secondItem.toString()
         holder.thirdItem.isChecked = currentItem.thirdItem
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =

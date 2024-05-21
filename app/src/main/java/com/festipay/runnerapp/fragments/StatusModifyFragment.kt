@@ -398,14 +398,14 @@ class StatusModifyFragment : Fragment() {
     private fun initSpinnersInstall(){
         val firstArrayList = ArrayList<String>()
         for(i in InstallFirstItemEnum.entries)
-            firstArrayList.add(i.name)
+            firstArrayList.add(i.toString())
         val firstArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.spinner_item, firstArrayList)
         firstArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         firstItemI.adapter = firstArrayAdapter
 
         val secondArrayList = ArrayList<String>()
         for(i in InstallSecondItemEnum.entries)
-            secondArrayList.add(i.name)
+            secondArrayList.add(i.toString())
         val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.spinner_item, secondArrayList)
         secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         secondItemI.adapter = secondArrayAdapter
@@ -415,19 +415,17 @@ class StatusModifyFragment : Fragment() {
     private fun initSpinnersDemolition(){
         val firstArrayList = ArrayList<String>()
         for(i in DemolitionFirstItemEnum.entries)
-            firstArrayList.add(i.name)
+            firstArrayList.add(i.toString())
         val firstArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.spinner_item, firstArrayList)
         firstArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         firstItemD.adapter = firstArrayAdapter
 
         val secondArrayList = ArrayList<String>()
         for(i in DemolitionSecondItemEnum.entries)
-            secondArrayList.add(i.name)
+            secondArrayList.add(i.toString())
         val secondArrayAdapter:ArrayAdapter<String> = ArrayAdapter(requireActivity(), R.layout.spinner_item, secondArrayList)
         secondArrayAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice)
         secondItemD.adapter = secondArrayAdapter
-
-        Log.d("asd","asd")
     }
 
     private fun refreshCoords() {
