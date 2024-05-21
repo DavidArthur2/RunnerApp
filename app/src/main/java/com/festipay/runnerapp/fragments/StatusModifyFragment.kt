@@ -32,6 +32,7 @@ import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
+import com.festipay.runnerapp.utilities.showWarning
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
@@ -462,5 +463,9 @@ class StatusModifyFragment : Fragment() {
                 showError(context, "Sikertelen pozíció lekérés!", errorMessage)
             }
         )
+    }
+
+    fun onBackCalled(){
+        showWarning(requireActivity(), "Nem mentettél paraszt!!\nBiztosan kiszeretnél lépni mentés nélkül?", OperationSelectorFragment())
     }
 }

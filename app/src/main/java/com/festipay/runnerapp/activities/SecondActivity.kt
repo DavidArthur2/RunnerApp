@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.http.UrlRequest.Status
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
@@ -22,9 +23,11 @@ import com.festipay.runnerapp.fragments.OperationSelectorFragment
 import com.festipay.runnerapp.fragments.ProgramSelectorFragment
 import com.festipay.runnerapp.fragments.SNAddFragment
 import com.festipay.runnerapp.fragments.SNFragment
+import com.festipay.runnerapp.fragments.StatusModifyFragment
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
+import com.festipay.runnerapp.utilities.OperationType
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlin.system.exitProcess
 
@@ -39,8 +42,7 @@ class SecondActivity : AppCompatActivity() {
 
         navigationViewListener()
 
-        launchFragment(this, ProgramSelectorFragment())
-
+        fragmentDecider()
     }
 
     @Deprecated("Deprecated in Java")
@@ -57,7 +59,12 @@ class SecondActivity : AppCompatActivity() {
                 launchFragment(this, InventoryFragment(), true)
             }
 
-            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS, FragmentType.FINAL_INVENTORY_ITEM_STATUS,
+            FragmentType.INVENTORY_ITEM_STATUS, FragmentType.INSTALL_COMPANY_STATUS, FragmentType.DEMOLITION_COMPANY_STATUS, FragmentType.FINAL_INVENTORY_ITEM_STATUS ->{
+                val fragment = supportFragmentManager.findFragmentById(R.id.frameLayout)
+                if(fragment is StatusModifyFragment)
+                    fragment.onBackCalled()
+            }
+
             FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS, FragmentType.FINAL_INVENTORY_ITEM_COMMENTS,
             FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN, FragmentType.FINAL_INVENTORY_ITEM_SN,
             FragmentType.INSTALL_COMPANY_GPS ->
@@ -139,10 +146,17 @@ class SecondActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPause() {
-        if (!this.isFinishing){
-            exitProcess(0)
-        }
-        super.onPause()
+    private fun fragmentDecider(){
+        val bottomView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        if(CurrentState.operation != OperationType.GPS)
+            launchFragment(this, ProgramSelectorFragment())
+        else
+            when(CurrentState.fragmentType){
+                FragmentType.INSTALL_COMPANY_GPS -> bottomView.selectedItemId = R.id.install
+                FragmentType.DEMOLITION_COMPANY_GPS -> bottomView.selectedItemId = R.id.demolition
+                else -> launchFragment(this, ProgramSelectorFragment())
+            }
     }
+
 }
