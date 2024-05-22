@@ -1,6 +1,7 @@
 package com.festipay.runnerapp.activities
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         loginButton.setOnClickListener{
             loginClick()
         }
+
+        checkVersion()
     }
 
     private fun initActivity(){
@@ -124,10 +127,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun checkVersion(){
+        Database.db.collection("Config").get().addOnSuccessListener {
+            val ver = it.documents[0].data?.get("MinVersion") as String
+            val curr_ver = packageManager.getPackageInfo(packageName, 0).versionName
+            if(ver != curr_ver.toString()) {
+                loginButton.isEnabled = false
+                showError(this, "A verziód elavult!\nA te verziód: $curr_ver\nJelenlegi verzió: $ver")
+            }
 
-    override fun onUserLeaveHint() {
-        super.onUserLeaveHint()
-        finish()
+        }.addOnFailureListener {
+            loginButton.isEnabled = false
+            showError(this, "Sikertelen verzió lekérés", it.toString())
+        }
     }
-
 }
