@@ -2,6 +2,10 @@ package com.festipay.runnerapp.fragments
 
 import android.content.Context
 import android.content.IntentFilter
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.media.ToneGenerator
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +14,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
 import androidx.core.content.ContextCompat.registerReceiver
@@ -27,6 +32,7 @@ import com.festipay.runnerapp.data.Program
 import com.festipay.runnerapp.data.SN
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.BarcodeScanReceiver
+import com.festipay.runnerapp.utilities.CamScanner
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.FragmentType
@@ -37,12 +43,16 @@ import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
+import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
 import com.festipay.runnerapp.utilities.showWarning
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 class SNAddFragment : Fragment(), IFragment<SN> {
     override lateinit var recyclerView: RecyclerView
@@ -50,8 +60,11 @@ class SNAddFragment : Fragment(), IFragment<SN> {
     private lateinit var modeName: String
     private lateinit var addButton: Button
     private lateinit var snInput: EditText
+    private lateinit var cameraButton: FloatingActionButton
     private lateinit var adapt: SNAddAdapter
     private lateinit var context: FragmentActivity
+    private lateinit var camScanner: CamScanner
+    private var hasScanner = false
     private var barcodeScanReceiver: BarcodeScanReceiver? = null
 
     override fun onCreateView(
@@ -64,10 +77,11 @@ class SNAddFragment : Fragment(), IFragment<SN> {
         initViews(view)
         return view
     }
-    private fun initFragment(){
+
+    private fun initFragment() {
         context = requireActivity()
         barcodeScanReceiver = BarcodeScanReceiver { barcode ->
-            if(barcode != null)addSN(barcode)
+            if (barcode != null) addSN(barcode)
             else Toast.makeText(context, "Sikertelen SN olvasás!", Toast.LENGTH_LONG).show()
         }
         val filter = IntentFilter("android.intent.ACTION_DECODE_DATA")
@@ -81,12 +95,42 @@ class SNAddFragment : Fragment(), IFragment<SN> {
             Mode.FINAL_INVENTORY -> FragmentType.FINAL_INVENTORY_ITEM_SN_ADD
             else -> FragmentType.INVENTORY_ITEM_SN_ADD
         }
-
+        camScanner = CamScanner(context, ::addSN)
     }
 
-    private fun addSN(sn: String){
-        if(itemList.contains(SN(sn)))
-            return showWarning(context, "'$sn' már a listában van!")
+    private fun initViews(view: View) {
+        addButton = view.findViewById(R.id.snAddButton)
+        snInput = view.findViewById(R.id.snInput)
+
+        cameraButton = view.findViewById(R.id.cameraFloatingActionButton)
+        if (Build.MANUFACTURER == "Urovo") {
+            hasScanner = true
+            cameraButton.isVisible = false
+        }
+
+        addButton.setOnClickListener {
+            if (snInput.text.isNotEmpty())
+                addSN(snInput.text.toString())
+
+        }
+        cameraButton
+            .setOnClickListener {
+                camScanner.scanCode()
+            }
+        view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton)
+            .setOnClickListener {
+                saveList()
+            }
+    }
+
+    private fun addSN(sn: String) {
+        if (sn.isEmpty())
+            return if (hasScanner) showWarning(context, "Üres sort olvastál be!")
+            else Toast.makeText(context, "Üres sort olvastál be!", Toast.LENGTH_LONG).show()
+        if (itemList.contains(SN(sn)))
+            return if (hasScanner) showWarning(context, "'$sn' már a listában van!")
+            else Toast.makeText(context, "'$sn' már a listában van!", Toast.LENGTH_LONG).show()
+
         itemList.add(SN(sn))
         hideKeyboard(context, snInput)
         adapt.notifyItemInserted(itemList.size - 1)
@@ -95,45 +139,36 @@ class SNAddFragment : Fragment(), IFragment<SN> {
         Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun saveList(){
+    private fun saveList() {
         var unsuccessfulCount = itemList.size
         val unsuccessfulList = ArrayList(itemList)
         showLoadingScreen(context)
-        for(i in itemList) {
+        for (i in itemList) {
             val data = hashMapOf(
                 "SN" to i.sn
             )
             Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
                 .collection("SN").add(data).addOnSuccessListener {
-                unsuccessfulCount--
+                    unsuccessfulCount--
                     unsuccessfulList.remove(i)
-                    if(i == itemList.last()){
+                    if (i == itemList.last()) {
                         launchFragment(context, SNFragment())
-                        if(unsuccessfulCount == 0)
+                        if (unsuccessfulCount == 0)
                             showInfoDialog(context, "Hozzáadás", "SN lista sikeresen hozzáadva!")
                         else
-                            showError(context,"$unsuccessfulCount / $itemList SN sikertelenül hozzáadva!\n$unsuccessfulList")
+                            showError(
+                                context,
+                                "$unsuccessfulCount / $itemList SN sikertelenül hozzáadva!\n$unsuccessfulList"
+                            )
                     }
-            }
+                }
         }
     }
-    private fun initViews(view: View) {
-        addButton = view.findViewById(R.id.snAddButton)
-        snInput = view.findViewById(R.id.snInput)
-        addButton.setOnClickListener {
-            if(snInput.text.isNotEmpty())
-                addSN(snInput.text.toString())
 
-        }
-        view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton)
-            .setOnClickListener {
-                saveList()
-            }
-    }
-
-    override fun onViewLoaded(){
+    override fun onViewLoaded() {
         Functions.hideLoadingScreen()
     }
+
     override fun loadList(view: View) {
         itemList = arrayListOf()
         setupView(view)
@@ -166,13 +201,14 @@ class SNAddFragment : Fragment(), IFragment<SN> {
             }
         })
     }
+
     override fun onDestroy() {
         super.onDestroy()
         context.unregisterReceiver(barcodeScanReceiver)
     }
 
-    fun onBackCalled(){
-        if(itemList.size > 0)
+    fun onBackCalled() {
+        if (itemList.size > 0)
             showWarning(context, "Nem mentettél paraszt!!", SNFragment())
         else launchFragment(context, SNFragment())
     }
