@@ -192,14 +192,27 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
     private fun showFilterDialog() {
         val filterOptions = InstallFilter.toCharSequence()
+        val selectedItems = filter.selectedInstallItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Válassz egy szűrőt")
-            .setItems(filterOptions) { _, which ->
-                filter.filterList(option = InstallFilter.valueOfOrdinal(which))
+            .setMultiChoiceItems(filterOptions, selectedItems) { _, which, isChecked ->
+                selectedItems[which] = isChecked
             }
+            .setPositiveButton("Szűrés") { _, _ ->
+                val selectedFilters:MutableList<InstallFilter> = mutableListOf()
+                for (i in selectedItems.indices) {
+                    if (selectedItems[i]) {
+                        selectedFilters.add(InstallFilter.valueOfOrdinal(i))
+                    }
+                }
+                filter.filterList(option = selectedFilters)
+                filter.selectedInstallItems = selectedItems
+            }
+            .setNegativeButton("Mégse", null)
 
         val dialog = builder.create()
         dialog.show()
     }
+
 }

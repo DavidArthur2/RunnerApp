@@ -9,6 +9,7 @@ import com.festipay.runnerapp.adapters.SNAdapter
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum.*
+import com.festipay.runnerapp.data.IData
 import com.festipay.runnerapp.data.InstallFirstItemEnum.*
 import com.festipay.runnerapp.data.InstallSecondItemEnum.*
 import com.festipay.runnerapp.data.Inventory
@@ -17,27 +18,35 @@ import com.festipay.runnerapp.data.SN
 
 class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
-    fun filterList(text: String = "", option: IFilter? = null) {
+    var selectedInstallItems: BooleanArray = BooleanArray(InstallFilter.toCharSequence().size)
+    var selectedDemolitionItems: BooleanArray = BooleanArray(DemolitionFilter.toCharSequence().size)
+
+    fun filterList(text: String = "", option: MutableList<out IFilter> = mutableListOf()) {
 
         when (CurrentState.fragmentType) {
             FragmentType.INSTALL -> {
                 val adapter = (this.adapter as CompanyInstallAdapter)
                 val itemList = (this.itemList as ArrayList<CompanyInstall>)
-                var filteredList: List<CompanyInstall> = emptyList()
+                var filteredList: List<CompanyInstall> = itemList
 
-                filteredList = if (option == null) {
-                    itemList.filter {
+                selectedInstallItems.fill(false)
+                if (option.isEmpty() && text.isNotEmpty()) {
+                    filteredList = filteredList.filter {
                         it.companyName.lowercase().contains(text.lowercase())
                     }
-                } else {
-                    val filterOption = (option as InstallFilter)
-                    itemList.filter {
-                        when (filterOption) {
-                            InstallFilter.NINCS_PARAM -> it.eightItem
+                }
+                else if(option.isNotEmpty())
+                {
+                    for (filterOption in option)
+                    {
+                        selectedInstallItems[(filterOption as InstallFilter).ordinal] = true
+                        filteredList = filteredList.filter {
+                            when (filterOption) {
+                                InstallFilter.NINCS_PARAM -> it.eightItem
 
-                            InstallFilter.TELEPITESRE_VAR -> it.firstItem == TELEPITHETO && it.secondItem == KIRAKVA
+                                InstallFilter.TELEPITESRE_VAR -> it.firstItem == TELEPITHETO && it.secondItem == KIRAKVA
 
-                            else -> true
+                            }
                         }
                     }
                 }
@@ -47,19 +56,24 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
             FragmentType.DEMOLITION -> {
                 val adapter = (this.adapter as CompanyDemolitionAdapter)
                 val itemList = (this.itemList as ArrayList<CompanyDemolition>)
-                var filteredList: List<CompanyDemolition> = emptyList()
+                var filteredList: List<CompanyDemolition> = itemList
 
-                filteredList = if (option == null) {
-                    itemList.filter {
+                selectedDemolitionItems.fill(false)
+                if (option.isEmpty() && text.isNotEmpty()) {
+                    filteredList = filteredList.filter {
                         it.companyName.lowercase().contains(text.lowercase())
                     }
-                } else {
-                    val filterOption = (option as DemolitionFilter)
-                    itemList.filter {
-                        when (filterOption) {
-                            DemolitionFilter.ELSZALLITANDO -> it.secondItem == CSOMAGOLT_TEREPEN
+                }
+                else if(option.isNotEmpty())
+                {
+                    for (filterOption in option)
+                    {
+                        selectedDemolitionItems[(filterOption as DemolitionFilter).ordinal] = true
+                        filteredList = filteredList.filter {
+                            when (filterOption) {
+                                DemolitionFilter.ELSZALLITANDO -> it.secondItem == CSOMAGOLT_TEREPEN
 
-                            else -> true
+                            }
                         }
                     }
                 }
@@ -69,14 +83,13 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
             FragmentType.INVENTORY, FragmentType.FINAL_INVENTORY -> {
                 val adapter = (this.adapter as InventoryAdapter)
                 val itemList = (this.itemList as ArrayList<Inventory>)
+                var filteredList: List<Inventory> = itemList
 
-                var filteredList: List<Inventory> = if (option == null)
-                    itemList.filter {
+                if (option.isEmpty() && text.isNotEmpty()) {
+                    filteredList = filteredList.filter {
                         it.itemName.lowercase().contains(text.lowercase())
                     }
-                else
-                    emptyList()
-
+                }
                 adapter.filterList(filteredList)
 
             }
@@ -85,14 +98,13 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
             {
                 val adapter = (this.adapter as SNAdapter)
                 val itemList = (this.itemList as ArrayList<SN>)
+                var filteredList: List<SN> = itemList
 
-                var filteredList: List<SN> = if (option == null)
-                    itemList.filter {
+                if (option.isEmpty() && text.isNotEmpty()) {
+                    filteredList = filteredList.filter {
                         it.sn.lowercase().contains(text.lowercase())
                     }
-                else
-                    emptyList()
-
+                }
                 adapter.filterList(filteredList)
             }
 
@@ -103,13 +115,13 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
 
     }
+
+
 }
 
 enum class InstallFilter(private val displayName: String) : IFilter {
     NINCS_PARAM("Hiányzik: Param"),
-    TELEPITESRE_VAR("Telepítésre vár"),
-    NO_FILTER("Szűrő törlése");
-
+    TELEPITESRE_VAR("Telepítésre vár");
     override fun toString(): String {
         return displayName
     }
@@ -127,9 +139,7 @@ enum class InstallFilter(private val displayName: String) : IFilter {
 }
 
 enum class DemolitionFilter(private val displayName: String) : IFilter {
-    ELSZALLITANDO("Elszállítandó"),
-    NO_FILTER("Szűrő törlése");
-
+    ELSZALLITANDO("Elszállítandó");
     override fun toString(): String {
         return displayName
     }

@@ -14,7 +14,7 @@ data class CompanyInstall(var companyName: String,
                           val ninethItem: Boolean,
                           var docID: String = "",
                           var lastComment: Comment? = null,
-                          var lastModified: LocalDateTime? = null)
+                          var lastModified: LocalDateTime? = null): IData
 
 data class CompanyDemolition(var companyName: String,
                              val firstItem: DemolitionFirstItemEnum,
@@ -22,7 +22,7 @@ data class CompanyDemolition(var companyName: String,
                              val thirdItem: Boolean,
                              var docID: String = "",
                              var lastComment: Comment? = null,
-                             var lastModified: LocalDateTime? = null)
+                             var lastModified: LocalDateTime? = null): IData
 enum class InstallFirstItemEnum(private var displayName: String){
     NEM_KIRAKHATO("Nem kirakható"),
     KIRAKHATO("Kirakható"),

@@ -175,12 +175,24 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     private fun showFilterDialog() {
         val filterOptions = DemolitionFilter.toCharSequence()
+        val selectedItems = filter.selectedInstallItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Válassz egy szűrőt")
-            .setItems(filterOptions) { _, which ->
-                filter.filterList(option = DemolitionFilter.valueOfOrdinal(which))
+            .setMultiChoiceItems(filterOptions, selectedItems) { _, which, isChecked ->
+                selectedItems[which] = isChecked
             }
+            .setPositiveButton("Szűrés") { _, _ ->
+                val selectedFilters:MutableList<DemolitionFilter> = mutableListOf()
+                for (i in selectedItems.indices) {
+                    if (selectedItems[i]) {
+                        selectedFilters.add(DemolitionFilter.valueOfOrdinal(i))
+                    }
+                }
+                filter.filterList(option = selectedFilters)
+                filter.selectedDemolitionItems = selectedItems
+            }
+            .setNegativeButton("Mégse", null)
 
         val dialog = builder.create()
         dialog.show()
