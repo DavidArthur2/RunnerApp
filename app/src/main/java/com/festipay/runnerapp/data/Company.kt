@@ -1,5 +1,7 @@
 package com.festipay.runnerapp.data
 
+import java.time.LocalDateTime
+
 data class CompanyInstall(var companyName: String,
                           val firstItem: InstallFirstItemEnum,
                           val secondItem: InstallSecondItemEnum,
@@ -11,14 +13,16 @@ data class CompanyInstall(var companyName: String,
                           val eightItem: Boolean,
                           val ninethItem: Boolean,
                           var docID: String = "",
-                          var lastComment: Comment? = null)
+                          var lastComment: Comment? = null,
+                          var lastModified: LocalDateTime? = null)
 
 data class CompanyDemolition(var companyName: String,
                              val firstItem: DemolitionFirstItemEnum,
                              val secondItem: DemolitionSecondItemEnum,
                              val thirdItem: Boolean,
                              var docID: String = "",
-                             var lastComment: Comment? = null)
+                             var lastComment: Comment? = null,
+                             var lastModified: LocalDateTime? = null)
 enum class InstallFirstItemEnum(private var displayName: String){
     NEM_KIRAKHATO("Nem kirakható"),
     KIRAKHATO("Kirakható"),

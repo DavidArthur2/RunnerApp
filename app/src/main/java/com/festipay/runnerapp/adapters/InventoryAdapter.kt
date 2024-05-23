@@ -22,6 +22,7 @@ class InventoryAdapter(private var itemList: ArrayList<Inventory>) :
         val targyNev: TextView = itemView.findViewById(R.id.itemTitle)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
+        val lastModifiedDate: TextView = itemView.findViewById(R.id.lastModifiedDate)
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
@@ -54,6 +55,7 @@ class InventoryAdapter(private var itemList: ArrayList<Inventory>) :
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
             DateFormatter.LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.lastModifiedDate.text = DateFormatter.LocalDateTimeToString(currentItem.lastModified)
 
     }
 

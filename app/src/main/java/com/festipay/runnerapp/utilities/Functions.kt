@@ -30,7 +30,9 @@ object Functions {
         CurrentState.loadingScreen = dialog
     }
     fun hideLoadingScreen(){
-        CurrentState.loadingScreen?.dismiss()
+        try {
+            CurrentState.loadingScreen?.dismiss()
+        }catch (_:Exception){}
         CurrentState.loadingScreen = null
     }
 

@@ -30,6 +30,7 @@ class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
         val ninethItem: CheckBox = itemView.findViewById(R.id.ninethItem)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
+        val lastModifiedDate: TextView = itemView.findViewById(R.id.lastModifiedDate)
         private val pinGo: ImageView = itemView.findViewById(R.id.pinGo)
 
 
@@ -78,6 +79,7 @@ class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
         holder.ninethItem.isChecked = currentItem.ninethItem
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text = LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.lastModifiedDate.text = LocalDateTimeToString(currentItem.lastModified)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

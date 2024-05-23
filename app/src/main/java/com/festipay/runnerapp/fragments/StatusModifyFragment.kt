@@ -321,6 +321,7 @@ class StatusModifyFragment : Fragment() {
             "1" to companyDemolitionItem.firstItem.name,
             "2" to companyDemolitionItem.secondItem.name,
             "3" to companyDemolitionItem.thirdItem,
+            "LastModified" to Timestamp.now().toDate()
         )
         Database.db.collection("Company_Demolition").document(docID).update(data).addOnSuccessListener {
             if(exit)launchFragment(requireActivity(), DemolitionFragment())
@@ -348,6 +349,7 @@ class StatusModifyFragment : Fragment() {
             "7" to companyInstallItem.seventhItem,
             "8" to companyInstallItem.eightItem,
             "9" to companyInstallItem.ninethItem,
+            "LastModified" to Timestamp.now().toDate()
         )
         Database.db.collection("Company_Install").document(docID).update(data).addOnSuccessListener {
             if(exit)launchFragment(requireActivity(), InstallFragment())
@@ -378,7 +380,8 @@ class StatusModifyFragment : Fragment() {
         val docID = CurrentState.companySiteID ?: ""
         val data = hashMapOf<String, Any>(
             "Quantity" to inventoryItem.quantity,
-            "ItemName" to inventoryItem.itemName
+            "ItemName" to inventoryItem.itemName,
+            "LastModified" to Timestamp.now().toDate()
         )
         var final = false
         if(CurrentState.mode == Mode.FINAL_INVENTORY)

@@ -25,6 +25,7 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
         val thirdItem: CheckBox = itemView.findViewById(R.id.thirdItem)
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
+        val lastModifiedDate: TextView = itemView.findViewById(R.id.lastModifiedDate)
 
 
         init {
@@ -61,6 +62,7 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
             DateFormatter.LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.lastModifiedDate.text = DateFormatter.LocalDateTimeToString(currentItem.lastModified)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

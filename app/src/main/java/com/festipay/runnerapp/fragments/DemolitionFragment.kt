@@ -29,6 +29,7 @@ import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
 import com.festipay.runnerapp.utilities.DemolitionFilter
 import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
@@ -83,7 +84,8 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                                 DemolitionFirstItemEnum.valueOf(doc.data["1"] as String),
                                 DemolitionSecondItemEnum.valueOf(doc.data["2"] as String),
                                 doc.data["3"] as Boolean,
-                                doc.id
+                                doc.id,
+                                lastModified = TimestampToLocalDateTime(doc.data["LastModified"] as Timestamp?)
                         )
                         )
                     }
@@ -108,7 +110,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                             comments.add(
                                 Comment(
                                     doc.data["Comment"] as String,
-                                    DateFormatter.TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
+                                    TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
                                 )
                             )
                         }

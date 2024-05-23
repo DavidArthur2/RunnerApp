@@ -23,6 +23,7 @@ import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
 import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
@@ -111,7 +112,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                                     doc.data["ItemName"] as String,
                                     (doc.data["Quantity"] as Long).toInt(),
                                     doc.id,
-                                    null
+                                    lastModified = TimestampToLocalDateTime(doc.data["LastModified"] as Timestamp?),
+                                    lastComment = null
                                 )
                             )
                         }

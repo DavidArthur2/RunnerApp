@@ -78,6 +78,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
             .get().addOnSuccessListener { result ->
             if(!result.isEmpty){
                 for(doc in result){
+                    val lm = doc.data["LastModified"] as Timestamp?
                     itemList.add(CompanyInstall(
                         doc.data["CompanyName"] as String,
                         InstallFirstItemEnum.valueOf(doc.data["1"] as String),
@@ -89,7 +90,8 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                         doc.data["7"] as Boolean,
                         doc.data["8"] as Boolean,
                         doc.data["9"] as Boolean,
-                        doc.id
+                        doc.id,
+                        lastModified = TimestampToLocalDateTime(lm)
                     ))
                 }
                 loadComments(view)
@@ -121,7 +123,9 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                     logToFile("COMMENTS LOG: ${it.lastComment}, ${comments.size}")
                 }
                     if(itemList.last() == it)setupView(view)
-            }
+            }.addOnFailureListener {
+                showError(context, "Sikertelen volt a kommentek lehívása!")
+                }
         }
     }
 

@@ -7,7 +7,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 object DateFormatter {
-    fun TimestampToLocalDateTime(input: Timestamp): LocalDateTime {
+    fun TimestampToLocalDateTime(input: Timestamp?): LocalDateTime? {
+        if (input == null)return null
         val javaDate: java.util.Date = input.toDate()
         return LocalDateTime.ofInstant(javaDate.toInstant(), ZoneId.systemDefault())
     }
