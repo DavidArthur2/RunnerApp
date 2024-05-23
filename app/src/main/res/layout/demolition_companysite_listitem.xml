@@ -14,6 +14,10 @@
         android:layout_marginStart="174dp"
         android:layout_marginTop="130dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

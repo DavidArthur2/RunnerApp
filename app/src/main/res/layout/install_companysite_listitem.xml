@@ -79,6 +79,10 @@
         android:layout_marginStart="68dp"
         android:layout_marginTop="202dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -90,6 +94,10 @@
         android:layout_marginStart="312dp"
         android:layout_marginTop="134dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -155,6 +163,10 @@
         android:layout_marginStart="184dp"
         android:layout_marginTop="134dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -166,6 +178,10 @@
         android:layout_marginStart="212dp"
         android:layout_marginTop="170dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -177,6 +193,10 @@
         android:layout_marginStart="210dp"
         android:layout_marginTop="202dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -210,6 +230,10 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="170dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -221,6 +245,10 @@
         android:layout_marginStart="75dp"
         android:layout_marginTop="134dp"
         android:enabled="false"
+        android:background="@drawable/custom_checkbox_selector"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:button="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
