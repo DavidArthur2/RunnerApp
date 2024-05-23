@@ -11,6 +11,7 @@ import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum.*
 import com.festipay.runnerapp.data.IData
 import com.festipay.runnerapp.data.InstallFirstItemEnum.*
+import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.data.InstallSecondItemEnum.*
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.data.SN
@@ -42,9 +43,21 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
                         selectedInstallItems[(filterOption as InstallFilter).ordinal] = true
                         filteredList = filteredList.filter {
                             when (filterOption) {
+                                InstallFilter.NINCS_ELOSZTO -> it.thirdItem
+                                InstallFilter.NINCS_ARAM -> it.fourthItem
+                                InstallFilter.NINCS_HALOZAT -> it.fifthItem
+                                InstallFilter.NINCS_PTG -> it.sixthItem
+                                InstallFilter.NINCS_SZOFTVER -> it.seventhItem
                                 InstallFilter.NINCS_PARAM -> it.eightItem
-
-                                InstallFilter.TELEPITESRE_VAR -> it.firstItem == TELEPITHETO && it.secondItem == KIRAKVA
+                                InstallFilter.NINCS_HELYSZIN -> it.ninethItem
+                                InstallFilter.TELEPITHETO -> it.firstItem == TELEPITHETO
+                                InstallFilter.KIRAKHATO -> it.firstItem == KIRAKHATO
+                                InstallFilter.NEM_KIRAKHATO -> it.firstItem == NEM_KIRAKHATO
+                                InstallFilter.KIADVA -> it.secondItem == BAZIS_KIADVA
+                                InstallFilter.KIHELYEZESRE_VAR -> it.secondItem == KIHELYEZESRE_VAR
+                                InstallFilter.STATUSZ_NELKUL -> it.secondItem == InstallSecondItemEnum.STATUSZ_NELKUL
+                                InstallFilter.KIRAKVA -> it.secondItem == KIRAKVA
+                                InstallFilter.HELYSZINEN_TESZTELVE -> it.secondItem == HELYSZINEN_TESZTELVE
 
                             }
                         }
@@ -121,7 +134,20 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
 enum class InstallFilter(private val displayName: String) : IFilter {
     NINCS_PARAM("Hiányzik: Param"),
-    TELEPITESRE_VAR("Telepítésre vár");
+    NINCS_ELOSZTO("Hiányzik: Elosztó"),
+    NINCS_ARAM("Hiányzik: Áram"),
+    NINCS_HALOZAT("Hiányzik: Hálozat"),
+    NINCS_PTG("Hiányzik: Pénztárgép"),
+    NINCS_SZOFTVER("Hiányzik: Szoftver"),
+    NINCS_HELYSZIN("Hiányzik: Helyszín"),
+    KIADVA("Kiadva"),
+    KIHELYEZESRE_VAR("Kihelyezésre vár"),
+    KIRAKVA("Kirakva"),
+    HELYSZINEN_TESZTELVE("Helyszínen tesztelve"),
+    STATUSZ_NELKUL("Státusz nélkül"),
+    KIRAKHATO("Kirakható"),
+    TELEPITHETO("Telepíthető"),
+    NEM_KIRAKHATO("Nem kirakható");
     override fun toString(): String {
         return displayName
     }
