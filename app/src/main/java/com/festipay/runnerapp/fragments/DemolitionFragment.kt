@@ -68,6 +68,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
     }
     override fun onViewLoaded(){
         filter = Filter(adapter, itemList)
+        invokeFilter()
         hideLoadingScreen()
     }
     override fun loadList(view: View){
@@ -175,7 +176,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     private fun showFilterDialog() {
         val filterOptions = DemolitionFilter.toCharSequence()
-        val selectedItems = filter.selectedDemolitionItems.copyOf()
+        val selectedItems = Filter.selectedDemolitionItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Válassz egy szűrőt")
@@ -183,14 +184,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                 selectedItems[which] = isChecked
             }
             .setPositiveButton("Szűrés") { _, _ ->
-                val selectedFilters:MutableList<DemolitionFilter> = mutableListOf()
-                for (i in selectedItems.indices) {
-                    if (selectedItems[i]) {
-                        selectedFilters.add(DemolitionFilter.valueOfOrdinal(i))
-                    }
-                }
-                filter.filterList(option = selectedFilters)
-                filter.selectedDemolitionItems = selectedItems
+                invokeFilter(selectedItems)
             }
             .setNegativeButton("Mégse", null)
 
@@ -198,5 +192,17 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         dialog.show()
     }
 
+    private fun invokeFilter(rawSelectedItems: BooleanArray? = null){
+        val selectedItems: BooleanArray = rawSelectedItems ?: Filter.selectedDemolitionItems.copyOf()
+
+        val selectedFilters:MutableList<DemolitionFilter> = mutableListOf()
+        for (i in selectedItems.indices) {
+            if (selectedItems[i]) {
+                selectedFilters.add(DemolitionFilter.valueOfOrdinal(i))
+            }
+        }
+        filter.filterList(option = selectedFilters)
+        Filter.selectedDemolitionItems = selectedItems
+    }
 
 }
