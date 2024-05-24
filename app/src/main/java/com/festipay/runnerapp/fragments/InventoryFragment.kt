@@ -142,7 +142,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                             comments.add(
                                 Comment(
                                     doc.data["Comment"] as String,
-                                    DateFormatter.TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
+                                    TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
                                 )
                             )
                         }

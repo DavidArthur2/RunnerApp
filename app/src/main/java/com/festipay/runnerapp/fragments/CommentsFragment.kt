@@ -28,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
-class CommentsFragment() : Fragment(), IFragment<Comment> {
+class CommentsFragment : Fragment(), IFragment<Comment> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Comment>
     private lateinit var modeName: String

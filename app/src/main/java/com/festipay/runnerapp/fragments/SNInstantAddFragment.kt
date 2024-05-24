@@ -151,7 +151,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
     }
 
     override fun onViewLoaded() {
-        Functions.hideLoadingScreen()
+        hideLoadingScreen()
     }
     override fun loadList(view: View) {
         itemList = arrayListOf()

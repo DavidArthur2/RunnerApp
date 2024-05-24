@@ -80,9 +80,9 @@ class CameraFragment : Fragment() {
 
         vFilename = "${CurrentState.companySiteID}.jpg"
 
-        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val file = File(downloadsDir, vFilename)
-        val image_uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file);
+        val image_uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
 
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
@@ -99,12 +99,13 @@ class CameraFragment : Fragment() {
             }
         }
     }
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            val file = File(downloadsDir, vFilename);
-            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file);
+            val downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val file = File(downloadsDir, vFilename)
+            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
             val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
             inputStream?.close()
@@ -116,6 +117,16 @@ class CameraFragment : Fragment() {
         context = requireActivity()
         CurrentState.fragmentType = FragmentType.DEMOLITION_COMPANY_CAMERA
         CurrentState.operation = OperationType.CAMERA
+
+        val permissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+
+        if (!arePermissionsGranted( permissions)) {
+            requestPermissions(context, permissions, 123)
+        }
     }
 
     private fun onViewLoaded(){
@@ -157,5 +168,22 @@ class CameraFragment : Fragment() {
             showError(context,"Hiba történt a kép betöltésekor!")
             onViewLoaded()
         }
+    }
+
+    private fun arePermissionsGranted(permissions: Array<String>): Boolean {
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun requestPermissions(activity: Activity, permissions: Array<String>, requestCode: Int) {
+        ActivityCompat.requestPermissions(
+            activity,
+            permissions,
+            requestCode
+        )
     }
 }

@@ -1,4 +1,3 @@
 package com.festipay.runnerapp.utilities
 
-interface IFilter {
-}
+interface IFilter

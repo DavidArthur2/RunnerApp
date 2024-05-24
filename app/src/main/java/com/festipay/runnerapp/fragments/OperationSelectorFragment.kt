@@ -21,8 +21,7 @@ import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class OperationSelectorFragment(
-) : Fragment(), IFragment<String> {
+class OperationSelectorFragment : Fragment(), IFragment<String> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<String>
 
