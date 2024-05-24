@@ -11,5 +11,6 @@
     <color name="lightGray">#878787</color>
     <color name="lightRed">#DD4034</color>
     <color name="veryLightGray">#FFE3E3E3</color>
+    <color name="filterOrange">#CBFFC107</color>
 
 </resources>

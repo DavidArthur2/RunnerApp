@@ -6,11 +6,14 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.DateFormatter
+import com.festipay.runnerapp.utilities.Filter
 import org.w3c.dom.Text
 
 class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition>) :
@@ -19,6 +22,7 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
     private var mListener: OnItemClickListener? = null
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val constLayout: ConstraintLayout = itemView.findViewById(R.id.constLayout)
         val companyName: TextView = itemView.findViewById(R.id.companyTitle)
         val firstItem: TextView = itemView.findViewById(R.id.firstItem)
         val secondItem: TextView = itemView.findViewById(R.id.secondItem)
@@ -55,6 +59,10 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
+
+        if(Filter.selectedDemolitionItems.any { it -> it })holder.constLayout.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.orange_rectangle)
+        else holder.constLayout.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.rectangle)
+
         holder.companyName.text = currentItem.companyName
         holder.firstItem.text = currentItem.firstItem.toString()
         holder.secondItem.text = currentItem.secondItem.toString()
