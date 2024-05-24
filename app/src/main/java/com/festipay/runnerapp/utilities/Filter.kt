@@ -48,13 +48,13 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
                         selectedInstallItems[(filterOption as InstallFilter).ordinal] = true
                         filteredList = filteredList.filter {
                             when (filterOption) {
-                                InstallFilter.NINCS_ELOSZTO -> it.thirdItem
-                                InstallFilter.NINCS_ARAM -> it.fourthItem
-                                InstallFilter.NINCS_HALOZAT -> it.fifthItem
-                                InstallFilter.NINCS_PTG -> it.sixthItem
-                                InstallFilter.NINCS_SZOFTVER -> it.seventhItem
-                                InstallFilter.NINCS_PARAM -> it.eightItem
-                                InstallFilter.NINCS_HELYSZIN -> it.ninethItem
+                                InstallFilter.NINCS_ELOSZTO -> !it.thirdItem
+                                InstallFilter.NINCS_ARAM -> !it.fourthItem
+                                InstallFilter.NINCS_HALOZAT -> !it.fifthItem
+                                InstallFilter.NINCS_PTG -> !it.sixthItem
+                                InstallFilter.NINCS_SZOFTVER -> !it.seventhItem
+                                InstallFilter.NINCS_PARAM -> !it.eightItem
+                                InstallFilter.NINCS_HELYSZIN -> !it.ninethItem
                                 InstallFilter.TELEPITHETO -> it.firstItem == TELEPITHETO
                                 InstallFilter.KIRAKHATO -> it.firstItem == KIRAKHATO
                                 InstallFilter.NEM_KIRAKHATO -> it.firstItem == NEM_KIRAKHATO
@@ -184,8 +184,8 @@ enum class DemolitionFilter(private val displayName: String) : IFilter {
     CSOMAGOLVA("Csomagolva"),
     SZALLITASRA_VAR("Szállításra vár"),
     ELSZALLITVA("Elszállítva"),
-    BAZIS_LESZERELES("Bázis leszerelés kell"),
-    STATUSZ_NELKUL("Státusz nélkül");
+    STATUSZ_NELKUL("Státusz nélkül"),
+    BAZIS_LESZERELES("Bázis leszerelés kell");
     override fun toString(): String {
         return displayName
     }
