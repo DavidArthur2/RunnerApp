@@ -175,7 +175,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     private fun showFilterDialog() {
         val filterOptions = DemolitionFilter.toCharSequence()
-        val selectedItems = filter.selectedDemolitionItems.copyOf()
+        val selectedItems = Filter.selectedDemolitionItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Válassz egy szűrőt")
@@ -190,7 +190,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                     }
                 }
                 filter.filterList(option = selectedFilters)
-                filter.selectedDemolitionItems = selectedItems
+                Filter.selectedDemolitionItems = selectedItems
             }
             .setNegativeButton("Mégse", null)
 

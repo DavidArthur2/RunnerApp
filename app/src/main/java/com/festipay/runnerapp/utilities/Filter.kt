@@ -21,8 +21,11 @@ import com.festipay.runnerapp.data.SN
 
 class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
-    var selectedInstallItems: BooleanArray = BooleanArray(InstallFilter.toCharSequence().size)
-    var selectedDemolitionItems: BooleanArray = BooleanArray(DemolitionFilter.toCharSequence().size)
+    companion object{
+        var selectedInstallItems: BooleanArray = BooleanArray(InstallFilter.toCharSequence().size)
+        var selectedDemolitionItems: BooleanArray = BooleanArray(DemolitionFilter.toCharSequence().size)
+    }
+
 
     fun filterList(text: String = "", option: MutableList<out IFilter> = mutableListOf()) {
 

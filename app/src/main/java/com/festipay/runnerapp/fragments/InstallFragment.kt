@@ -68,6 +68,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
     }
     override fun onViewLoaded(){
         filter = Filter(adapter, itemList)
+        invokeFilter()
         hideLoadingScreen()
     }
     override fun loadList(view: View){
@@ -192,7 +193,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
     private fun showFilterDialog() {
         val filterOptions = InstallFilter.toCharSequence()
-        val selectedItems = filter.selectedInstallItems.copyOf()
+        val selectedItems = Filter.selectedInstallItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Válassz egy szűrőt")
@@ -200,19 +201,24 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                 selectedItems[which] = isChecked
             }
             .setPositiveButton("Szűrés") { _, _ ->
-                val selectedFilters:MutableList<InstallFilter> = mutableListOf()
-                for (i in selectedItems.indices) {
-                    if (selectedItems[i]) {
-                        selectedFilters.add(InstallFilter.valueOfOrdinal(i))
-                    }
-                }
-                filter.filterList(option = selectedFilters)
-                filter.selectedInstallItems = selectedItems
+                invokeFilter(selectedItems)
             }
             .setNegativeButton("Mégse", null)
 
         val dialog = builder.create()
         dialog.show()
+    }
+    private fun invokeFilter(rawSelectedItems: BooleanArray? = null){
+        val selectedItems: BooleanArray = rawSelectedItems ?: Filter.selectedInstallItems.copyOf()
+
+        val selectedFilters:MutableList<InstallFilter> = mutableListOf()
+        for (i in selectedItems.indices) {
+            if (selectedItems[i]) {
+                selectedFilters.add(InstallFilter.valueOfOrdinal(i))
+            }
+        }
+        filter.filterList(option = selectedFilters)
+        Filter.selectedInstallItems = selectedItems
     }
 
 }
