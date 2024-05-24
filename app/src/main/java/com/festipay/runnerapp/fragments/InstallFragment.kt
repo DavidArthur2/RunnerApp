@@ -2,6 +2,7 @@ package com.festipay.runnerapp.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,6 +10,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
@@ -196,12 +200,53 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         val selectedItems = Filter.selectedInstallItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
-        builder.setTitle("Válassz egy szűrőt")
-            .setMultiChoiceItems(filterOptions, selectedItems) { _, which, isChecked ->
-                selectedItems[which] = isChecked
-            }
+
+        val dialogLayout = layoutInflater.inflate(R.layout.custom_filter_dialog_layout, null)
+
+        val block1TitleTextView = dialogLayout.findViewById<TextView>(R.id.block1TitleTextView)
+        val block1CheckboxGroup = dialogLayout.findViewById<LinearLayout>(R.id.block1CheckboxGroup)
+        val block2TitleTextView = dialogLayout.findViewById<TextView>(R.id.block2TitleTextView)
+        val block2CheckboxGroup = dialogLayout.findViewById<LinearLayout>(R.id.block2CheckboxGroup)
+        val block3TitleTextView = dialogLayout.findViewById<TextView>(R.id.block3TitleTextView)
+        val block3CheckboxGroup = dialogLayout.findViewById<LinearLayout>(R.id.block3CheckboxGroup)
+
+
+        block1TitleTextView.text = "Felderítés"
+        block2TitleTextView.text = "Telepítés"
+        block3TitleTextView.text = "Elemek"
+
+        for (i in filterOptions.indices) {
+            val checkBox = CheckBox(requireActivity())
+            checkBox.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+            checkBox.text = filterOptions[i]
+            checkBox.isChecked = selectedItems[i]
+            val paddingInPixels = resources.getDimensionPixelSize(R.dimen.checkbox_padding)
+            checkBox.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
+
+            if (i in 0..2) {
+                block1CheckboxGroup.addView(checkBox)
+            } else if(i in 3 .. 7) {
+                block2CheckboxGroup.addView(checkBox)
+            }else
+                block3CheckboxGroup.addView(checkBox)
+        }
+
+        builder.setView(dialogLayout)
             .setPositiveButton("Szűrés") { _, _ ->
-                invokeFilter(selectedItems)
+                val updatedSelectedItems = mutableListOf<Boolean>()
+                for (i in 0 until block1CheckboxGroup.childCount) {
+                    val checkBox = block1CheckboxGroup.getChildAt(i) as CheckBox
+                    updatedSelectedItems.add(checkBox.isChecked)
+                }
+                for (i in 0 until block2CheckboxGroup.childCount) {
+                    val checkBox = block2CheckboxGroup.getChildAt(i) as CheckBox
+                    updatedSelectedItems.add(checkBox.isChecked)
+                }
+                for (i in 0 until block3CheckboxGroup.childCount) {
+                    val checkBox = block3CheckboxGroup.getChildAt(i) as CheckBox
+                    updatedSelectedItems.add(checkBox.isChecked)
+                }
+                invokeFilter(updatedSelectedItems.toBooleanArray())
             }
             .setNegativeButton("Mégse", null)
 

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Block 1 -->
+        <TextView
+            android:id="@+id/block1TitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 1 Title"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"/>
+
+        <LinearLayout
+            android:id="@+id/block1CheckboxGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+            <!-- Checkboxes for Block 1 will be dynamically added here -->
+        </LinearLayout>
+
+        <!-- Horizontal line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@android:color/darker_gray"/>
+
+        <!-- Block 2 -->
+        <TextView
+            android:id="@+id/block2TitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 2 Title"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"/>
+
+        <LinearLayout
+            android:id="@+id/block2CheckboxGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+            <!-- Checkboxes for Block 2 will be dynamically added here -->
+        </LinearLayout>
+
+        <!-- Horizontal line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@android:color/darker_gray"/>
+
+        <!-- Block 3 -->
+        <TextView
+            android:id="@+id/block3TitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Block 3 Title"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"/>
+
+        <LinearLayout
+            android:id="@+id/block3CheckboxGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+            <!-- Checkboxes for Block 3 will be dynamically added here -->
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
