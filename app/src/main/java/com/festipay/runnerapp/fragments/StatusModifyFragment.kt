@@ -331,7 +331,8 @@ class StatusModifyFragment : Fragment() {
                 requireActivity(),
                 "Módosítás",
                 "Telephely sikeresen módosítva!",
-                "Vissza"
+                "Vissza",
+                hideLoading = false
             )
             logToFile("Updated: companysitename: ${companyDemolitionItem.companyName} programname: ${CurrentState.programName} docid: $docID") }
     }
@@ -359,7 +360,8 @@ class StatusModifyFragment : Fragment() {
                 requireActivity(),
                 "Módosítás",
                 "Telephely sikeresen módosítva!",
-                "Vissza"
+                "Vissza",
+                hideLoading = false
             )
             logToFile("Updated: companysitename: ${companyInstallItem.companyName} programname: ${CurrentState.programName} docid: $docID")
         }
@@ -394,7 +396,8 @@ class StatusModifyFragment : Fragment() {
                 requireActivity(),
                 "Módosítás",
                 "Tárgy sikeresen módosítva!",
-                "Rendben"
+                "Rendben",
+                hideLoading = false
             )
             logToFile("Updated $modeName: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
         }

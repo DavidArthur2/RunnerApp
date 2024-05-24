@@ -1,26 +1,20 @@
 package com.festipay.runnerapp.activities
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract.Data
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.festipay.runnerapp.R.*
-import com.festipay.runnerapp.data.InstallFirstItemEnum
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.showError
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -97,7 +91,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loginClick(){
         showLoadingScreen(this)
-        manipulateDB()
         val userName: String = userInput.text.toString()
         Database.db.collection("Users").whereEqualTo("Name", userName).get().addOnSuccessListener { result ->
             if(!result.isEmpty){
@@ -113,27 +106,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun manipulateDB(){
-        val data = hashMapOf<String, Any>(
-            "1" to InstallFirstItemEnum.NEM_KIRAKHATO
-        )
-        Database.db.collection("Company_Install").get()
-            .addOnSuccessListener { querySnapshot ->
-                for (document in querySnapshot.documents) {
-                    val documentRef = Database.db.collection("Company_Install").document(document.id)
-                    documentRef.update(data)
-                }
-            }
-
-    }
-
     private fun checkVersion(){
         Database.db.collection("Config").get().addOnSuccessListener {
-            val ver = it.documents[0].data?.get("MinVersion") as String
-            val curr_ver = packageManager.getPackageInfo(packageName, 0).versionName
-            if(ver != curr_ver.toString()) {
+            val correctVersion = it.documents[0].data?.get("MinVersion") as String
+            val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
+            if(correctVersion != currentVersion.toString()) {
                 loginButton.isEnabled = false
-                showError(this, "A verziód elavult!\nA te verziód: $curr_ver\nJelenlegi verzió: $ver")
+                showError(this, "A verziód elavult!\nA te verziód: $currentVersion\nJelenlegi verzió: $correctVersion")
             }
 
         }.addOnFailureListener {
