@@ -145,21 +145,22 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 }
 
 enum class InstallFilter(private val displayName: String) : IFilter {
+    TELEPITHETO("Telepíthető"),
+    KIRAKHATO("Kirakható"),
+    NEM_KIRAKHATO("Nem kirakható"),
+    KIADVA("Bázis kiadva"),
+    KIHELYEZESRE_VAR("Kihelyezésre vár"),
+    KIRAKVA("Kirakva"),
+    HELYSZINEN_TESZTELVE("Helyszínen tesztelve"),
+    STATUSZ_NELKUL("Státusz nélkül"),
     NINCS_PARAM("Hiányzik: Param"),
     NINCS_ELOSZTO("Hiányzik: Elosztó"),
     NINCS_ARAM("Hiányzik: Áram"),
     NINCS_HALOZAT("Hiányzik: Hálozat"),
     NINCS_PTG("Hiányzik: Pénztárgép"),
     NINCS_SZOFTVER("Hiányzik: Szoftver"),
-    NINCS_HELYSZIN("Hiányzik: Helyszín"),
-    KIADVA("Kiadva"),
-    KIHELYEZESRE_VAR("Kihelyezésre vár"),
-    KIRAKVA("Kirakva"),
-    HELYSZINEN_TESZTELVE("Helyszínen tesztelve"),
-    STATUSZ_NELKUL("Státusz nélkül"),
-    KIRAKHATO("Kirakható"),
-    TELEPITHETO("Telepíthető"),
-    NEM_KIRAKHATO("Nem kirakható");
+    NINCS_HELYSZIN("Hiányzik: Helyszín");
+
     override fun toString(): String {
         return displayName
     }
@@ -183,8 +184,8 @@ enum class DemolitionFilter(private val displayName: String) : IFilter {
     CSOMAGOLVA("Csomagolva"),
     SZALLITASRA_VAR("Szállításra vár"),
     ELSZALLITVA("Elszállítva"),
-    STATUSZ_NELKUL("Státusz nélkül"),
-    BAZIS_LESZERELES("Bázis leszerelés kell");
+    BAZIS_LESZERELES("Bázis leszerelés kell"),
+    STATUSZ_NELKUL("Státusz nélkül");
     override fun toString(): String {
         return displayName
     }
