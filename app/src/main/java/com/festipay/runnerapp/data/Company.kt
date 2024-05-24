@@ -46,8 +46,8 @@ enum class InstallSecondItemEnum(private var displayName: String){
 }
 enum class DemolitionFirstItemEnum(private var displayName: String){
     BONTHATO("Bontható"),
-    BONTASRA_VAR("Bontásra vár"),
-    STATUSZ_NELKUL("Státusz nélkül");
+    MEG_NYITVA("Még nyitva"),
+    NEM_HOZZAFERHETO("Nem hozzáférhető");
 
     override fun toString(): String {
         return displayName
@@ -55,7 +55,8 @@ enum class DemolitionFirstItemEnum(private var displayName: String){
 }
 
 enum class DemolitionSecondItemEnum(private var displayName: String){
-    CSOMAGOLT_TEREPEN("Csomagolt terepen"),
+    CSOMAGOLVA("Csomagolva"),
+    SZALLITASRA_VAR("Szállításra vár"),
     ELSZALLITVA("Elszállítva"),
     STATUSZ_NELKUL("Státusz nélkül");
 

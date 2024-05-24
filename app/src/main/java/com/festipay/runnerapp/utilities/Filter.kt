@@ -8,6 +8,8 @@ import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.adapters.SNAdapter
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.CompanyInstall
+import com.festipay.runnerapp.data.DemolitionFirstItemEnum
+import com.festipay.runnerapp.data.DemolitionSecondItemEnum
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum.*
 import com.festipay.runnerapp.data.IData
 import com.festipay.runnerapp.data.InstallFirstItemEnum.*
@@ -84,7 +86,14 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
                         selectedDemolitionItems[(filterOption as DemolitionFilter).ordinal] = true
                         filteredList = filteredList.filter {
                             when (filterOption) {
-                                DemolitionFilter.ELSZALLITANDO -> it.secondItem == CSOMAGOLT_TEREPEN
+                                DemolitionFilter.ELSZALLITVA -> it.secondItem == ELSZALLITVA
+                                DemolitionFilter.CSOMAGOLVA -> it.secondItem == CSOMAGOLVA
+                                DemolitionFilter.MEG_NYITVA -> it.firstItem == DemolitionFirstItemEnum.MEG_NYITVA
+                                DemolitionFilter.NEM_HOZZAFERHETO -> it.firstItem == DemolitionFirstItemEnum.NEM_HOZZAFERHETO
+                                DemolitionFilter.SZALLITASRA_VAR -> it.secondItem == SZALLITASRA_VAR
+                                DemolitionFilter.BONTHATO -> it.firstItem == DemolitionFirstItemEnum.BONTHATO
+                                DemolitionFilter.STATUSZ_NELKUL -> it.secondItem == DemolitionSecondItemEnum.STATUSZ_NELKUL
+                                DemolitionFilter.BAZIS_LESZERELES -> it.thirdItem
 
                             }
                         }
@@ -165,7 +174,14 @@ enum class InstallFilter(private val displayName: String) : IFilter {
 }
 
 enum class DemolitionFilter(private val displayName: String) : IFilter {
-    ELSZALLITANDO("Elszállítandó");
+    BONTHATO("Bontható"),
+    MEG_NYITVA("Még nyitva"),
+    NEM_HOZZAFERHETO("Nem hozzáférhető"),
+    CSOMAGOLVA("Csomagolva"),
+    SZALLITASRA_VAR("Szállításra vár"),
+    ELSZALLITVA("Elszállítva"),
+    STATUSZ_NELKUL("Státusz nélkül"),
+    BAZIS_LESZERELES("Bázis leszerelés kell");
     override fun toString(): String {
         return displayName
     }

@@ -175,7 +175,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     private fun showFilterDialog() {
         val filterOptions = DemolitionFilter.toCharSequence()
-        val selectedItems = filter.selectedInstallItems.copyOf()
+        val selectedItems = filter.selectedDemolitionItems.copyOf()
 
         val builder = AlertDialog.Builder(requireActivity())
         builder.setTitle("Válassz egy szűrőt")

@@ -315,6 +315,7 @@ class StatusModifyFragment : Fragment() {
         }
     }
     private fun modifyCompanyDemolition(companyDemolitionItem: CompanyDemolition, exit: Boolean = false) {
+        addComment()
         val docID = CurrentState.companySiteID ?: ""
         val data = hashMapOf<String, Any>(
             "CompanyName" to companyDemolitionItem.companyName,
