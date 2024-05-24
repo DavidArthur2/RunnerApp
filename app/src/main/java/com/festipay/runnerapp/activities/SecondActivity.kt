@@ -67,7 +67,7 @@ class SecondActivity : AppCompatActivity() {
 
             FragmentType.DEMOLITION_COMPANY_COMMENTS, FragmentType.INSTALL_COMPANY_COMMENTS, FragmentType.INVENTORY_ITEM_COMMENTS, FragmentType.FINAL_INVENTORY_ITEM_COMMENTS,
             FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INSTALL_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN, FragmentType.FINAL_INVENTORY_ITEM_SN,
-            FragmentType.INSTALL_COMPANY_GPS ->
+            FragmentType.INSTALL_COMPANY_GPS, FragmentType.DEMOLITION_COMPANY_CAMERA ->
                 launchFragment(this, OperationSelectorFragment())
 
             FragmentType.INSTALL_COMPANY ->

@@ -75,6 +75,8 @@ class OperationSelectorFragment(
             itemList.add(getString(R.string.did))
             itemList.add(getString(R.string.gps))
         }
+        if(CurrentState.mode == Mode.DEMOLITION)
+            itemList.add("Kép")
         if(CurrentState.mode == Mode.INVENTORY || CurrentState.mode == Mode.FINAL_INVENTORY) itemList.add(getString(R.string.sn))
         setupView(view)
     }
@@ -107,6 +109,9 @@ class OperationSelectorFragment(
                     }
                     getString(R.string.gps) ->{
                         Functions.launchFragment(requireActivity(), GPSFragment())
+                    }
+                    "Kép" ->{
+                        Functions.launchFragment(requireActivity(), CameraFragment())
                     }
                 }
 

@@ -60,6 +60,9 @@ dependencies {
 
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-storage:20.0.1")
+    implementation("com.google.firebase:firebase-auth:21.0.1")
+    implementation("com.firebaseui:firebase-ui-storage:8.0.0")
 
     implementation("androidx.camera:camera-core:1.0.2")
     implementation("androidx.camera:camera-camera2:1.0.2")
