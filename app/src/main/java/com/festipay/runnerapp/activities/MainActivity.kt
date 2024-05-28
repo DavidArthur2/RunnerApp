@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.festipay.runnerapp.R.*
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loginButton: Button
     private lateinit var userInput: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)  // TURN OFF NIGHT MODE
         super.onCreate(savedInstanceState)
 
         initActivity()
