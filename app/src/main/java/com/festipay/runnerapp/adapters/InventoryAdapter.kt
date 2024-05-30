@@ -1,13 +1,12 @@
 package com.festipay.runnerapp.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.DateFormatter
 
@@ -23,6 +22,7 @@ class InventoryAdapter(private var itemList: ArrayList<Inventory>) :
         val utolsoMegjegyzes: TextView = itemView.findViewById(R.id.lastCommentText)
         val utolsoMegjegyzesDatum: TextView = itemView.findViewById(R.id.lastCommentDate)
         val lastModifiedDate: TextView = itemView.findViewById(R.id.lastModifiedDate)
+
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
@@ -39,6 +39,7 @@ class InventoryAdapter(private var itemList: ArrayList<Inventory>) :
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun filterList(filterlist: List<Inventory>) {
         itemList = filterlist as ArrayList<Inventory>
         notifyDataSetChanged()

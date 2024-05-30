@@ -1,5 +1,6 @@
 package com.festipay.runnerapp.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.SN
 
 class SNAdapter(private var itemList: ArrayList<SN>) :
@@ -18,6 +18,7 @@ class SNAdapter(private var itemList: ArrayList<SN>) :
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val sn: TextView = itemView.findViewById(R.id.snValue)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.snDeleteButton)
+
         init {
             deleteButton.setOnClickListener {
                 val position = adapterPosition
@@ -34,6 +35,7 @@ class SNAdapter(private var itemList: ArrayList<SN>) :
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun filterList(filterlist: List<SN>) {
         itemList = filterlist as ArrayList<SN>
         notifyDataSetChanged()

@@ -1,20 +1,18 @@
 package com.festipay.runnerapp.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyDemolition
-import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.Filter
-import org.w3c.dom.Text
 
 class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition>) :
     RecyclerView.Adapter<CompanyDemolitionAdapter.ItemViewHolder>(), IAdapter {
@@ -48,6 +46,7 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun filterList(filterlist: List<CompanyDemolition>) {
         itemList = filterlist as ArrayList<CompanyDemolition>
         notifyDataSetChanged()
@@ -60,8 +59,10 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
 
-        if(Filter.selectedDemolitionItems.any { it -> it })holder.constLayout.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.orange_rectangle)
-        else holder.constLayout.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.rectangle)
+        if (Filter.selectedDemolitionItems.any { it -> it }) holder.constLayout.background =
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.orange_rectangle)
+        else holder.constLayout.background =
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.rectangle)
 
         holder.companyName.text = currentItem.companyName
         holder.firstItem.text = currentItem.firstItem.toString()

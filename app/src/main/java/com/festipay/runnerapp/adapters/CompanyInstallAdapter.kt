@@ -1,8 +1,6 @@
 package com.festipay.runnerapp.adapters
 
-import android.graphics.Color
-import android.graphics.ColorSpace.Rgb
-import android.graphics.drawable.Drawable
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +61,7 @@ class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
         return ItemViewHolder(itemView)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun filterList(filterlist: List<CompanyInstall>) {
         itemList = filterlist as ArrayList<CompanyInstall>
         notifyDataSetChanged()
@@ -75,8 +74,10 @@ class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
 
-        if(Filter.selectedInstallItems.any { it -> it })holder.constLayout.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.orange_rectangle)
-        else holder.constLayout.background = ContextCompat.getDrawable(holder.itemView.context,R.drawable.rectangle)
+        if (Filter.selectedInstallItems.any { it -> it }) holder.constLayout.background =
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.orange_rectangle)
+        else holder.constLayout.background =
+            ContextCompat.getDrawable(holder.itemView.context, R.drawable.rectangle)
 
         holder.companyName.text = currentItem.companyName
         holder.firstItem.text = currentItem.firstItem.toString()
@@ -89,7 +90,8 @@ class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
         holder.eightItem.isChecked = currentItem.eightItem
         holder.ninethItem.isChecked = currentItem.ninethItem
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
-        holder.utolsoMegjegyzesDatum.text = LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.utolsoMegjegyzesDatum.text =
+            LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
         holder.lastModifiedDate.text = LocalDateTimeToString(currentItem.lastModified)
     }
 

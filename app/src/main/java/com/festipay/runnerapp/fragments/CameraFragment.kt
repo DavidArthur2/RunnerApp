@@ -16,18 +16,17 @@ import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
+import com.festipay.runnerapp.utilities.Functions.showInfoDialog
+import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
 import com.festipay.runnerapp.utilities.showWarning
@@ -38,9 +37,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class CameraFragment : Fragment() {
 
@@ -52,19 +48,21 @@ class CameraFragment : Fragment() {
     private lateinit var vFilename: String
     private val PERMISSION_CODE = 1000
     private val IMAGE_CAPTURE_CODE = 1001
+    private val REQUEST_CODE = 123
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view =  inflater.inflate(R.layout.fragment_camera, container, false)
+        val view = inflater.inflate(R.layout.fragment_camera, container, false)
         initFragment()
         initView(view)
         loadImage()
         return view
     }
-    private fun initView(view: View){
+
+    private fun initView(view: View) {
         photoView = view.findViewById(R.id.photoView)
         photoButton = view.findViewById(R.id.cameraFloatingActionButton)
         photoButton.setOnClickListener {
@@ -82,23 +80,30 @@ class CameraFragment : Fragment() {
 
         val downloadsDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val file = File(downloadsDir, vFilename)
-        val image_uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+        val imageUri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
 
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode){
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.size > 0 && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     openCamera()
                 }
 
             }
         }
     }
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -113,7 +118,7 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun initFragment(){
+    private fun initFragment() {
         context = requireActivity()
         CurrentState.fragmentType = FragmentType.DEMOLITION_COMPANY_CAMERA
         CurrentState.operation = OperationType.CAMERA
@@ -124,17 +129,17 @@ class CameraFragment : Fragment() {
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
 
-        if (!arePermissionsGranted( permissions)) {
-            requestPermissions(context, permissions, 123)
+        if (!arePermissionsGranted(permissions)) {
+            requestPermissions(context, permissions)
         }
     }
 
-    private fun onViewLoaded(){
-        Functions.hideLoadingScreen()
+    private fun onViewLoaded() {
+        hideLoadingScreen()
     }
 
     private fun uploadImageToFirebase(bitmap: Bitmap) {
-        Functions.showLoadingScreen(context)
+        showLoadingScreen(context)
         val storageRef = storage.reference
         val imagesRef = storageRef.child("${CurrentState.companySiteID}.jpg")
 
@@ -145,15 +150,16 @@ class CameraFragment : Fragment() {
         val uploadTask = imagesRef.putBytes(data)
         uploadTask.addOnFailureListener {
             showError(context, "Sikertelen képfeltöltés!", it.toString())
-        }.addOnSuccessListener { taskSnapshot ->
+        }.addOnSuccessListener {
             photoView.setImageBitmap(bitmap)
-            Functions.showInfoDialog(context, "Feltöltés", "Sikeres képfeltöltés!")
+            showInfoDialog(context, "Feltöltés", "Sikeres képfeltöltés!")
 
         }
     }
 
     private fun loadImage() {
-        val storageRef: StorageReference = storage.reference.child("${CurrentState.companySiteID}.jpg")
+        val storageRef: StorageReference =
+            storage.reference.child("${CurrentState.companySiteID}.jpg")
         try {
             val localFile = File.createTempFile("${CurrentState.companySiteID}", "jpg")
             storageRef.getFile(localFile).addOnSuccessListener {
@@ -161,29 +167,36 @@ class CameraFragment : Fragment() {
                 photoView.setImageBitmap(bitmap)
             }.addOnFailureListener { exception ->
                 showWarning(context, "Nem található elmentett kép!")
-            }.addOnCompleteListener{
+            }.addOnCompleteListener {
                 onViewLoaded()
             }
         } catch (e: IOException) {
-            showError(context,"Hiba történt a kép betöltésekor!")
+            showError(context, "Hiba történt a kép betöltésekor!")
             onViewLoaded()
         }
     }
 
     private fun arePermissionsGranted(permissions: Array<String>): Boolean {
         for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 return false
             }
         }
         return true
     }
 
-    private fun requestPermissions(activity: Activity, permissions: Array<String>, requestCode: Int) {
+    private fun requestPermissions(
+        activity: Activity,
+        permissions: Array<String>
+    ) {
         ActivityCompat.requestPermissions(
             activity,
             permissions,
-            requestCode
+            REQUEST_CODE
         )
     }
 }

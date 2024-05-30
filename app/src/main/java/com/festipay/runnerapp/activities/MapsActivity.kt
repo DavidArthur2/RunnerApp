@@ -16,11 +16,11 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
-
     private lateinit var latLng: LatLng
 
     companion object {
@@ -33,7 +33,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val lat = intent.getStringExtra("lat")?.toDouble()
         val long = intent.getStringExtra("long")?.toDouble()
-        if(lat == null || long == null) {
+        if (lat == null || long == null) {
             showError(this, "Long and latitude values are null when starting MapsActivity intent")
             finish()
             return
@@ -43,7 +43,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
-
 
     }
 
@@ -67,6 +66,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.onLowMemory()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this, SecondActivity::class.java)
@@ -77,18 +77,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(gMap: GoogleMap) {
         googleMap = gMap
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_LOCATION_PERMISSION)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
             return
         }
 
         var lastLocation: Location? = null
-        var lastAccuracy: Double = 0.0
         googleMap.isMyLocationEnabled = true
 
         googleMap.setOnMyLocationChangeListener { location ->
             lastLocation = location
-            lastAccuracy = location.accuracy.toDouble()
+            //lastAccuracy = location.accuracy.toDouble()
 
         }
 
@@ -102,6 +109,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         googleMap.addMarker(MarkerOptions().position(latLng).title("Telephely"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 }

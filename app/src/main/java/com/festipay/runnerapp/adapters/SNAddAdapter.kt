@@ -17,6 +17,7 @@ class SNAddAdapter(private val itemList: ArrayList<SN>) :
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val sn: TextView = itemView.findViewById(R.id.snAddValue)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.snAddDeleteButton)
+
         init {
             deleteButton.setOnClickListener {
                 val position = adapterPosition

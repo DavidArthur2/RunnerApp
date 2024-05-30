@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.fragment.app.FragmentActivity
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
@@ -25,6 +26,7 @@ class CommentsAddFragment : Fragment() {
     private lateinit var commentText: EditText
     private lateinit var addButton: Button
     private lateinit var modeName: String
+    private lateinit var context: FragmentActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +38,9 @@ class CommentsAddFragment : Fragment() {
         initViews(view)
         return view
     }
-    private fun initFragment(){
+
+    private fun initFragment() {
+        context = requireActivity()
         CurrentState.fragmentType = when (CurrentState.mode) {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_COMMENTS_ADD
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_COMMENTS_ADD
@@ -47,7 +51,8 @@ class CommentsAddFragment : Fragment() {
         }
         modeName = Database.mapCollectionModeName()
     }
-    private fun initViews(view: View){
+
+    private fun initViews(view: View) {
         commentText = view.findViewById(R.id.commentInput)
         addButton = view.findViewById(R.id.commentsAddButton)
         addButton.setOnClickListener {
@@ -56,16 +61,17 @@ class CommentsAddFragment : Fragment() {
     }
 
     private fun addComment() {
-        Functions.showLoadingScreen(requireActivity())
+        Functions.showLoadingScreen(context)
         val data = hashMapOf(
             "Comment" to commentText.text.toString(),
             "Timestamp" to Timestamp.now().toDate()
         )
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "").collection("Comments").add(data)
+        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+            .collection("Comments").add(data)
             .addOnSuccessListener {
-                launchFragment(requireActivity(), CommentsFragment())
+                launchFragment(context, CommentsFragment())
                 Functions.showInfoDialog(
-                    requireActivity(),
+                    context,
                     "Hozzáadás",
                     "Megjegyzés sikeresen hozzáadva!",
                     "Rendben",
@@ -73,7 +79,7 @@ class CommentsAddFragment : Fragment() {
                 )
             }.addOnFailureListener { ex ->
                 showError(
-                    requireActivity(),
+                    context,
                     "Sikertelen hozzáadás\nNézd a logot",
                     "Error at adding comment in Comments: $data, $ex"
                 )

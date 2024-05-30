@@ -1,22 +1,22 @@
 package com.festipay.runnerapp.activities
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.festipay.runnerapp.R.*
+import com.festipay.runnerapp.data.References.Companion.users_ref
+import com.festipay.runnerapp.data.References.Companion.config_ref
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.database.Database
-import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.showError
-import kotlin.system.exitProcess
+import com.festipay.runnerapp.utilities.Dialogs.Companion.showExitDialog
+import com.festipay.runnerapp.utilities.Dialogs.Companion.showLoginErrorDialog
 
 class MainActivity : AppCompatActivity() {
     /**
@@ -25,32 +25,43 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var loginButton: Button
     private lateinit var userInput: EditText
+    private lateinit var versionLabel: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)  // TURN OFF NIGHT MODE
         super.onCreate(savedInstanceState)
-
+        initViews()
         initActivity()
-        loginButton.setOnClickListener{
-            loginClick()
+    }
+
+    private fun initActivity() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)  // TURN OFF NIGHT MODE
+
+        CurrentState.userName = null
+
+        try {
+            Database
+        } catch (ex: Exception) {
+            showError(this, "Hiba történt a Firebase inicializálásakor!", ex.toString())
         }
 
         checkVersion()
+
     }
 
-    private fun initActivity(){
+    private fun initViews() {
         setContentView(layout.activity_main)
-        loginButton = findViewById(id.loginButton)
-        val versionLabel: TextView = findViewById(id.versionLabel)
+        versionLabel = findViewById(id.versionLabel)
         userInput = findViewById(id.userInputText)
+        loginButton = findViewById(id.loginButton)
+        loginButton.isEnabled = false
 
-        versionLabel.text = "${getString(string.defaultVersionLabelString)}: ${packageManager.getPackageInfo(packageName, 0).versionName}"
 
-        CurrentState.userName = null
-        Database
+        loginButton.setOnClickListener {
+            loginClick()
+        }
     }
 
 
-    private fun launchProgramSelector(){
+    private fun launchProgramSelector() {
         val nextActivity = Intent(this, SecondActivity::class.java)
         startActivity(nextActivity)
         finish()
@@ -59,66 +70,43 @@ class MainActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        setupExitDialog()
+        showExitDialog(this, loginButton)
     }
 
-    private fun setupLoginErrorDialog(){
-        val dialog = Dialog(this)
-        dialog.setContentView(layout.error_dialog)
-        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(getDrawable(drawable.custom_error_button_bg))
-        dialog.setCancelable(false)
-        dialog.show()
-        dialog.findViewById<Button>(id.back_button).setOnClickListener {
-            hideLoadingScreen()
-            dialog.dismiss()
-        }
-        dialog.setOnDismissListener{loginButton.isClickable = true}
-    }
-    private fun setupExitDialog(){
-        val dialog = Dialog(this)
-        dialog.setContentView(layout.exit_dialog)
-        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(getDrawable(drawable.custom_error_button_bg))
-        dialog.setCancelable(false)
-        dialog.show()
-        dialog.findViewById<Button>(id.back_button).setOnClickListener {
-            dialog.dismiss()
-        }
-        dialog.findViewById<Button>(id.exit_button).setOnClickListener{
-            exitProcess(0)
-        }
-        dialog.setOnDismissListener{loginButton.isClickable = true}
-    }
 
-    private fun loginClick(){
+    private fun loginClick() {
         showLoadingScreen(this)
         val userName: String = userInput.text.toString()
-        Database.db.collection("Users").whereEqualTo("Name", userName).get().addOnSuccessListener { result ->
-            if(!result.isEmpty){
-                CurrentState.userName = userName
-                launchProgramSelector()
-                userInput.clearComposingText()
+        users_ref.whereEqualTo("Name", userName).get()
+            .addOnSuccessListener { result ->
+                if (!result.isEmpty) {
+                    CurrentState.userName = userName
+                    launchProgramSelector()
+                    userInput.clearComposingText()
+                } else {
+                    showLoginErrorDialog(this, loginButton)
+                }
+            }.addOnFailureListener { exception ->
+                showError(this, "Sikertelen autentikáció!", exception.toString())
             }
-            else{
-                setupLoginErrorDialog()
-            }
-        }.addOnFailureListener { exception ->
-            showError(this, "Can't read documents in users: $exception")
-        }
     }
 
-    private fun checkVersion(){
-        Database.db.collection("Config").get().addOnSuccessListener {
+    @SuppressLint("SetTextI18n")
+    private fun checkVersion() {
+        val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
+        versionLabel.text = "Verzió: $currentVersion"
+
+        config_ref.get().addOnSuccessListener {
             val correctVersion = it.documents[0].data?.get("MinVersion") as String
-            val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
-            if(correctVersion != currentVersion.toString()) {
-                loginButton.isEnabled = false
-                showError(this, "A verziód elavult!\nA te verziód: $currentVersion\nJelenlegi verzió: $correctVersion")
+            if (correctVersion != currentVersion.toString()) {
+                showError(
+                    this,
+                    "A verziód elavult!\nA te verziód: $currentVersion\nJelenlegi verzió: $correctVersion"
+                )
             }
+            loginButton.isEnabled = true
 
         }.addOnFailureListener {
-            loginButton.isEnabled = false
             showError(this, "Sikertelen verzió lekérés", it.toString())
         }
     }

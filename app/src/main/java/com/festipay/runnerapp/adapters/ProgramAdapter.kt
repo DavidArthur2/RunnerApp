@@ -16,6 +16,7 @@ class ProgramAdapter(private val itemList: ArrayList<Program>) :
 
     inner class ItemViewHolder(itemView: View) : ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.programTitle)
+
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition

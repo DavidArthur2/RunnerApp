@@ -17,15 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.data.Comment
-import com.festipay.runnerapp.data.Comments
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.database.Database
-import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
 import com.festipay.runnerapp.utilities.Filter
-import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.showError

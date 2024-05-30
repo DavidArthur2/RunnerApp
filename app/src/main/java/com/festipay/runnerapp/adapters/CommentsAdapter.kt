@@ -19,6 +19,7 @@ class CommentsAdapter(private val itemList: ArrayList<Comment>) :
         val message: TextView = itemView.findViewById(R.id.commentText)
         val timestamp: TextView = itemView.findViewById(R.id.commentDate)
         private val deleteButton: ImageButton = itemView.findViewById(R.id.deleteButton)
+
         init {
             deleteButton.setOnClickListener {
                 val position = adapterPosition

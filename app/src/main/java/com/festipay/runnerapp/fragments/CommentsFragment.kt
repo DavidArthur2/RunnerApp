@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Comment>
     private lateinit var modeName: String
+    private lateinit var context: FragmentActivity
 
     private lateinit var commentText: EditText
     private lateinit var addButton: Button
@@ -47,6 +49,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
     }
 
     private fun initFragment() {
+        context = requireActivity()
         CurrentState.operation = OperationType.COMMENTS
         modeName = Database.mapCollectionModeName()
         CurrentState.fragmentType = when (CurrentState.mode) {
@@ -58,7 +61,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
 
         }
 
-        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: androidx.appcompat.widget.Toolbar = context.findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.companySite} - Megjegyzések"
     }
 
@@ -68,19 +71,6 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
         addButton.setOnClickListener {
             addComment()
         }
-//        view.findViewById<FloatingActionButton>(R.id.commentsFloatingActionButton)
-//            .setOnClickListener {
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .setCustomAnimations(
-//                        R.anim.slide_in_right,
-//                        R.anim.slide_out_left,
-//                        R.anim.slide_in_left,
-//                        R.anim.slide_out_right
-//                    )
-//                    .replace(R.id.frameLayout, CommentsAddFragment())
-//                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                    .commit()
-//            }
     }
 
     override fun setupView(view: View) {
@@ -102,12 +92,12 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
 
         adapt.setOnItemClickListener(object : CommentsAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, comment: Comment) {
-                Functions.showLoadingScreen(requireActivity())
+                Functions.showLoadingScreen(context)
                 Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
                     .collection("Comments").document(comment.docID).delete().addOnSuccessListener {
-                        launchFragment(requireActivity(), CommentsFragment())
+                        launchFragment(context, CommentsFragment())
                     showInfoDialog(
-                        requireActivity(),
+                        context,
                         "Törlés",
                         "Sikeresen törölted a megjegyzést!",
                         "Vissza",
@@ -115,7 +105,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
                     )
                 }.addOnFailureListener {
                     showError(
-                        requireActivity(),
+                        context,
                         "Megjegyzést törlése sikertelen!",
                         "companydocid: ${CurrentState.companySiteID} commentdocid: ${comment.docID} error: $it"
                     )
@@ -143,7 +133,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
                 setupView(view)
             }.addOnFailureListener {
                 showError(
-                    requireActivity(),
+                    context,
                     "Sikertelen megjegyzés beolvasás",
                     "companydocid: ${CurrentState.companySiteID} error: $it"
                 )
@@ -158,16 +148,16 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
 
     }
     private fun addComment() {
-        Functions.showLoadingScreen(requireActivity())
+        Functions.showLoadingScreen(context)
         val data = hashMapOf(
             "Comment" to commentText.text.toString(),
             "Timestamp" to Timestamp.now().toDate()
         )
         Database.db.collection(modeName).document(CurrentState.companySiteID ?: "").collection("Comments").add(data)
             .addOnSuccessListener {
-                launchFragment(requireActivity(), CommentsFragment())
+                launchFragment(context, CommentsFragment())
                 showInfoDialog(
-                    requireActivity(),
+                    context,
                     "Hozzáadás",
                     "Megjegyzés sikeresen hozzáadva!",
                     "Rendben",
@@ -175,7 +165,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
                 )
             }.addOnFailureListener { ex ->
                 showError(
-                    requireActivity(),
+                    context,
                     "Sikertelen hozzáadás\nNézd a logot",
                     "Error at adding comment in Comments: $data, $ex"
                 )
