@@ -17,6 +17,7 @@ import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.showError
 import com.festipay.runnerapp.utilities.Dialogs.Companion.showExitDialog
 import com.festipay.runnerapp.utilities.Dialogs.Companion.showLoginErrorDialog
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 
 class MainActivity : AppCompatActivity() {
     /**
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)  // TURN OFF NIGHT MODE
-
+        showLoadingScreen(this)
         CurrentState.userName = null
 
         try {
@@ -97,6 +98,11 @@ class MainActivity : AppCompatActivity() {
         versionLabel.text = "Verzió: $currentVersion"
 
         config_ref.get().addOnSuccessListener {
+            if(it.documents.isEmpty()){
+                showError(this, "Sikertelen verzió lekérdezés!\n Ellenőrízd az Internetet!")
+                onViewLoaded()
+                return@addOnSuccessListener
+            }
             val correctVersion = it.documents[0].data?.get("MinVersion") as String
             if (correctVersion != currentVersion.toString()) {
                 showError(
@@ -105,9 +111,14 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             loginButton.isEnabled = true
+            onViewLoaded()
 
         }.addOnFailureListener {
             showError(this, "Sikertelen verzió lekérés", it.toString())
         }
+    }
+
+    private fun onViewLoaded(){
+        hideLoadingScreen()
     }
 }

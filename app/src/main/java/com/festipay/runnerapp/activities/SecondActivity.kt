@@ -17,6 +17,7 @@ import com.festipay.runnerapp.fragments.SNAddFragment
 import com.festipay.runnerapp.fragments.StatusModifyFragment
 import com.festipay.runnerapp.utilities.Dialogs.Companion.showLogoutDialog
 import com.festipay.runnerapp.utilities.FragmentType
+import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.OperationType
 import com.google.android.material.bottomnavigation.BottomNavigationView

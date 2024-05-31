@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.fragments.InstallFragment
+import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -89,6 +90,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             return
         }
+
+        Functions.hideLoadingScreen()
 
         var lastLocation: Location? = null
         googleMap.isMyLocationEnabled = true

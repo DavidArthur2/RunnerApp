@@ -85,14 +85,16 @@ class GPSFragment : Fragment() {
 
                 if(arguments?.getString("go") == "go") // Ha gyorsgombbol inditjuk el
                     startMaps()
-                if(arguments?.getString("save") == "save")
+                else if(arguments?.getString("save") == "save")
                     refreshCoords()
+                else
+                    onViewLoaded()
             }
             else{
                 longText.text = "-"
                 latText.text = "-"
+                onViewLoaded()
             }
-            hideLoadingScreen()
         }.addOnFailureListener {ex ->
             showError(context, "Sikertelen koordináta lekérdezés", ex.toString())
         }
@@ -140,4 +142,7 @@ class GPSFragment : Fragment() {
         else showError(context, "Koordináták nincsenek rögzítve")
     }
 
+    private fun onViewLoaded(){
+        hideLoadingScreen()
+    }
 }
