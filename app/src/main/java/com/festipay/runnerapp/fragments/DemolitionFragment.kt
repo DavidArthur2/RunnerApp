@@ -111,7 +111,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     override fun loadComments(view: View) {
         for (it in itemList) {
-            comments_ref()
+            comments_ref(it.docID)
                 .orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {

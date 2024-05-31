@@ -104,8 +104,8 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
                 finalInventoryEnable_ref().whereEqualTo("ProgramName", program.title).get()
                     .addOnSuccessListener {
                         if (!it.isEmpty) {
-                            val v = it.documents[0].data?.get("enabled") as Boolean
-                            bottomView.menu.findItem(R.id.finalInventory).isVisible = v
+                            val finalInventoryEnabled = it.documents[0].data?.get("enabled") as Boolean
+                            bottomView.menu.findItem(R.id.finalInventory).isVisible = finalInventoryEnabled
                         }
                     }.addOnFailureListener {
                     logToFile(it.toString())

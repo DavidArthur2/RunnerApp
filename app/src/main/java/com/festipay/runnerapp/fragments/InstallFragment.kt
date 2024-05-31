@@ -119,7 +119,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
     override fun loadComments(view: View) {
         for (it in itemList) {
-            comments_ref().orderBy("Timestamp", Query.Direction.ASCENDING)
+            comments_ref(it.docID).orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
                         val comments: MutableList<Comment> = mutableListOf()

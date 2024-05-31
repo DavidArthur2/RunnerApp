@@ -70,7 +70,6 @@ class StatusModifyFragment : Fragment() {
     private lateinit var thirdItemD: SwitchMaterial
 
     private lateinit var context: FragmentActivity
-    private lateinit var modeName: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -376,7 +375,7 @@ class StatusModifyFragment : Fragment() {
         )
         company_ref().update(data).addOnSuccessListener {
             if (exit) launchFragment(context, DemolitionFragment())
-            else launchFragment(context, SNAddFragment())
+            else launchFragment(context, SNInstantAddFragment())
             showInfoDialog(
                 context,
                 "Módosítás",
@@ -450,7 +449,7 @@ class StatusModifyFragment : Fragment() {
                 "Rendben",
                 hideLoading = false
             )
-            logToFile("Updated $modeName: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
+            logToFile("Updated ${CurrentState.mode.toString()}: itemname: ${inventoryItem.itemName} programname: ${CurrentState.programName} docid: $docID")
         }
     }
 
@@ -506,18 +505,16 @@ class StatusModifyFragment : Fragment() {
                     }.addOnFailureListener {
                     showError(context, "Sikertelen koordináta lekérés", it.toString())
                 }
-                if (docID != null) Database.db.collection("Coordinates").document(docID!!)
+                if (docID != null) coord_ref().document(docID!!)
                     .update(data).addOnSuccessListener {
                     showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                 }.addOnFailureListener {
                     showError(context, "Sikertelen koordináta rögzítés", it.toString())
                 }
                 if (docID == null) {
-                    val companyRef =
-                        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                    data = hashMapOf("coord" to geoPoint, "ref" to companyRef)
+                    data = hashMapOf("coord" to geoPoint, "ref" to company_ref())
 
-                    Database.db.collection("Coordinates").add(data).addOnSuccessListener {
+                    coord_ref().add(data).addOnSuccessListener {
                         showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                     }.addOnFailureListener {
                         showError(context, "Sikertelen koordináta rögzítés", it.toString())

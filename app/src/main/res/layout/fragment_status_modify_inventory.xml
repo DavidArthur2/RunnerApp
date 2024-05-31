@@ -78,20 +78,21 @@
 
         <Button
             android:id="@+id/modifyExitButton"
-            android:layout_width="166dp"
+            android:layout_width="146dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="252dp"
             android:text="@string/modifyExitButtonText"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.037"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/modifyAddButton"
-            android:layout_width="166dp"
+            android:layout_width="146dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="-30dp"
             android:layout_marginTop="252dp"
             android:text="@string/modifyDIDButtonText"
             android:textSize="16sp"

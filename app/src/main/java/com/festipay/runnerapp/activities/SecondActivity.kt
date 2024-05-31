@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.data.References
 import com.festipay.runnerapp.fragments.CommentsFragment
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.fragments.DemolitionFragment
@@ -19,6 +20,7 @@ import com.festipay.runnerapp.utilities.Dialogs.Companion.showLogoutDialog
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions.launchFragment
 import com.festipay.runnerapp.utilities.OperationType
+import com.festipay.runnerapp.utilities.logToFile
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SecondActivity : AppCompatActivity() {
@@ -128,12 +130,26 @@ class SecondActivity : AppCompatActivity() {
 
         if (CurrentState.operation != OperationType.GPS)
             launchFragment(this, ProgramSelectorFragment())
-        else
-            when (CurrentState.fragmentType) {
-                FragmentType.INSTALL_COMPANY_GPS -> bottomView.selectedItemId = R.id.install
-                FragmentType.DEMOLITION_COMPANY_GPS -> bottomView.selectedItemId = R.id.demolition
-                else -> launchFragment(this, ProgramSelectorFragment())
-            }
+        else {
+            References.finalInventoryEnable_ref()
+                .whereEqualTo("ProgramName", CurrentState.programName).get()
+                .addOnSuccessListener {
+                    if (!it.isEmpty) {
+                        val finalInventoryEnabled = it.documents[0].data?.get("enabled") as Boolean
+                        bottomView.menu.findItem(R.id.finalInventory).isVisible = finalInventoryEnabled
+                    }
+                }.addOnFailureListener {
+                    logToFile(it.toString())
+                }.addOnCompleteListener {
+                    when (CurrentState.fragmentType) {
+                        FragmentType.INSTALL_COMPANY_GPS -> bottomView.selectedItemId = R.id.install
+                        FragmentType.DEMOLITION_COMPANY_GPS -> bottomView.selectedItemId =
+                            R.id.demolition
+
+                        else -> launchFragment(this, ProgramSelectorFragment())
+                    }
+                }
+        }
     }
 
 }
