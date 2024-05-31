@@ -63,7 +63,7 @@ class InventoryAddFragment : Fragment() {
             showError(context, "A tárgynév legalább 3 hosszú kell legyen!")
             return
         }
-        mode_ref.whereEqualTo("TargyNev", item.itemName)
+        mode_ref().whereEqualTo("TargyNev", item.itemName)
             .whereEqualTo("ProgramName", CurrentState.programName).get().addOnSuccessListener {
                 if (it.isEmpty)
                     addData(item, comment, exit = exit)
@@ -132,7 +132,7 @@ class InventoryAddFragment : Fragment() {
             "ProgramName" to CurrentState.programName,
             "ItemName" to item.itemName
         )
-        mode_ref.add(data).addOnSuccessListener { doc ->
+        mode_ref().add(data).addOnSuccessListener { doc ->
 
             if (comment.isEmpty()) {
                 if (exit) launchFragment(context, InventoryFragment(), final)

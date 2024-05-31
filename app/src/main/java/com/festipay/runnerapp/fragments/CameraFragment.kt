@@ -23,7 +23,6 @@ import androidx.core.content.FileProvider
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.FragmentType
-import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen

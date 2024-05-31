@@ -101,7 +101,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
         val data = hashMapOf(
             "SN" to sn
         )
-        sn_ref.add(data).addOnSuccessListener {
+        sn_ref().add(data).addOnSuccessListener {
             itemList.add(SN(sn))
             adapt.notifyItemInserted(itemList.size - 1)
             Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
@@ -139,7 +139,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        sn_ref.get().addOnSuccessListener { result ->
+        sn_ref().get().addOnSuccessListener { result ->
             if (!result.isEmpty) {
                 for (doc in result) {
                     itemList.add(
@@ -180,7 +180,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
         adapt.setOnItemClickListener(object : SNAddAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, snItem: SN) {
                 showLoadingScreen(context)
-                sn_ref.whereEqualTo("SN", snItem.sn).get().addOnSuccessListener {
+                sn_ref().whereEqualTo("SN", snItem.sn).get().addOnSuccessListener {
                     if (it.documents.isNotEmpty())
                         sn_ref(it.documents[0].id).delete().addOnSuccessListener {
                             Toast.makeText(context, "\'${snItem.sn}\' törölve!", Toast.LENGTH_SHORT)

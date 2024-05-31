@@ -83,7 +83,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        mode_ref
+        mode_ref()
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
@@ -119,7 +119,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
     override fun loadComments(view: View) {
         for (it in itemList) {
-            comments_ref.orderBy("Timestamp", Query.Direction.ASCENDING)
+            comments_ref().orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
                         val comments: MutableList<Comment> = mutableListOf()

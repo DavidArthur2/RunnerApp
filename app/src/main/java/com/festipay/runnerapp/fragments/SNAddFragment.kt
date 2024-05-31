@@ -130,7 +130,7 @@ class SNAddFragment : Fragment(), IFragment<SN> {
             val data = hashMapOf(
                 "SN" to i.sn
             )
-            sn_ref.add(data).addOnSuccessListener {
+            sn_ref().add(data).addOnSuccessListener {
                 unsuccessfulCount--
                 unsuccessfulList.remove(i)
                 if (i == itemList.last()) {

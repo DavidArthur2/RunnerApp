@@ -88,7 +88,7 @@ class SNFragment : Fragment(), IFragment<SN> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        sn_ref.get().addOnSuccessListener { result ->
+        sn_ref().get().addOnSuccessListener { result ->
             if (!result.isEmpty) {
                 for (doc in result) {
                     itemList.add(

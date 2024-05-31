@@ -141,7 +141,7 @@ class StatusModifyFragment : Fragment() {
     private fun loadValues() {
         when (CurrentState.mode) {
             Mode.INVENTORY -> {
-                company_ref.get()
+                company_ref().get()
                     .addOnSuccessListener { documents ->
                         itemNameInput.setText(documents.data?.get("ItemName") as String)
                         deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
@@ -150,7 +150,7 @@ class StatusModifyFragment : Fragment() {
             }
 
             Mode.FINAL_INVENTORY -> {
-                company_ref.get()
+                company_ref().get()
                     .addOnSuccessListener { documents ->
                         itemNameInput.setText(documents.data?.get("ItemName") as String)
                         deviceNumberInput.setText((documents.data?.get("Quantity") as Long).toString())
@@ -159,7 +159,7 @@ class StatusModifyFragment : Fragment() {
             }
 
             Mode.INSTALL -> {
-                company_ref.get()
+                company_ref().get()
                     .addOnSuccessListener { documents ->
                         companyName.text = (documents.data?.get("CompanyName") as String)
                         firstItemI.setSelection(InstallFirstItemEnum.valueOf(documents.data?.get("1") as String).ordinal)
@@ -176,7 +176,7 @@ class StatusModifyFragment : Fragment() {
             }
 
             Mode.DEMOLITION -> {
-                company_ref.get()
+                company_ref().get()
                     .addOnSuccessListener { documents ->
                         companyName.text = (documents.data?.get("CompanyName") as String)
                         firstItemD.setSelection(
@@ -350,7 +350,7 @@ class StatusModifyFragment : Fragment() {
                 "Comment" to comment,
                 "Timestamp" to Timestamp.now().toDate()
             )
-            comments_ref.add(data)
+            comments_ref().add(data)
                 .addOnFailureListener { ex ->
                     showError(
                         context,
@@ -374,7 +374,7 @@ class StatusModifyFragment : Fragment() {
             "3" to companyDemolitionItem.thirdItem,
             "LastModified" to Timestamp.now().toDate()
         )
-        company_ref.update(data).addOnSuccessListener {
+        company_ref().update(data).addOnSuccessListener {
             if (exit) launchFragment(context, DemolitionFragment())
             else launchFragment(context, SNAddFragment())
             showInfoDialog(
@@ -404,7 +404,7 @@ class StatusModifyFragment : Fragment() {
             "9" to companyInstallItem.ninethItem,
             "LastModified" to Timestamp.now().toDate()
         )
-        company_ref.update(data).addOnSuccessListener {
+        company_ref().update(data).addOnSuccessListener {
             if (exit) launchFragment(context, InstallFragment())
             else launchFragment(context, SNAddFragment())
             showInfoDialog(
@@ -440,7 +440,7 @@ class StatusModifyFragment : Fragment() {
         var final = false
         if (CurrentState.mode == Mode.FINAL_INVENTORY)
             final = true
-        company_ref.update(data).addOnSuccessListener {
+        company_ref().update(data).addOnSuccessListener {
             if (exit) launchFragment(context, InventoryFragment(), final)
             else launchFragment(context, SNAddFragment(), final)
             showInfoDialog(
@@ -499,7 +499,7 @@ class StatusModifyFragment : Fragment() {
                 val geoPoint = GeoPoint(location.latitude, location.longitude)
                 var data = hashMapOf<String, Any>("coord" to geoPoint)
                 var docID: String? = null
-                coord_ref.whereEqualTo("ref", CurrentState.companySiteID).get()
+                coord_ref().whereEqualTo("ref", CurrentState.companySiteID).get()
                     .addOnSuccessListener {
                         if (it.documents.isNotEmpty())
                             docID = it.documents[0].id

@@ -53,7 +53,7 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        programs_ref
+        programs_ref()
             .whereArrayContains("users", CurrentState.userName as String).get()
             .addOnSuccessListener { result ->
                 if (!result.isEmpty) {
@@ -101,7 +101,7 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
                 val bottomView =
                     context.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-                finalInventoryEnable_ref.whereEqualTo("ProgramName", program.title).get()
+                finalInventoryEnable_ref().whereEqualTo("ProgramName", program.title).get()
                     .addOnSuccessListener {
                         if (!it.isEmpty) {
                             val v = it.documents[0].data?.get("enabled") as Boolean

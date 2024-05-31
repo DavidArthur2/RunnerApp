@@ -79,7 +79,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        mode_ref
+        mode_ref()
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
@@ -111,7 +111,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
     override fun loadComments(view: View) {
         for (it in itemList) {
-            comments_ref
+            comments_ref()
                 .orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
@@ -119,7 +119,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
                         for (doc in result) {
                             comments.add(
                                 Comment(
-                                    megjegyzes =  doc.data["Comment"] as String,
+                                    megjegyzes = doc.data["Comment"] as String,
                                     megjegyzesIdo = timestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
                                 )
                             )

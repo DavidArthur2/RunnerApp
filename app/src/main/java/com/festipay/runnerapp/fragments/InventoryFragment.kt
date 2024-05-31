@@ -102,7 +102,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf<Inventory>()
-        mode_ref
+        mode_ref()
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("ItemName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->

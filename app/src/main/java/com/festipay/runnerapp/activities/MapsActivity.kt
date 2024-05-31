@@ -8,7 +8,6 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.fragments.InstallFragment
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.showError
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -106,7 +105,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (lastLocation != null) {
                 val latLng = LatLng(lastLocation!!.latitude, lastLocation!!.longitude)
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20f))
-                true
             }
             false
         }

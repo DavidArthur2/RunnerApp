@@ -67,7 +67,7 @@ class CommentsAddFragment : Fragment() {
             "Comment" to commentText.text.toString(),
             "Timestamp" to Timestamp.now().toDate()
         )
-        comments_ref.add(data)
+        comments_ref().add(data)
             .addOnSuccessListener {
                 launchFragment(context, CommentsFragment())
                 Functions.showInfoDialog(

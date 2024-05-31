@@ -92,7 +92,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
         adapt.setOnItemClickListener(object : CommentsAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, comment: Comment) {
                 Functions.showLoadingScreen(context)
-                comments_ref.document(comment.docID).delete().addOnSuccessListener {
+                comments_ref().document(comment.docID).delete().addOnSuccessListener {
                     launchFragment(context, CommentsFragment())
                     showInfoDialog(
                         context,
@@ -114,7 +114,7 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
 
     override fun loadComments(view: View) {
         itemList = arrayListOf()
-        comments_ref.orderBy("Timestamp", Query.Direction.ASCENDING)
+        comments_ref().orderBy("Timestamp", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
                 if (!result.isEmpty) {
                     for (doc in result) {
