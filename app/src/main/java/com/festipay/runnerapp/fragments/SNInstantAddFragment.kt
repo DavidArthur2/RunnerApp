@@ -12,43 +12,27 @@ import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
-import androidx.core.content.ContextCompat.registerReceiver
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.adapters.CommentsAdapter
-import com.festipay.runnerapp.adapters.SNAdapter
 import com.festipay.runnerapp.adapters.SNAddAdapter
-import com.festipay.runnerapp.data.Comment
-import com.festipay.runnerapp.data.Program
+import com.festipay.runnerapp.data.References.Companion.sn_ref
 import com.festipay.runnerapp.data.SN
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.BarcodeScanReceiver
 import com.festipay.runnerapp.utilities.CamScanner
 import com.festipay.runnerapp.utilities.CurrentState
-import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.FragmentType
-import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideKeyboard
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
-import com.festipay.runnerapp.utilities.Functions.launchFragment
-import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
 import com.festipay.runnerapp.utilities.showWarning
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.Query
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 class SNInstantAddFragment : Fragment(), IFragment<SN> {
     override lateinit var recyclerView: RecyclerView
@@ -99,10 +83,10 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
 
     private fun addSN(sn: String) {
         if (sn.isEmpty())
-            return if(hasScanner) showWarning(context, "Üres sort olvastál be!")
+            return if (hasScanner) showWarning(context, "Üres sort olvastál be!")
             else Toast.makeText(context, "Üres sort olvastál be!", Toast.LENGTH_LONG).show()
         if (itemList.contains(SN(sn)))
-            return if(hasScanner) showWarning(context, "'$sn' már a listában van!")
+            return if (hasScanner) showWarning(context, "'$sn' már a listában van!")
             else Toast.makeText(context, "'$sn' már a listában van!", Toast.LENGTH_LONG).show()
 
         saveItem(sn)
@@ -117,13 +101,12 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
         val data = hashMapOf(
             "SN" to sn
         )
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-            .collection("SN").add(data).addOnSuccessListener {
-                itemList.add(SN(sn))
-                adapt.notifyItemInserted(itemList.size - 1)
-                Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
-                hideLoadingScreen()
-            }
+        sn_ref.add(data).addOnSuccessListener {
+            itemList.add(SN(sn))
+            adapt.notifyItemInserted(itemList.size - 1)
+            Toast.makeText(context, "\'$sn\' hozzáadva!", Toast.LENGTH_SHORT).show()
+            hideLoadingScreen()
+        }
 
     }
 
@@ -132,7 +115,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
         snInput = view.findViewById(R.id.snInput)
 
         cameraButton = view.findViewById(R.id.cameraFloatingActionButton)
-        if(Build.MANUFACTURER == "Urovo") {
+        if (Build.MANUFACTURER == "Urovo") {
             cameraButton.isVisible = false
             hasScanner = true
         }
@@ -142,7 +125,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
                 camScanner.scanCode()
             }
 
-        view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton).isVisible=false
+        view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton).isVisible = false
         addButton.setOnClickListener {
             if (snInput.text.isNotEmpty())
                 addSN(snInput.text.toString())
@@ -153,25 +136,25 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
     override fun onViewLoaded() {
         hideLoadingScreen()
     }
+
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-            .collection("SN").get().addOnSuccessListener { result ->
-                if (!result.isEmpty) {
-                    for (doc in result) {
-                        itemList.add(
-                            SN(doc.data["SN"] as String)
-                        )
-                    }
+        sn_ref.get().addOnSuccessListener { result ->
+            if (!result.isEmpty) {
+                for (doc in result) {
+                    itemList.add(
+                        SN(doc.data["SN"] as String)
+                    )
                 }
-                setupView(view)
-            }.addOnFailureListener {
-                showError(
-                    requireActivity(),
-                    "Sikertelen SN beolvasás",
-                    "companydocid: ${CurrentState.companySiteID} error: $it"
-                )
             }
+            setupView(view)
+        }.addOnFailureListener {
+            showError(
+                requireActivity(),
+                "Sikertelen SN beolvasás",
+                "companydocid: ${CurrentState.companySiteID} error: $it"
+            )
+        }
     }
 
     override fun loadComments(view: View) {
@@ -179,7 +162,7 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
 
     override fun setupView(view: View) {
         recyclerView = view.findViewById(R.id.snAddRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(false)
 
 
@@ -197,19 +180,18 @@ class SNInstantAddFragment : Fragment(), IFragment<SN> {
         adapt.setOnItemClickListener(object : SNAddAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, snItem: SN) {
                 showLoadingScreen(context)
-                Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                    .collection("SN").whereEqualTo("SN", snItem.sn).get().addOnSuccessListener{
-                        if(it.documents.isNotEmpty())
-                            Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                                .collection("SN").document(it.documents[0].id).delete().addOnSuccessListener {
-                                    Toast.makeText(context, "\'${snItem.sn}\' törölve!", Toast.LENGTH_SHORT).show()
-                                    itemList.removeAt(position)
-                                    adapt.notifyItemRemoved(position)
-                                    hideLoadingScreen()
-                                }
-                    }.addOnFailureListener {
-                        showError(context, "Hiba történt a törléskor!", it.toString())
-                    }
+                sn_ref.whereEqualTo("SN", snItem.sn).get().addOnSuccessListener {
+                    if (it.documents.isNotEmpty())
+                        sn_ref(it.documents[0].id).delete().addOnSuccessListener {
+                            Toast.makeText(context, "\'${snItem.sn}\' törölve!", Toast.LENGTH_SHORT)
+                                .show()
+                            itemList.removeAt(position)
+                            adapt.notifyItemRemoved(position)
+                            hideLoadingScreen()
+                        }
+                }.addOnFailureListener {
+                    showError(context, "Hiba történt a törléskor!", it.toString())
+                }
             }
         })
     }

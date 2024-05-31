@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.CompanyInstall
-import com.festipay.runnerapp.utilities.DateFormatter.LocalDateTimeToString
+import com.festipay.runnerapp.utilities.DateFormatter.localDateTimeToString
 import com.festipay.runnerapp.utilities.Filter
 
 
@@ -91,8 +91,8 @@ class CompanyInstallAdapter(private var itemList: ArrayList<CompanyInstall>) :
         holder.ninethItem.isChecked = currentItem.ninethItem
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
-            LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
-        holder.lastModifiedDate.text = LocalDateTimeToString(currentItem.lastModified)
+            localDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.lastModifiedDate.text = localDateTimeToString(currentItem.lastModified)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

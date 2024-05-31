@@ -1,12 +1,12 @@
 package com.festipay.runnerapp.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -17,6 +17,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
@@ -25,9 +26,10 @@ import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.InstallFirstItemEnum
 import com.festipay.runnerapp.data.InstallSecondItemEnum
-import com.festipay.runnerapp.database.Database
+import com.festipay.runnerapp.data.References.Companion.comments_ref
+import com.festipay.runnerapp.data.References.Companion.mode_ref
 import com.festipay.runnerapp.utilities.CurrentState
-import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
+import com.festipay.runnerapp.utilities.DateFormatter.timestampToLocalDateTime
 import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
@@ -45,6 +47,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
     private lateinit var adapter: CompanyInstallAdapter
     override lateinit var itemList: ArrayList<CompanyInstall>
     private lateinit var filter: Filter<CompanyInstall>
+    private lateinit var context: FragmentActivity
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,93 +61,98 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         return view
     }
 
-    fun initFragment(){
+    fun initFragment() {
+        context = requireActivity()
         CurrentState.mode = Mode.INSTALL
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INSTALL
 
-        val bottomView = requireActivity()
+        val bottomView = context
             .findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomView.isVisible = true
 
-        val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: Toolbar = context.findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.install_title)}"
         setHasOptionsMenu(true)
     }
-    override fun onViewLoaded(){
+
+    override fun onViewLoaded() {
         filter = Filter(adapter, itemList)
         invokeFilter()
         hideLoadingScreen()
     }
-    override fun loadList(view: View){
+
+    override fun loadList(view: View) {
         itemList = arrayListOf()
-        Database.db.collection("Company_Install")
+        mode_ref
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
-            if(!result.isEmpty){
-                for(doc in result){
-                    val lm = doc.data["LastModified"] as Timestamp?
-                    itemList.add(CompanyInstall(
-                        doc.data["CompanyName"] as String,
-                        InstallFirstItemEnum.valueOf(doc.data["1"] as String),
-                        InstallSecondItemEnum.valueOf(doc.data["2"] as String),
-                        doc.data["3"] as Boolean,
-                        doc.data["4"] as Boolean,
-                        doc.data["5"] as Boolean,
-                        doc.data["6"] as Boolean,
-                        doc.data["7"] as Boolean,
-                        doc.data["8"] as Boolean,
-                        doc.data["9"] as Boolean,
-                        doc.id,
-                        lastModified = TimestampToLocalDateTime(lm)
-                    ))
-                }
-                loadComments(view)
-
-            }
-            else{
-                showError(requireContext(), "Nincs felvéve telephely!")
-            }
-        }.addOnFailureListener { exception ->
-            showError(requireContext(), "Can't read documents in telephelyek: $exception")
-        }
-    }
-
-    override fun loadComments(view: View){
-        for(it in itemList) {
-            Database.db.collection("Company_Install").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
-                .get().addOnSuccessListener { result ->
                 if (!result.isEmpty) {
-                    val comments: MutableList<Comment> = mutableListOf()
                     for (doc in result) {
-                        comments.add(
-                            Comment(
-                                doc.data["Comment"] as String,
-                                TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
+                        val lm = doc.data["LastModified"] as Timestamp?
+                        itemList.add(
+                            CompanyInstall(
+                                companyName = doc.data["CompanyName"] as String,
+                                firstItem = InstallFirstItemEnum.valueOf(doc.data["1"] as String),
+                                secondItem = InstallSecondItemEnum.valueOf(doc.data["2"] as String),
+                                thirdItem = doc.data["3"] as Boolean,
+                                fourthItem = doc.data["4"] as Boolean,
+                                fifthItem = doc.data["5"] as Boolean,
+                                sixthItem = doc.data["6"] as Boolean,
+                                seventhItem = doc.data["7"] as Boolean,
+                                eightItem = doc.data["8"] as Boolean,
+                                ninethItem = doc.data["9"] as Boolean,
+                                docID = doc.id,
+                                lastModified = timestampToLocalDateTime(lm)
                             )
                         )
                     }
-                    it.lastComment = comments.last()
-                    logToFile("COMMENTS LOG: ${it.lastComment}, ${comments.size}")
+                    loadComments(view)
+
+                } else {
+                    showError(context, "Nincs felvéve telephely!")
                 }
-                    if(itemList.last() == it)setupView(view)
-            }.addOnFailureListener {
-                showError(context, "Sikertelen volt a kommentek lehívása!")
+            }.addOnFailureListener { exception ->
+                showError(context, "Can't read documents in telephelyek: $exception")
+            }
+    }
+
+    override fun loadComments(view: View) {
+        for (it in itemList) {
+            comments_ref.orderBy("Timestamp", Query.Direction.ASCENDING)
+                .get().addOnSuccessListener { result ->
+                    if (!result.isEmpty) {
+                        val comments: MutableList<Comment> = mutableListOf()
+                        for (doc in result) {
+                            comments.add(
+                                Comment(
+                                    megjegyzes = doc.data["Comment"] as String,
+                                    megjegyzesIdo = timestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
+                                )
+                            )
+                        }
+                        it.lastComment = comments.last()
+                        logToFile("COMMENTS LOG: ${it.lastComment}, ${comments.size}")
+                    }
+                    if (itemList.last() == it) setupView(view)
+                }.addOnFailureListener {
+                    showError(context, "Sikertelen volt a kommentek lehívása!")
                 }
         }
     }
 
-    override fun setupView(view: View){
+    override fun setupView(view: View) {
 
         recyclerView = view.findViewById(R.id.companyInstallRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
 
         adapter = CompanyInstallAdapter(itemList)
         recyclerView.adapter = adapter
 
-        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 onViewLoaded()
                 recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -156,7 +164,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
             override fun onItemClick(position: Int, companyInstall: CompanyInstall) {
                 CurrentState.companySite = companyInstall.companyName
                 CurrentState.companySiteID = companyInstall.docID
-                Functions.launchFragment(requireActivity(), OperationSelectorFragment())
+                Functions.launchFragment(context, OperationSelectorFragment())
 
             }
 
@@ -167,7 +175,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                 bundle.putString("go", "go")
                 val frag = GPSFragment()
                 frag.arguments = bundle
-                Functions.launchFragment(requireActivity(), frag)
+                Functions.launchFragment(context, frag)
             }
         })
     }
@@ -195,11 +203,12 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showFilterDialog() {
         val filterOptions = InstallFilter.toCharSequence()
         val selectedItems = Filter.selectedInstallItems.copyOf()
 
-        val builder = AlertDialog.Builder(requireActivity())
+        val builder = AlertDialog.Builder(context)
 
         val dialogLayout = layoutInflater.inflate(R.layout.custom_filter_dialog_layout, null)
 
@@ -216,7 +225,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         block3TitleTextView.text = "Elemek"
 
         for (i in filterOptions.indices) {
-            val checkBox = CheckBox(requireActivity())
+            val checkBox = CheckBox(context)
             checkBox.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
             checkBox.text = filterOptions[i]
             checkBox.isChecked = selectedItems[i]
@@ -225,9 +234,9 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
 
             if (i in 0..2) {
                 block1CheckboxGroup.addView(checkBox)
-            } else if(i in 3 .. 7) {
+            } else if (i in 3..7) {
                 block2CheckboxGroup.addView(checkBox)
-            }else
+            } else
                 block3CheckboxGroup.addView(checkBox)
         }
 
@@ -253,10 +262,11 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
         val dialog = builder.create()
         dialog.show()
     }
-    private fun invokeFilter(rawSelectedItems: BooleanArray? = null){
+
+    private fun invokeFilter(rawSelectedItems: BooleanArray? = null) {
         val selectedItems: BooleanArray = rawSelectedItems ?: Filter.selectedInstallItems.copyOf()
 
-        val selectedFilters:MutableList<InstallFilter> = mutableListOf()
+        val selectedFilters: MutableList<InstallFilter> = mutableListOf()
         for (i in selectedItems.indices) {
             if (selectedItems[i]) {
                 selectedFilters.add(InstallFilter.valueOfOrdinal(i))

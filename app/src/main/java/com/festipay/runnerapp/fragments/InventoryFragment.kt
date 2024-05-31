@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,9 +20,10 @@ import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.data.Inventory
+import com.festipay.runnerapp.data.References.Companion.comments_ref
+import com.festipay.runnerapp.data.References.Companion.mode_ref
 import com.festipay.runnerapp.utilities.Mode
-import com.festipay.runnerapp.database.Database
-import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
+import com.festipay.runnerapp.utilities.DateFormatter.timestampToLocalDateTime
 import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment
@@ -38,6 +40,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     private lateinit var filter: Filter<Inventory>
     private var final: Boolean = false
     private var modeName: String = "Inventory"
+    private lateinit var context: FragmentActivity
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +62,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
             args.putString("final", "final")
             if(final)frag.arguments = args
 
-            requireActivity().supportFragmentManager.beginTransaction()
+            context.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.slide_in_right,
                     R.anim.slide_out_left,
@@ -72,6 +76,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     }
 
     private fun initFragment() {
+        context = requireActivity()
         if(arguments?.getString("final") != null) {
             final = true
             modeName = "Final_Inventory"
@@ -80,11 +85,11 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
         if(!final)CurrentState.mode = Mode.INVENTORY
         else CurrentState.mode = Mode.FINAL_INVENTORY
 
-        val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: Toolbar = context.findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${if(final)"Záró" else ""} ${getString(R.string.inventory_string)}"
         setHasOptionsMenu(true)
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible =
+        context.findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible =
             true
         if(!final)CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY
         else CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.FINAL_INVENTORY
@@ -97,7 +102,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf<Inventory>()
-        Database.db.collection(modeName)
+        mode_ref
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("ItemName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
@@ -106,10 +111,10 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                         for (doc in result) {
                             itemList.add(
                                 Inventory(
-                                    doc.data["ItemName"] as String,
-                                    (doc.data["Quantity"] as Long).toInt(),
-                                    doc.id,
-                                    lastModified = TimestampToLocalDateTime(doc.data["LastModified"] as Timestamp?),
+                                    itemName = doc.data["ItemName"] as String,
+                                    quantity = (doc.data["Quantity"] as Long).toInt(),
+                                    docID = doc.id,
+                                    lastModified = timestampToLocalDateTime(doc.data["LastModified"] as Timestamp?),
                                     lastComment = null
                                 )
                             )
@@ -117,20 +122,20 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                         loadComments(view)
 
                     } else {
-                        showError(requireContext(), "Nincs felvéve tárgy!")
+                        showError(context, "Nincs felvéve tárgy!")
                     }
                 } catch (ex: Exception) {
-                    showError(requireContext(), "Error in $modeName loadInventoryList: $ex")
+                    showError(context, "Error in $modeName loadInventoryList: $ex")
                 }
 
             }.addOnFailureListener { exception ->
-                showError(requireContext(), "Can't read documents in $modeName inventoryitems: $exception")
+                showError(context, "Can't read documents in $modeName inventoryitems: $exception")
             }
     }
 
     override fun loadComments(view: View) {
         for (it in itemList) {
-            Database.db.collection(modeName).document(it.docID).collection("Comments")
+            comments_ref(it.docID)
                 .orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
@@ -138,8 +143,8 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
                         for (doc in result) {
                             comments.add(
                                 Comment(
-                                    doc.data["Comment"] as String,
-                                    TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
+                                    megjegyzes = doc.data["Comment"] as String,
+                                    megjegyzesIdo = timestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
                                 )
                             )
                         }
@@ -154,7 +159,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
     override fun setupView(view: View) {
 
         recyclerView = view.findViewById(R.id.inventoryRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
 
@@ -173,7 +178,7 @@ class InventoryFragment : Fragment(), IFragment<Inventory> {
             override fun onItemClick(position: Int, inventoryItem: Inventory) {
                 CurrentState.companySite = inventoryItem.itemName
                 CurrentState.companySiteID = inventoryItem.docID
-                launchFragment(requireActivity(), OperationSelectorFragment())
+                launchFragment(context, OperationSelectorFragment())
 
             }
         })

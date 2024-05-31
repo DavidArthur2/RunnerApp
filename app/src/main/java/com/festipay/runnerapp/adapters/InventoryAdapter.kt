@@ -55,8 +55,8 @@ class InventoryAdapter(private var itemList: ArrayList<Inventory>) :
         holder.darabszam.text = currentItem.quantity.toString()
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
-            DateFormatter.LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
-        holder.lastModifiedDate.text = DateFormatter.LocalDateTimeToString(currentItem.lastModified)
+            DateFormatter.localDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.lastModifiedDate.text = DateFormatter.localDateTimeToString(currentItem.lastModified)
 
     }
 

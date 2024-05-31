@@ -70,8 +70,8 @@ class CompanyDemolitionAdapter(private var itemList: ArrayList<CompanyDemolition
         holder.thirdItem.isChecked = currentItem.thirdItem
         holder.utolsoMegjegyzes.text = currentItem.lastComment?.megjegyzes
         holder.utolsoMegjegyzesDatum.text =
-            DateFormatter.LocalDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
-        holder.lastModifiedDate.text = DateFormatter.LocalDateTimeToString(currentItem.lastModified)
+            DateFormatter.localDateTimeToString(currentItem.lastComment?.megjegyzesIdo)
+        holder.lastModifiedDate.text = DateFormatter.localDateTimeToString(currentItem.lastModified)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

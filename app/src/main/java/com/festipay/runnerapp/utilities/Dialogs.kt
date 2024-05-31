@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.FragmentActivity
-import com.festipay.runnerapp.R
 import com.festipay.runnerapp.R.*
 import kotlin.system.exitProcess
 

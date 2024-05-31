@@ -12,11 +12,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-private fun createDirectoryIfNotExist(directoryPath: String) {
-    val directory = File(directoryPath)
-    if (!directory.exists()) directory.mkdirs()
-}
-
 @SuppressLint("SdCardPath")
 fun logToFile(message: String) {
     try {

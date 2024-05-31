@@ -9,12 +9,16 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
-class CamScanner(private val context: FragmentActivity, private val handleBarcode: (String) -> Unit) {
+class CamScanner(
+    private val context: FragmentActivity,
+    private val handleBarcode: (String) -> Unit
+) {
     private lateinit var mediaPlayer: MediaPlayer
 
-    init{
+    init {
         initBeeper()
     }
+
     fun scanCode() {
         val options = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS)

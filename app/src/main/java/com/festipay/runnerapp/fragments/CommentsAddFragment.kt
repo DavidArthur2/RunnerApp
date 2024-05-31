@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
 import com.festipay.runnerapp.R
+import com.festipay.runnerapp.data.References.Companion.comments_ref
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.FragmentType
@@ -66,8 +67,7 @@ class CommentsAddFragment : Fragment() {
             "Comment" to commentText.text.toString(),
             "Timestamp" to Timestamp.now().toDate()
         )
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-            .collection("Comments").add(data)
+        comments_ref.add(data)
             .addOnSuccessListener {
                 launchFragment(context, CommentsFragment())
                 Functions.showInfoDialog(

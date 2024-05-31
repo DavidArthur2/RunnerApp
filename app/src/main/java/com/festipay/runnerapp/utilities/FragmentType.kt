@@ -38,7 +38,8 @@ enum class FragmentType {
     FINAL_INVENTORY_ITEM_SN_ADD,
 
 }
-enum class OperationType{
+
+enum class OperationType {
     STATUS_MODIFY,
     COMMENTS,
     SN_HANDLING,

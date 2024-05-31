@@ -1,6 +1,6 @@
 package com.festipay.runnerapp.fragments
 
-import LocationGetter.getLocation
+import com.festipay.runnerapp.utilities.LocationGetter.getLocation
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.activities.MapsActivity
+import com.festipay.runnerapp.data.References.Companion.company_ref
+import com.festipay.runnerapp.data.References.Companion.coord_ref
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.FragmentType
@@ -43,7 +45,6 @@ class GPSFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_coords, container, false)
 
-
         initFragment()
         initView(view)
         loadCoords()
@@ -54,7 +55,7 @@ class GPSFragment : Fragment() {
         CurrentState.operation = OperationType.GPS
         CurrentState.fragmentType = FragmentType.INSTALL_COMPANY_GPS
         modeName = Database.mapCollectionModeName()
-        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: androidx.appcompat.widget.Toolbar = context.findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.companySite} - GPS koord."
 
     }
@@ -75,7 +76,7 @@ class GPSFragment : Fragment() {
     private fun loadCoords(){
         val companyRef = Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
 
-        Database.db.collection("Coordinates").whereEqualTo("ref", companyRef).get().addOnSuccessListener {
+        coord_ref.whereEqualTo("ref", companyRef).get().addOnSuccessListener {
             if(!it.isEmpty){
                 val geoPoint = it.first().data["coord"] as GeoPoint
                 coord = LatLng(geoPoint.latitude, geoPoint.longitude)
@@ -106,17 +107,16 @@ class GPSFragment : Fragment() {
             onSuccess = { location ->
                 val geoPoint = GeoPoint(location.latitude, location.longitude)
                 var data = hashMapOf<String, Any>("coord" to geoPoint)
-                if(docID != null)Database.db.collection("Coordinates").document(docID!!).update(data).addOnSuccessListener {
+                if(docID != null)coord_ref.document(docID!!).update(data).addOnSuccessListener {
                     launchFragment(context, OperationSelectorFragment())
                     showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                 }.addOnFailureListener {
                     showError(context, "Sikertelen koordináta rögzítés", it.toString())
                 }
                 if(docID == null) {
-                    val companyRef = Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                    data = hashMapOf("coord" to geoPoint, "ref" to companyRef)
+                    data = hashMapOf("coord" to geoPoint, "ref" to company_ref)
 
-                    Database.db.collection("Coordinates").add(data).addOnSuccessListener {
+                    coord_ref.add(data).addOnSuccessListener {
                         launchFragment(context, OperationSelectorFragment())
                         showInfoDialog(context, "Rögzítés", "Koordináták sikeresen rögzítve!")
                     }.addOnFailureListener {

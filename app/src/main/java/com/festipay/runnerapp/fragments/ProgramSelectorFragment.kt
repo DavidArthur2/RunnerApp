@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.ProgramAdapter
 import com.festipay.runnerapp.data.Program
+import com.festipay.runnerapp.data.References.Companion.finalInventoryEnable_ref
+import com.festipay.runnerapp.data.References.Companion.programs_ref
 import com.festipay.runnerapp.utilities.CurrentState
-import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.logToFile
 import com.festipay.runnerapp.utilities.showError
@@ -22,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class ProgramSelectorFragment : Fragment(), IFragment<Program> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<Program>
+    private lateinit var context: FragmentActivity
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,10 +37,11 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
     }
 
     private fun initFragment() {
-        val b = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        context = requireActivity()
+        val b = context.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         b.isVisible = false
 
-        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: androidx.appcompat.widget.Toolbar = context.findViewById(R.id.toolbar)
         appBar.title = getString(R.string.program_selector_title)
 
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.PROGRAM
@@ -49,7 +53,7 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        Database.db.collection("Programs")
+        programs_ref
             .whereArrayContains("users", CurrentState.userName as String).get()
             .addOnSuccessListener { result ->
                 if (!result.isEmpty) {
@@ -58,17 +62,17 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
                     }
                     setupView(view)
                 } else {
-                    showError(requireContext(), "Nincs felvéve program!")
+                    showError(context, "Nincs felvéve program!")
                 }
             }.addOnFailureListener { exception ->
-            showError(requireContext(), "Can't read documents in programs: $exception")
-        }
+                showError(context, "Can't read documents in programs: $exception")
+            }
     }
 
     override fun setupView(view: View) {
 
         recyclerView = view.findViewById(R.id.programSelectorRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
 
@@ -94,14 +98,16 @@ class ProgramSelectorFragment : Fragment(), IFragment<Program> {
             override fun onItemClick(position: Int, program: Program) {
                 CurrentState.programName = program.title
 
-                val bottomView = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                val bottomView =
+                    context.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
-                Database.db.collection("Final_Inventory_enable").whereEqualTo("ProgramName", program.title).get().addOnSuccessListener {
-                    if(!it.isEmpty) {
-                        val v = it.documents[0].data?.get("enabled") as Boolean
-                        bottomView.menu.findItem(R.id.finalInventory).isVisible = v
-                    }
-                }.addOnFailureListener {
+                finalInventoryEnable_ref.whereEqualTo("ProgramName", program.title).get()
+                    .addOnSuccessListener {
+                        if (!it.isEmpty) {
+                            val v = it.documents[0].data?.get("enabled") as Boolean
+                            bottomView.menu.findItem(R.id.finalInventory).isVisible = v
+                        }
+                    }.addOnFailureListener {
                     logToFile(it.toString())
                 }.addOnCompleteListener {
                     bottomView.selectedItemId = R.id.install

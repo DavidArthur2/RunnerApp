@@ -9,12 +9,12 @@ import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.CommentsAdapter
 import com.festipay.runnerapp.data.Comment
+import com.festipay.runnerapp.data.References.Companion.comments_ref
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.DateFormatter
@@ -25,7 +25,6 @@ import com.festipay.runnerapp.utilities.Functions.showInfoDialog
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
@@ -93,9 +92,8 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
         adapt.setOnItemClickListener(object : CommentsAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, comment: Comment) {
                 Functions.showLoadingScreen(context)
-                Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                    .collection("Comments").document(comment.docID).delete().addOnSuccessListener {
-                        launchFragment(context, CommentsFragment())
+                comments_ref.document(comment.docID).delete().addOnSuccessListener {
+                    launchFragment(context, CommentsFragment())
                     showInfoDialog(
                         context,
                         "Törlés",
@@ -116,15 +114,14 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
 
     override fun loadComments(view: View) {
         itemList = arrayListOf()
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-            .collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
+        comments_ref.orderBy("Timestamp", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
                 if (!result.isEmpty) {
                     for (doc in result) {
                         itemList.add(
                             Comment(
                                 doc.data["Comment"] as String,
-                                DateFormatter.TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp),
+                                DateFormatter.timestampToLocalDateTime(doc.data["Timestamp"] as Timestamp),
                                 doc.id
                             )
                         )
@@ -147,13 +144,15 @@ class CommentsFragment : Fragment(), IFragment<Comment> {
     override fun loadList(view: View) {
 
     }
+
     private fun addComment() {
         Functions.showLoadingScreen(context)
         val data = hashMapOf(
             "Comment" to commentText.text.toString(),
             "Timestamp" to Timestamp.now().toDate()
         )
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "").collection("Comments").add(data)
+        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
+            .collection("Comments").add(data)
             .addOnSuccessListener {
                 launchFragment(context, CommentsFragment())
                 showInfoDialog(

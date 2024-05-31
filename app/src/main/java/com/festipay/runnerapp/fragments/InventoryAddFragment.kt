@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.Inventory
+import com.festipay.runnerapp.data.References
+import com.festipay.runnerapp.data.References.Companion.comments_ref
+import com.festipay.runnerapp.data.References.Companion.mode_ref
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
@@ -24,11 +28,12 @@ class InventoryAddFragment : Fragment() {
     private lateinit var addExitButton: Button
     private lateinit var addButton: Button
 
-    private lateinit var commentInput : EditText
+    private lateinit var commentInput: EditText
     private lateinit var itemNameInput: EditText
     private lateinit var deviceNumberInput: EditText
     private var modeName: String = "Inventory"
     private var final: Boolean = false
+    private lateinit var context: FragmentActivity
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,40 +41,35 @@ class InventoryAddFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_inventory_add, container, false)
+        initFragment()
         initViews(view)
-
-
-        addExitButton.setOnClickListener {
-            showLoadingScreen(requireActivity())
-            addButtonListener(exit = true)
-        }
-        addButton.setOnClickListener {
-            showLoadingScreen(requireActivity())
-            addButtonListener(exit = false)
-        }
 
         return view
 
+    }
+
+    private fun initFragment() {
+        context = requireActivity()
     }
 
     private fun addButtonListener(exit: Boolean) {
         val (item, comment) = getValues()
 
         if (deviceNumberInput.text.isEmpty()) {
-            showError(requireActivity(), "Adj meg darabszámot!")
+            showError(context, "Adj meg darabszámot!")
             return
         }
         if (item.itemName.length < 3) {
-            showError(requireActivity(), "A tárgynév legalább 3 hosszú kell legyen!")
+            showError(context, "A tárgynév legalább 3 hosszú kell legyen!")
             return
         }
-        Database.db.collection("Inventory").whereEqualTo("TargyNev", item.itemName)
+        mode_ref.whereEqualTo("TargyNev", item.itemName)
             .whereEqualTo("ProgramName", CurrentState.programName).get().addOnSuccessListener {
                 if (it.isEmpty)
                     addData(item, comment, exit = exit)
                 else
                     showError(
-                        requireActivity(),
+                        context,
                         "Már létezik ilyen tárgynév ezen a programon!",
                         "itemname: ${item.itemName} programname: ${CurrentState.programName}"
                     )
@@ -82,23 +82,35 @@ class InventoryAddFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
-        if(arguments?.getString("final") != null){
+
+        if (arguments?.getString("final") != null) {
             final = true
             modeName = "Final_Inventory"
         }
-        if(!final)CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.INVENTORY_ITEM_ADD
-        else CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.FINAL_INVENTORY_ITEM_ADD
+        if (!final) CurrentState.fragmentType =
+            com.festipay.runnerapp.utilities.FragmentType.INVENTORY_ITEM_ADD
+        else CurrentState.fragmentType =
+            com.festipay.runnerapp.utilities.FragmentType.FINAL_INVENTORY_ITEM_ADD
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
-        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        context.findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
+        val appBar: androidx.appcompat.widget.Toolbar = context.findViewById(R.id.toolbar)
         appBar.title =
-            "${CurrentState.programName} - ${if(final)"Záró" else ""} ${getString(R.string.inventory_string)} - Hozzáadás"
+            "${CurrentState.programName} - ${if (final) "Záró" else ""} ${getString(R.string.inventory_string)} - Hozzáadás"
 
         addExitButton = view.findViewById(R.id.modifyExitButton)
         addButton = view.findViewById(R.id.modifyButton)
         itemNameInput = view.findViewById(R.id.itemNameInput)
         deviceNumberInput = view.findViewById(R.id.deviceNumberInput)
         commentInput = view.findViewById(R.id.commentInput)
+
+        addExitButton.setOnClickListener {
+            showLoadingScreen(context)
+            addButtonListener(exit = true)
+        }
+        addButton.setOnClickListener {
+            showLoadingScreen(context)
+            addButtonListener(exit = false)
+        }
 
         itemNameInput.clearComposingText()
         deviceNumberInput.clearComposingText()
@@ -120,13 +132,13 @@ class InventoryAddFragment : Fragment() {
             "ProgramName" to CurrentState.programName,
             "ItemName" to item.itemName
         )
-        Database.db.collection(modeName).add(data).addOnSuccessListener { doc ->
+        mode_ref.add(data).addOnSuccessListener { doc ->
 
             if (comment.isEmpty()) {
-                if (exit) launchFragment(requireActivity(), InventoryFragment(), final)
-                else launchFragment(requireActivity(), InventoryAddFragment(), final)
+                if (exit) launchFragment(context, InventoryFragment(), final)
+                else launchFragment(context, InventoryAddFragment(), final)
                 showInfoDialog(
-                    requireActivity(),
+                    context,
                     "Hozzáadás",
                     "\'${item.itemName}\' sikeresen hozzáadva!",
                     "Rendben",
@@ -137,12 +149,12 @@ class InventoryAddFragment : Fragment() {
                     "Comment" to comment,
                     "Timestamp" to Timestamp.now().toDate()
                 )
-                Database.db.collection(modeName).document(doc.id).collection("Comments").add(data)
+                comments_ref(doc.id).add(data)
                     .addOnSuccessListener {
-                        if (exit) launchFragment(requireActivity(), InventoryFragment(), final)
-                        else launchFragment(requireActivity(), InventoryAddFragment(), final)
+                        if (exit) launchFragment(context, InventoryFragment(), final)
+                        else launchFragment(context, InventoryAddFragment(), final)
                         showInfoDialog(
-                            requireActivity(),
+                            context,
                             "Hozzáadás",
                             "${item.itemName} sikeresen hozzáadva!",
                             "Rendben",
@@ -150,7 +162,7 @@ class InventoryAddFragment : Fragment() {
                         )
                     }.addOnFailureListener { ex ->
                         showError(
-                            requireActivity(),
+                            context,
                             "Sikertelen hozzáadás\nNézd a logot",
                             "Error at adding comment: $data, $ex"
                         )
@@ -158,7 +170,7 @@ class InventoryAddFragment : Fragment() {
             }
         }.addOnFailureListener { ex ->
             showError(
-                requireActivity(),
+                context,
                 "Sikertelen hozzáadás\nNézd a logot",
                 "Error at adding item: $data, $ex"
             )

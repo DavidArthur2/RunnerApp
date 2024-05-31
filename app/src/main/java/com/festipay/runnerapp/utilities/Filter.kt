@@ -1,6 +1,5 @@
 package com.festipay.runnerapp.utilities
 
-import androidx.fragment.app.Fragment
 import com.festipay.runnerapp.adapters.CompanyDemolitionAdapter
 import com.festipay.runnerapp.adapters.CompanyInstallAdapter
 import com.festipay.runnerapp.adapters.IAdapter
@@ -11,7 +10,6 @@ import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.data.DemolitionFirstItemEnum
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum.*
-import com.festipay.runnerapp.data.IData
 import com.festipay.runnerapp.data.InstallFirstItemEnum.*
 import com.festipay.runnerapp.data.InstallSecondItemEnum
 import com.festipay.runnerapp.data.InstallSecondItemEnum.*
@@ -21,9 +19,10 @@ import com.festipay.runnerapp.data.SN
 
 class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
-    companion object{
+    companion object {
         var selectedInstallItems: BooleanArray = BooleanArray(InstallFilter.toCharSequence().size)
-        var selectedDemolitionItems: BooleanArray = BooleanArray(DemolitionFilter.toCharSequence().size)
+        var selectedDemolitionItems: BooleanArray =
+            BooleanArray(DemolitionFilter.toCharSequence().size)
     }
 
 
@@ -40,11 +39,8 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
                     filteredList = filteredList.filter {
                         it.companyName.lowercase().contains(text.lowercase())
                     }
-                }
-                else if(option.isNotEmpty())
-                {
-                    for (filterOption in option)
-                    {
+                } else if (option.isNotEmpty()) {
+                    for (filterOption in option) {
                         selectedInstallItems[(filterOption as InstallFilter).ordinal] = true
                         filteredList = filteredList.filter {
                             when (filterOption) {
@@ -81,11 +77,8 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
                     filteredList = filteredList.filter {
                         it.companyName.lowercase().contains(text.lowercase())
                     }
-                }
-                else if(option.isNotEmpty())
-                {
-                    for (filterOption in option)
-                    {
+                } else if (option.isNotEmpty()) {
+                    for (filterOption in option) {
                         selectedDemolitionItems[(filterOption as DemolitionFilter).ordinal] = true
                         filteredList = filteredList.filter {
                             when (filterOption) {
@@ -119,8 +112,7 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
             }
 
-            FragmentType.INSTALL_COMPANY_SN, FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN, FragmentType.FINAL_INVENTORY_ITEM_SN ->
-            {
+            FragmentType.INSTALL_COMPANY_SN, FragmentType.DEMOLITION_COMPANY_SN, FragmentType.INVENTORY_ITEM_SN, FragmentType.FINAL_INVENTORY_ITEM_SN -> {
                 val adapter = (this.adapter as SNAdapter)
                 val itemList = (this.itemList as ArrayList<SN>)
                 var filteredList: List<SN> = itemList
@@ -186,6 +178,7 @@ enum class DemolitionFilter(private val displayName: String) : IFilter {
     ELSZALLITVA("Elszállítva"),
     STATUSZ_NELKUL("Státusz nélkül"),
     BAZIS_LESZERELES("Bázis leszerelés kell");
+
     override fun toString(): String {
         return displayName
     }

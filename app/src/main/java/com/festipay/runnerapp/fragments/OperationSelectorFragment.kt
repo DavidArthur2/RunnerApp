@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.EditText
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
@@ -24,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class OperationSelectorFragment : Fragment(), IFragment<String> {
     override lateinit var recyclerView: RecyclerView
     override lateinit var itemList: ArrayList<String>
+    private lateinit var context: FragmentActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,46 +39,53 @@ class OperationSelectorFragment : Fragment(), IFragment<String> {
         return view
     }
 
-    private fun initFragment(){
-        val mode: String = when(CurrentState.mode){
+    private fun initFragment() {
+        context = requireActivity()
+        val mode: String = when (CurrentState.mode) {
             Mode.INVENTORY -> {
                 CurrentState.fragmentType = FragmentType.INVENTORY_ITEM
                 getString(R.string.inventory_string)
             }
+
             Mode.INSTALL -> {
                 CurrentState.fragmentType = FragmentType.INSTALL_COMPANY
                 getString(R.string.install_string)
             }
+
             Mode.DEMOLITION -> {
                 CurrentState.fragmentType = FragmentType.DEMOLITION_COMPANY
                 getString(R.string.demolition_string)
             }
+
             Mode.FINAL_INVENTORY -> {
                 CurrentState.fragmentType = FragmentType.FINAL_INVENTORY_ITEM
                 "Záró leltár"
             }
+
             else -> getString(R.string.inventory_string)
         }
 
 
-        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: androidx.appcompat.widget.Toolbar = context.findViewById(R.id.toolbar)
         appBar.title =
             "${CurrentState.programName} - $mode - ${CurrentState.companySite}"
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
+        context.findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = false
     }
 
     override fun loadList(view: View) {
         itemList = arrayListOf()
         itemList.add(getString(R.string.status_modify))
         itemList.add(getString(R.string.comments))
-        if(CurrentState.mode == Mode.DEMOLITION || CurrentState.mode == Mode.INSTALL ){
+        if (CurrentState.mode == Mode.DEMOLITION || CurrentState.mode == Mode.INSTALL) {
             itemList.add(getString(R.string.did))
             itemList.add(getString(R.string.gps))
         }
-        if(CurrentState.mode == Mode.DEMOLITION)
+        if (CurrentState.mode == Mode.DEMOLITION)
             itemList.add("Kép")
-        if(CurrentState.mode == Mode.INVENTORY || CurrentState.mode == Mode.FINAL_INVENTORY) itemList.add(getString(R.string.sn))
+        if (CurrentState.mode == Mode.INVENTORY || CurrentState.mode == Mode.FINAL_INVENTORY) itemList.add(
+            getString(R.string.sn)
+        )
         setupView(view)
     }
 
@@ -86,7 +95,7 @@ class OperationSelectorFragment : Fragment(), IFragment<String> {
 
     override fun setupView(view: View) {
         recyclerView = view.findViewById(R.id.operationSelectorRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
 
@@ -95,22 +104,29 @@ class OperationSelectorFragment : Fragment(), IFragment<String> {
 
         adapt.setOnItemClickListener(object : OperationAdapter.OnItemClickListener {
             override fun onItemClick(position: Int, operation: String) {
-                when(operation){
-                    getString(R.string.status_modify) ->{
-                        Functions.launchFragment(requireActivity(), StatusModifyFragment())
+                when (operation) {
+                    getString(R.string.status_modify) -> {
+                        Functions.launchFragment(context, StatusModifyFragment())
                     }
-                    getString(R.string.comments) ->{
-                        Functions.launchFragment(requireActivity(), CommentsFragment())
+
+                    getString(R.string.comments) -> {
+                        Functions.launchFragment(context, CommentsFragment())
                     }
-                    getString(R.string.did),getString(R.string.sn) ->{
-                        if(CurrentState.mode != Mode.DEMOLITION)Functions.launchFragment(requireActivity(), SNFragment())
-                        else Functions.launchFragment(requireActivity(), SNInstantAddFragment())
+
+                    getString(R.string.did), getString(R.string.sn) -> {
+                        if (CurrentState.mode != Mode.DEMOLITION) Functions.launchFragment(
+                            context,
+                            SNFragment()
+                        )
+                        else Functions.launchFragment(context, SNInstantAddFragment())
                     }
-                    getString(R.string.gps) ->{
-                        Functions.launchFragment(requireActivity(), GPSFragment())
+
+                    getString(R.string.gps) -> {
+                        Functions.launchFragment(context, GPSFragment())
                     }
-                    "Kép" ->{
-                        Functions.launchFragment(requireActivity(), CameraFragment())
+
+                    "Kép" -> {
+                        Functions.launchFragment(context, CameraFragment())
                     }
                 }
 

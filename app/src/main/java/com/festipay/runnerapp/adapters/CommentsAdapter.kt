@@ -43,7 +43,7 @@ class CommentsAdapter(private val itemList: ArrayList<Comment>) :
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.message.text = currentItem.megjegyzes
-        holder.timestamp.text = DateFormatter.LocalDateTimeToString(currentItem.megjegyzesIdo)
+        holder.timestamp.text = DateFormatter.localDateTimeToString(currentItem.megjegyzesIdo)
     }
 
     fun setOnItemClickListener(listener: OnItemDeleteListener) {

@@ -9,21 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.adapters.CommentsAdapter
-import com.festipay.runnerapp.adapters.InventoryAdapter
 import com.festipay.runnerapp.adapters.SNAdapter
-import com.festipay.runnerapp.data.Comment
-import com.festipay.runnerapp.data.Inventory
-import com.festipay.runnerapp.data.Program
+import com.festipay.runnerapp.data.References.Companion.sn_ref
 import com.festipay.runnerapp.data.SN
 import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
-import com.festipay.runnerapp.utilities.DateFormatter
 import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
@@ -31,10 +26,7 @@ import com.festipay.runnerapp.utilities.Functions.showLoadingScreen
 import com.festipay.runnerapp.utilities.Mode
 import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.Query
 
 class SNFragment : Fragment(), IFragment<SN> {
     override lateinit var recyclerView: RecyclerView
@@ -42,6 +34,8 @@ class SNFragment : Fragment(), IFragment<SN> {
     private lateinit var adapter: SNAdapter
     private lateinit var modeName: String
     private lateinit var filter: Filter<SN>
+    private lateinit var context: FragmentActivity
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,10 +46,12 @@ class SNFragment : Fragment(), IFragment<SN> {
         loadList(view)
         return view
     }
-    private fun initFragment(){
+
+    private fun initFragment() {
+        context = requireActivity()
         CurrentState.operation = OperationType.SN_HANDLING
         modeName = Database.mapCollectionModeName()
-        val appBar: androidx.appcompat.widget.Toolbar = requireActivity().findViewById(R.id.toolbar)
+        val appBar: androidx.appcompat.widget.Toolbar = context.findViewById(R.id.toolbar)
         CurrentState.fragmentType = when (CurrentState.mode) {
             Mode.INSTALL -> FragmentType.INSTALL_COMPANY_SN
             Mode.DEMOLITION -> FragmentType.DEMOLITION_COMPANY_SN
@@ -72,7 +68,7 @@ class SNFragment : Fragment(), IFragment<SN> {
     private fun initViews(view: View) {
         view.findViewById<FloatingActionButton>(R.id.snFloatingActionButton)
             .setOnClickListener {
-                requireActivity().supportFragmentManager.beginTransaction()
+                context.supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
@@ -84,39 +80,41 @@ class SNFragment : Fragment(), IFragment<SN> {
                     .commit()
             }
     }
-    override fun onViewLoaded(){
+
+    override fun onViewLoaded() {
         filter = Filter(adapter, itemList)
         Functions.hideLoadingScreen()
     }
+
     override fun loadList(view: View) {
         itemList = arrayListOf()
-        Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-            .collection("SN").get().addOnSuccessListener { result ->
-                if (!result.isEmpty) {
-                    for (doc in result) {
-                        itemList.add(
-                            SN(
-                                doc.data["SN"] as String,
-                                doc.id
-                            )
+        sn_ref.get().addOnSuccessListener { result ->
+            if (!result.isEmpty) {
+                for (doc in result) {
+                    itemList.add(
+                        SN(
+                            doc.data["SN"] as String,
+                            doc.id
                         )
-                    }
+                    )
                 }
-                setupView(view)
-            }.addOnFailureListener {
-                showError(
-                    requireActivity(),
-                    "Sikertelen SN beolvasás",
-                    "companydocid: ${CurrentState.companySiteID} error: $it"
-                )
             }
+            setupView(view)
+        }.addOnFailureListener {
+            showError(
+                context,
+                "Sikertelen SN beolvasás",
+                "companydocid: ${CurrentState.companySiteID} error: $it"
+            )
+        }
     }
 
     override fun loadComments(view: View) {
     }
+
     override fun setupView(view: View) {
         recyclerView = view.findViewById(R.id.snRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
 
@@ -133,24 +131,23 @@ class SNFragment : Fragment(), IFragment<SN> {
 
         adapter.setOnItemClickListener(object : SNAdapter.OnItemDeleteListener {
             override fun onItemDelete(position: Int, snItem: SN) {
-                showLoadingScreen(requireActivity())
-                Database.db.collection(modeName).document(CurrentState.companySiteID ?: "")
-                    .collection("SN").document(snItem.docID).delete().addOnSuccessListener {
-                        Functions.launchFragment(requireActivity(), SNFragment())
-                        Functions.showInfoDialog(
-                            requireActivity(),
-                            "Törlés",
-                            "Sikeresen törölted az SN-t!",
-                            "Vissza",
-                            false
-                        )
-                    }.addOnFailureListener {
-                        showError(
-                            requireActivity(),
-                            "SN törlése sikertelen!",
-                            "companydocid: ${CurrentState.companySiteID} sndocid: ${snItem.docID} error: $it"
-                        )
-                    }
+                showLoadingScreen(context)
+                sn_ref(snItem.docID).delete().addOnSuccessListener {
+                    Functions.launchFragment(context, SNFragment())
+                    Functions.showInfoDialog(
+                        context,
+                        "Törlés",
+                        "Sikeresen törölted az SN-t!",
+                        "Vissza",
+                        false
+                    )
+                }.addOnFailureListener {
+                    showError(
+                        context,
+                        "SN törlése sikertelen!",
+                        "companydocid: ${CurrentState.companySiteID} sndocid: ${snItem.docID} error: $it"
+                    )
+                }
             }
         })
     }

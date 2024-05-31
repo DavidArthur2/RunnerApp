@@ -1,5 +1,6 @@
 package com.festipay.runnerapp.fragments
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.TypedValue
@@ -16,6 +17,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
@@ -24,10 +26,11 @@ import com.festipay.runnerapp.data.Comment
 import com.festipay.runnerapp.data.CompanyDemolition
 import com.festipay.runnerapp.data.DemolitionFirstItemEnum
 import com.festipay.runnerapp.data.DemolitionSecondItemEnum
+import com.festipay.runnerapp.data.References.Companion.comments_ref
+import com.festipay.runnerapp.data.References.Companion.mode_ref
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Mode
-import com.festipay.runnerapp.database.Database
-import com.festipay.runnerapp.utilities.DateFormatter.TimestampToLocalDateTime
+import com.festipay.runnerapp.utilities.DateFormatter.timestampToLocalDateTime
 import com.festipay.runnerapp.utilities.DemolitionFilter
 import com.festipay.runnerapp.utilities.Filter
 import com.festipay.runnerapp.utilities.Functions
@@ -42,6 +45,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
     override lateinit var itemList: ArrayList<CompanyDemolition>
     private lateinit var adapter: CompanyDemolitionAdapter
     private lateinit var filter: Filter<CompanyDemolition>
+    private lateinit var context: FragmentActivity
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,83 +57,92 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         loadList(view)
         return view
     }
-    private fun initFragment(){
+
+    private fun initFragment() {
+        context = requireActivity()
         CurrentState.mode = Mode.DEMOLITION
         CurrentState.fragmentType = com.festipay.runnerapp.utilities.FragmentType.DEMOLITION
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible = true
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView).isVisible =
+            true
 
         val appBar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         appBar.title = "${CurrentState.programName} - ${getString(R.string.demolition_string)}"
         setHasOptionsMenu(true)
     }
-    override fun onViewLoaded(){
+
+    override fun onViewLoaded() {
         filter = Filter(adapter, itemList)
         invokeFilter()
         hideLoadingScreen()
     }
-    override fun loadList(view: View){
-        itemList = arrayListOf<CompanyDemolition>()
-        Database.db.collection("Company_Demolition")
+
+    override fun loadList(view: View) {
+        itemList = arrayListOf()
+        mode_ref
             .whereEqualTo("ProgramName", CurrentState.programName)
             .orderBy("CompanyName", Query.Direction.ASCENDING)
             .get().addOnSuccessListener { result ->
-                if(!result.isEmpty){
-                    for(doc in result){
+                if (!result.isEmpty) {
+                    for (doc in result) {
                         itemList.add(
                             CompanyDemolition(
-                                doc.data["CompanyName"] as String,
-                                DemolitionFirstItemEnum.valueOf(doc.data["1"] as String),
-                                DemolitionSecondItemEnum.valueOf(doc.data["2"] as String),
-                                doc.data["3"] as Boolean,
-                                doc.id,
-                                lastModified = TimestampToLocalDateTime(doc.data["LastModified"] as Timestamp?)
-                        )
+                                companyName = doc.data["CompanyName"] as String,
+                                firstItem = DemolitionFirstItemEnum.valueOf(doc.data["1"] as String),
+                                secondItem = DemolitionSecondItemEnum.valueOf(doc.data["2"] as String),
+                                thirdItem = doc.data["3"] as Boolean,
+                                docID = doc.id,
+                                lastModified = timestampToLocalDateTime(doc.data["LastModified"] as Timestamp?)
+                            )
                         )
                     }
                     loadComments(view)
 
-                }
-                else{
-                    showError(requireContext(), "Nincs felvéve telephely!")
+                } else {
+                    showError(context, "Nincs felvéve telephely!")
                 }
             }.addOnFailureListener { exception ->
-                showError(requireContext(), "Can't read documents in telephelyek_bontas: $exception")
+                showError(
+                    context,
+                    "Can't read documents in telephelyek_bontas: $exception"
+                )
             }
     }
 
-    override fun loadComments(view: View){
-        for(it in itemList) {
-            Database.db.collection("Company_Demolition").document(it.docID).collection("Comments").orderBy("Timestamp", Query.Direction.ASCENDING)
+    override fun loadComments(view: View) {
+        for (it in itemList) {
+            comments_ref
+                .orderBy("Timestamp", Query.Direction.ASCENDING)
                 .get().addOnSuccessListener { result ->
                     if (!result.isEmpty) {
                         val comments: MutableList<Comment> = mutableListOf()
                         for (doc in result) {
                             comments.add(
                                 Comment(
-                                    doc.data["Comment"] as String,
-                                    TimestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
+                                    megjegyzes =  doc.data["Comment"] as String,
+                                    megjegyzesIdo = timestampToLocalDateTime(doc.data["Timestamp"] as Timestamp)
                                 )
                             )
                         }
                         it.lastComment = comments.last()
                     }
-                    if(itemList.last() == it)setupView(view)
+                    if (itemList.last() == it) setupView(view)
                 }
         }
     }
 
-    override fun setupView(view: View){
+    override fun setupView(view: View) {
 
         recyclerView = view.findViewById(R.id.companyDemolitionRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
 
 
         adapter = CompanyDemolitionAdapter(itemList)
         recyclerView.adapter = adapter
 
-        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 onViewLoaded()
                 recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -171,6 +184,7 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showFilterDialog() {
         val filterOptions = DemolitionFilter.toCharSequence()
         val selectedItems = Filter.selectedDemolitionItems.copyOf()
@@ -201,9 +215,9 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
 
             if (i in 0..2) {
                 block1CheckboxGroup.addView(checkBox)
-            } else if(i in 3 .. 6) {
+            } else if (i in 3..6) {
                 block2CheckboxGroup.addView(checkBox)
-            }else
+            } else
                 block3CheckboxGroup.addView(checkBox)
         }
 
@@ -230,10 +244,11 @@ class DemolitionFragment : Fragment(), IFragment<CompanyDemolition> {
         dialog.show()
     }
 
-    private fun invokeFilter(rawSelectedItems: BooleanArray? = null){
-        val selectedItems: BooleanArray = rawSelectedItems ?: Filter.selectedDemolitionItems.copyOf()
+    private fun invokeFilter(rawSelectedItems: BooleanArray? = null) {
+        val selectedItems: BooleanArray =
+            rawSelectedItems ?: Filter.selectedDemolitionItems.copyOf()
 
-        val selectedFilters:MutableList<DemolitionFilter> = mutableListOf()
+        val selectedFilters: MutableList<DemolitionFilter> = mutableListOf()
         for (i in selectedItems.indices) {
             if (selectedItems[i]) {
                 selectedFilters.add(DemolitionFilter.valueOfOrdinal(i))

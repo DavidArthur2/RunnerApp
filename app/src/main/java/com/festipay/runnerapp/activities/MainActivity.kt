@@ -44,7 +44,9 @@ class MainActivity : AppCompatActivity() {
             showError(this, "Hiba történt a Firebase inicializálásakor!", ex.toString())
         }
 
-        checkVersion()
+        onViewLoaded()
+        loginButton.isEnabled = true
+        //checkVersion()
 
     }
 
@@ -97,7 +99,8 @@ class MainActivity : AppCompatActivity() {
         val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
         versionLabel.text = "Verzió: $currentVersion"
 
-        config_ref.get().addOnSuccessListener {
+        Database.db.collection("Config").get().addOnSuccessListener {
+
             if(it.documents.isEmpty()){
                 showError(this, "Sikertelen verzió lekérdezés!\n Ellenőrízd az Internetet!")
                 onViewLoaded()
