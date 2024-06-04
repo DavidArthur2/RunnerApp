@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingTop="@dimen/fragment_vertical_margin"
+        android:paddingRight="@dimen/fragment_horizontal_margin"
+        android:paddingBottom="@dimen/fragment_vertical_margin"
+        tools:context=".fragments.StatusModifyFragment">
+
+        <ImageView
+            android:id="@+id/pinGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="108dp"
+            android:scaleX="1.8"
+            android:scaleY="1.8"
+            android:src="@drawable/ic_location_pin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.478"
+            app:layout_constraintStart_toEndOf="@+id/companyNameText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/companyNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/companyNameLabel"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/firstLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:text="Felderítés: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/secondLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="88dp"
+            android:text="Telepítés: "
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/companyNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Bar 15A"
+            android:textSize="21sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintStart_toEndOf="@+id/companyNameLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/commentInput"
+            android:layout_width="288dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="512dp"
+            android:background="@drawable/custom_input"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_ -.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fadingEdge="vertical"
+            android:hint="@string/commentAddHint"
+            android:inputType="none"
+            android:maxLength="40"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/modifyExitButton"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="584dp"
+            android:text="@string/modifyExitButtonText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/modifyAddButton"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="584dp"
+            android:text="@string/modifyDIDButtonText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.212"
+            app:layout_constraintStart_toEndOf="@+id/modifyExitButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/firstItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="46dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/gradient_spinner"
+            android:spinnerMode="dialog"
+            app:layout_constraintStart_toEndOf="@+id/firstLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/secondItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="86dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/gradient_spinner"
+            android:spinnerMode="dialog"
+            app:layout_constraintStart_toEndOf="@+id/secondLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/thirdItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="152dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Elosztó:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/seventhItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="352dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Szoftver:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:switchPadding="-15dp"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/ninethItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="452dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Helyszín:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:switchPadding="-15dp"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/fifthItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="252dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Hálozat:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/sixthItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="300dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="PTG:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/eightItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="400dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Param:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/fourthItem"
+            android:layout_width="104dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="200dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:text="Áram:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:thumbTint="@color/switch_thumb_selector_red"
+            app:trackTint="@color/switch_track_selector_red" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

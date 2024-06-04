@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingTop="@dimen/fragment_vertical_margin"
+        android:paddingRight="@dimen/fragment_horizontal_margin"
+        android:paddingBottom="@dimen/fragment_vertical_margin"
+        tools:context=".fragments.StatusModifyFragment">
+
+        <EditText
+            android:id="@+id/itemNameInput"
+            android:layout_width="288dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/custom_input"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_-.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fadingEdge="vertical"
+            android:hint="@string/targyNevText"
+            android:inputType="textCapSentences"
+            android:maxLength="15"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/deviceNumberInput"
+            android:layout_width="118dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/custom_input"
+            android:digits="0123456789"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fadingEdge="vertical"
+            android:hint="Darabszám*"
+            android:inputType="numberSigned"
+            android:maxLength="4"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/commentInput"
+            android:layout_width="288dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="176dp"
+            android:background="@drawable/custom_input"
+            android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_ -.QWERTYUIOPASDFGHJKLZXCVBNMáéőúüóűöÖíÁÉŐÚŰÓÜÍ"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fadingEdge="vertical"
+            android:hint="@string/commentAddHint"
+            android:inputType="none"
+            android:maxLength="40"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/modifyExitButton"
+            android:layout_width="166dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="252dp"
+            android:text="Hozzáadás és kilépés"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/modifyButton"
+            android:layout_width="166dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="252dp"
+            android:text="Hozzáadás"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.307"
+            app:layout_constraintStart_toEndOf="@+id/modifyExitButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

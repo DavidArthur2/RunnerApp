@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <item
+        android:id="@+id/actionSearch"
+        android:icon="@drawable/search_icon"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/actionFilter"
+        android:icon="@drawable/filter_icon"
+        app:actionProviderClass="androidx.core.view.ActionProvider"
+        app:showAsAction="always"
+        android:title="Filter" />
+</menu>

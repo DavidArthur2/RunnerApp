@@ -1,15 +1,74 @@
 package com.festipay.runnerapp.data
 
-data class CompanyInstall(var kiadva: Boolean, var nemKirakhato: Boolean, var kirakva: Boolean,
-                          val eloszto: Boolean, var aram: Boolean, var szoftver: Boolean,
-                          var param: Boolean, var teszt:Boolean,
-                          var utolsoMegjegyzes: Comment?,
-                          var comments: Comments?, var didek: DIDS?)
+import java.time.LocalDateTime
 
-data class CompanyDemolition(var eszkozszam: Int, var folyamatban: Boolean, var csomagolt: Boolean,
-                             var autoban: Boolean, var bazisLeszereles: Boolean,
-                             var utolsoMegjegyzes: Comment?,
-                             var comments: Comments?, var didek: DIDS?)
+data class CompanyInstall(
+    var companyName: String,
+    val firstItem: InstallFirstItemEnum,
+    val secondItem: InstallSecondItemEnum,
+    val thirdItem: Boolean,
+    val fourthItem: Boolean,
+    val fifthItem: Boolean,
+    val sixthItem: Boolean,
+    val seventhItem: Boolean,
+    val eightItem: Boolean,
+    val ninethItem: Boolean,
+    var docID: String = "",
+    var lastComment: Comment? = null,
+    var lastModified: LocalDateTime? = null
+) : IData
 
-data class Inventory(var darabszam: Int, var sn: Boolean, var targyNev: String, var utolsoMegjegyzes: Comment?,
-                     var comments: Comments?, var didek: DIDS?)
+data class CompanyDemolition(
+    var companyName: String,
+    val firstItem: DemolitionFirstItemEnum,
+    val secondItem: DemolitionSecondItemEnum,
+    val thirdItem: Boolean,
+    var docID: String = "",
+    var lastComment: Comment? = null,
+    var lastModified: LocalDateTime? = null
+) : IData
+
+
+enum class InstallFirstItemEnum(private var displayName: String) {
+    NEM_KIRAKHATO("Nem kirakható"),
+    KIRAKHATO("Kirakható"),
+    TELEPITHETO("Telepíthető");
+
+    override fun toString(): String {
+        return displayName
+    }
+}
+
+
+enum class InstallSecondItemEnum(private var displayName: String) {
+    STATUSZ_NELKUL("Státusz nélkül"),
+    BAZIS_KIADVA("Bázison kiadva"),
+    KIHELYEZESRE_VAR("Kihelyezésre vár"),
+    KIRAKVA("Kirakva"),
+    HELYSZINEN_TESZTELVE("Helyszínen tesztelve");
+
+    override fun toString(): String {
+        return displayName
+    }
+}
+
+enum class DemolitionFirstItemEnum(private var displayName: String) {
+    BONTHATO("Bontható"),
+    MEG_NYITVA("Még nyitva"),
+    NEM_HOZZAFERHETO("Nem hozzáférhető");
+
+    override fun toString(): String {
+        return displayName
+    }
+}
+
+enum class DemolitionSecondItemEnum(private var displayName: String) {
+    CSOMAGOLVA("Csomagolva"),
+    SZALLITASRA_VAR("Szállításra vár"),
+    ELSZALLITVA("Elszállítva"),
+    STATUSZ_NELKUL("Státusz nélkül");
+
+    override fun toString(): String {
+        return displayName
+    }
+}

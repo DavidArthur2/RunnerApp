@@ -2,8 +2,31 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.RunnerApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorControlActivated">@color/secondaryColor</item>
+        <item name="colorControlNormal">@color/secondaryColor</item>
+        <item name="colorControlHighlight">@color/secondaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="colorSwitchThumbNormal">@color/secondaryColor</item>
+        <item name="android:colorForeground">@color/secondaryColor</item>
     </style>
 
     <style name="Theme.RunnerApp" parent="Base.Theme.RunnerApp" />
+
+    <style name="FabShapeRound" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+    </style>
+
+    <style name="Widget.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="shapeAppearance">
+            @style/ShapeAppearance.M3.Comp.NavigationBar.ActiveIndicator.Shape
+        </item>
+        <item name="android:color">#7289D18B</item>
+    </style>
 </resources>

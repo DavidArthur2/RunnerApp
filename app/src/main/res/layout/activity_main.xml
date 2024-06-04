@@ -4,26 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="138dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="60dp"
+        android:backgroundTint="@color/primaryColor"
+
+        android:text="@string/loginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userInputText" />
+
+    <EditText
+        android:id="@+id/userInputText"
+        android:layout_width="288dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="216dp"
+        android:background="@drawable/custom_input"
+        android:autofillHints="name"
+        android:drawableStart="@drawable/ic_username"
+        android:drawablePadding="8dp"
+        android:ems="10"
+        android:fadingEdge="vertical"
+        android:hint="@string/userInputHint"
+        android:inputType="textCapWords"
+        android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_-.QWERTYUIOPASDFGHJKLZXCVBNM"
+        android:maxLength="15"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/versionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="72dp"
-        android:text="Button"
+        android:layout_marginTop="28dp"
+        android:text="@string/defaultVersionString"
+        android:textColor="@color/lightGray"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
