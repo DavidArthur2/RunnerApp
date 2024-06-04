@@ -82,7 +82,7 @@ class OperationSelectorFragment : Fragment(), IFragment<String> {
             itemList.add(getString(R.string.gps))
         }
         if (CurrentState.mode == Mode.DEMOLITION)
-            itemList.add("Kép")
+            itemList.add("Visszatartási kép")
         if (CurrentState.mode == Mode.INVENTORY || CurrentState.mode == Mode.FINAL_INVENTORY) itemList.add(
             getString(R.string.sn)
         )
