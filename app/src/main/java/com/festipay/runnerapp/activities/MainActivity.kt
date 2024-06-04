@@ -110,6 +110,7 @@ class MainActivity : AppCompatActivity() {
                     this,
                     "A verziód elavult!\nA te verziód: $currentVersion\nJelenlegi verzió: $correctVersion"
                 )
+                return@addOnSuccessListener
             }
             loginButton.isEnabled = true
             onViewLoaded()
