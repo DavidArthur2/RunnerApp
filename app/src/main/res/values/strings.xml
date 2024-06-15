@@ -49,6 +49,7 @@
     <string name="comments">Megjegyzések</string>
     <string name="did">DID kezelés</string>
     <string name="gps">GPS koordináták</string>
+    <string name="camera">Visszatartási kép</string>
     <string name="sn">SN kezelés</string>
     <string name="telephelyNevHint">Telephely név*</string>
     <string name="installFirstSwitchText">Kiadva</string>
@@ -72,5 +73,7 @@
     <string name="modifyExitButtonText">Mentés és kilépés</string>
     <string name="modifyDIDButtonText">Mentés és DID felvétel</string>
     <string name="final_inventory_string">Záró leltár</string>
+    <string name="addText">Hozzáadás</string>
+    <string name="addAndExitText">Hozzáadás és kilépés</string>
 
 </resources>

@@ -102,7 +102,8 @@ class SNAddFragment : Fragment(), IFragment<SN> {
             }
         view.findViewById<FloatingActionButton>(R.id.snSaveFloatingActionButton)
             .setOnClickListener {
-                saveList()
+                if(itemList.size > 0)
+                    saveList()
             }
     }
 

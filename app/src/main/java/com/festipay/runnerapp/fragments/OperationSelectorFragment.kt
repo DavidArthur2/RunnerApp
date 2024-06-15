@@ -5,21 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
-import com.festipay.runnerapp.adapters.CompanyInstallAdapter
 import com.festipay.runnerapp.adapters.OperationAdapter
-import com.festipay.runnerapp.data.CompanyInstall
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions
 import com.festipay.runnerapp.utilities.Mode
-import com.festipay.runnerapp.utilities.OperationType
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class OperationSelectorFragment : Fragment(), IFragment<String> {
@@ -82,7 +77,7 @@ class OperationSelectorFragment : Fragment(), IFragment<String> {
             itemList.add(getString(R.string.gps))
         }
         if (CurrentState.mode == Mode.DEMOLITION)
-            itemList.add("Visszatartási kép")
+            itemList.add(getString(R.string.camera))
         if (CurrentState.mode == Mode.INVENTORY || CurrentState.mode == Mode.FINAL_INVENTORY) itemList.add(
             getString(R.string.sn)
         )
@@ -125,7 +120,7 @@ class OperationSelectorFragment : Fragment(), IFragment<String> {
                         Functions.launchFragment(context, GPSFragment())
                     }
 
-                    "Kép" -> {
+                    getString(R.string.camera) -> {
                         Functions.launchFragment(context, CameraFragment())
                     }
                 }
