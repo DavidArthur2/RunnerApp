@@ -35,12 +35,13 @@ fun logToFile(message: String) {
     }
 }
 
-fun showError(context: Context?, message: String, log: String = "") {
+fun showError(context: Context?, message: String, log: String = "", onComplete: (() -> Unit)? = null) {
     hideLoadingScreen()
     if (context != null)
-        showErrorDialog(context, message)
+        showErrorDialog(context, message, onComplete)
 
     logToFile("showError: $message | $log")
+
 }
 
 fun showWarning(context: FragmentActivity?, message: String, action: Fragment? = null) {

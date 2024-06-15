@@ -11,10 +11,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.data.Inventory
-import com.festipay.runnerapp.data.References
 import com.festipay.runnerapp.data.References.Companion.comments_ref
 import com.festipay.runnerapp.data.References.Companion.mode_ref
-import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.Functions.hideLoadingScreen
 import com.festipay.runnerapp.utilities.Functions.launchFragment

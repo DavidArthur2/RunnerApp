@@ -1,13 +1,17 @@
 package com.festipay.runnerapp.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import com.festipay.runnerapp.R.*
 import com.festipay.runnerapp.data.References.Companion.users_ref
 import com.festipay.runnerapp.data.References.Companion.config_ref
@@ -46,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         checkVersion()
 
+        requestNecessaryPermissions(this)
     }
 
     private fun initViews() {
@@ -99,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
         config_ref().get().addOnSuccessListener {
 
-            if(it.documents.isEmpty()){
+            if (it.documents.isEmpty()) {
                 showError(this, "Sikertelen verzió lekérdezés!\n Ellenőrízd az Internetet!")
                 onViewLoaded()
                 return@addOnSuccessListener
@@ -120,7 +125,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onViewLoaded(){
+    private fun onViewLoaded() {
         hideLoadingScreen()
+    }
+
+    fun requestNecessaryPermissions(activity: Activity) {
+        val permissions = arrayOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.INTERNET,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+
+        ActivityCompat.requestPermissions(activity, permissions, 101)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 101) {
+            val allPermissionsGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+            if (!allPermissionsGranted) {
+                showError(
+                    this,
+                    "Sikertelen engedélyadás!\nAz applikáció beállításaiban újra engedélyezheted őket.\nAz app bezárul",
+                    onComplete = { this.finish() })
+            }
+        }
     }
 }

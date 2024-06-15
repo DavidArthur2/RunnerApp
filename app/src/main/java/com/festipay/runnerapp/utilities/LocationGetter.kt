@@ -26,11 +26,10 @@ object LocationGetter {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
+            showError(
                 activity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
+                "Sikertelen engedélyadás!\nAz applikáció beállításaiban újra engedélyezheted őket.\nAz app bezárul",
+                onComplete = { activity.finish() })
         } else {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
@@ -48,4 +47,5 @@ object LocationGetter {
                 }
         }
     }
+
 }

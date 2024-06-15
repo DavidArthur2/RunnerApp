@@ -25,7 +25,6 @@ import com.festipay.runnerapp.data.Inventory
 import com.festipay.runnerapp.data.References.Companion.comments_ref
 import com.festipay.runnerapp.data.References.Companion.company_ref
 import com.festipay.runnerapp.data.References.Companion.coord_ref
-import com.festipay.runnerapp.database.Database
 import com.festipay.runnerapp.utilities.CurrentState
 import com.festipay.runnerapp.utilities.FragmentType
 import com.festipay.runnerapp.utilities.Functions

@@ -40,7 +40,7 @@ object Functions {
         CurrentState.loadingScreen = null
     }
 
-    fun showErrorDialog(context: Context, message: String) {
+    fun showErrorDialog(context: Context, message: String, onComplete: (() -> Unit)? = null) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.error_dialog)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -52,6 +52,7 @@ object Functions {
         dialog.findViewById<TextView>(R.id.error_dialog_message).text = message
         dialog.show()
         dialog.findViewById<Button>(R.id.back_button).setOnClickListener {
+            if(onComplete != null) onComplete()
             dialog.dismiss()
         }
     }
