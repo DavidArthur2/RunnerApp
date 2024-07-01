@@ -125,7 +125,7 @@ class GPSFragment : Fragment() {
                 }
             },
             onError = { errorMessage ->
-                showError(context, "Sikertelen pozíció lekérés!", errorMessage)
+                showError(context, "Sikertelen pozíció lekérés!\n$errorMessage", errorMessage)
             }
         )
     }

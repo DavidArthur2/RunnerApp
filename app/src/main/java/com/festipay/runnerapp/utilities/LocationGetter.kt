@@ -1,11 +1,14 @@
 package com.festipay.runnerapp.utilities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.app.Activity
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 
 object LocationGetter {
@@ -13,10 +16,10 @@ object LocationGetter {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private const val LOCATION_PERMISSION_REQUEST_CODE = 100
+    private val steps = listOf(10, 15, 25, 40, 50)
+    private const val triesPerStep = 50
 
     fun getLocation(activity: Activity, onSuccess: (LatLng) -> Unit, onError: (String) -> Unit) {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-
         if (ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -31,21 +34,37 @@ object LocationGetter {
                 "Sikertelen engedélyadás!\nAz applikáció beállításaiban újra engedélyezheted őket.\nAz app bezárul",
                 onComplete = { activity.finish() })
         } else {
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location ->
-                    if (location != null) {
-                        onSuccess(LatLng(location.latitude, location.longitude))
-                    } else {
-                        val errorMessage = "Last known location is null"
-                        showError(activity, errorMessage)
+            executeLocationGet(activity, onSuccess, onError)
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun executeLocationGet(activity: Activity, onSuccess: (LatLng) -> Unit, onError: (String) -> Unit, step: Int = 0){
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    Log.i("Location", "${location.accuracy}")
+                    if(step/ triesPerStep == 5) {
+                        val errorMessage = "Bad precision, cannot get position."
                         onError(errorMessage)
+                        return@addOnSuccessListener
                     }
-                }
-                .addOnFailureListener { e ->
-                    val errorMessage = "Failed to get location: ${e.message}"
+
+                    if(location.accuracy <= steps[step / triesPerStep])
+                        onSuccess(LatLng(location.latitude, location.longitude))
+                    else
+                        executeLocationGet(activity, onSuccess, onError, step+1)
+                } else {
+                    val errorMessage = "Last known location is null"
+                    showError(activity, errorMessage)
                     onError(errorMessage)
                 }
-        }
+            }
+            .addOnFailureListener { e ->
+                val errorMessage = "Failed to get location: ${e.message}"
+                onError(errorMessage)
+            }
     }
 
 }
