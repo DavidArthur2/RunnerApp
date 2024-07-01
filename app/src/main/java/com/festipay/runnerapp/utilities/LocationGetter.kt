@@ -17,7 +17,7 @@ object LocationGetter {
 
     private const val LOCATION_PERMISSION_REQUEST_CODE = 100
     private val steps = listOf(10, 15, 25, 40, 50)
-    private const val triesPerStep = 50
+    private const val triesPerStep = 5
 
     fun getLocation(activity: Activity, onSuccess: (LatLng) -> Unit, onError: (String) -> Unit) {
         if (ActivityCompat.checkSelfPermission(
