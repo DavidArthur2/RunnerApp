@@ -1,5 +1,6 @@
 package com.festipay.runnerapp.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -35,6 +37,7 @@ class SNFragment : Fragment(), IFragment<SN> {
     private lateinit var modeName: String
     private lateinit var filter: Filter<SN>
     private lateinit var context: FragmentActivity
+    private lateinit var quantityLabel: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,6 +69,7 @@ class SNFragment : Fragment(), IFragment<SN> {
     }
 
     private fun initViews(view: View) {
+        quantityLabel = view.findViewById(R.id.quantityTextViewLabel)
         view.findViewById<FloatingActionButton>(R.id.snFloatingActionButton)
             .setOnClickListener {
                 context.supportFragmentManager.beginTransaction()
@@ -81,8 +85,10 @@ class SNFragment : Fragment(), IFragment<SN> {
             }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewLoaded() {
         filter = Filter(adapter, itemList)
+        quantityLabel.text = "Darabszám: ${itemList.size}/${CurrentState.companyInstall?.quantity ?: 0}"
         Functions.hideLoadingScreen()
     }
 

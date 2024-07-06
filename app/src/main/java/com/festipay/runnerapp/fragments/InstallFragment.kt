@@ -103,7 +103,8 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                                 eightItem = doc.data["8"] as Boolean,
                                 ninethItem = doc.data["9"] as Boolean,
                                 docID = doc.id,
-                                lastModified = timestampToLocalDateTime(lm)
+                                lastModified = timestampToLocalDateTime(lm),
+                                quantity = (doc.data["quantity"] as Long?)?.toInt() ?: 0
                             )
                         )
                     }
@@ -164,6 +165,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
             override fun onItemClick(position: Int, companyInstall: CompanyInstall) {
                 CurrentState.companySite = companyInstall.companyName
                 CurrentState.companySiteID = companyInstall.docID
+                CurrentState.companyInstall = companyInstall
                 Functions.launchFragment(context, OperationSelectorFragment())
 
             }

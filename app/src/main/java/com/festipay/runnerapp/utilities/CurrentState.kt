@@ -1,6 +1,8 @@
 package com.festipay.runnerapp.utilities
 
 import android.app.Dialog
+import com.festipay.runnerapp.data.CompanyDemolition
+import com.festipay.runnerapp.data.CompanyInstall
 
 enum class Mode(private var displayName: String) {
     INSTALL("Company_Install"),
@@ -22,4 +24,6 @@ object CurrentState {
     var operation: OperationType? = null
     var fragmentType: FragmentType? = null
     var loadingScreen: Dialog? = null
+    var companyInstall: CompanyInstall? = null
+    var companyDemolition: CompanyDemolition? = null
 }
