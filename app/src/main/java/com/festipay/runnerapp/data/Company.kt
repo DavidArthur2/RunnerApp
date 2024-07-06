@@ -15,7 +15,8 @@ data class CompanyInstall(
     val ninethItem: Boolean,
     var docID: String = "",
     var lastComment: Comment? = null,
-    var lastModified: LocalDateTime? = null
+    var lastModified: LocalDateTime? = null,
+    var quantity: Int = 0
 ) : IData
 
 data class CompanyDemolition(
