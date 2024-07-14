@@ -16,7 +16,8 @@ data class CompanyInstall(
     var docID: String = "",
     var lastComment: Comment? = null,
     var lastModified: LocalDateTime? = null,
-    var quantity: Int = 0
+    var quantity: Int = 0,
+    var companyCode: String
 ) : IData
 
 data class CompanyDemolition(

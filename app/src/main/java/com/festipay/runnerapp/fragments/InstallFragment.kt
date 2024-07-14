@@ -93,6 +93,7 @@ class InstallFragment : Fragment(), IFragment<CompanyInstall> {
                         itemList.add(
                             CompanyInstall(
                                 companyName = doc.data["CompanyName"] as String,
+                                companyCode = (doc.data["CompanyCode"] as String?) ?: "",
                                 firstItem = InstallFirstItemEnum.valueOf(doc.data["1"] as String),
                                 secondItem = InstallSecondItemEnum.valueOf(doc.data["2"] as String),
                                 thirdItem = doc.data["3"] as Boolean,

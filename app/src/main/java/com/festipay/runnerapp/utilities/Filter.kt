@@ -38,6 +38,8 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
                 if (option.isEmpty() && text.isNotEmpty()) {
                     filteredList = filteredList.filter {
                         it.companyName.lowercase().contains(text.lowercase())
+                                ||
+                                it.companyCode.lowercase().contains(text.lowercase())
                     }
                 } else if (option.isNotEmpty()) {
                     for (filterOption in option) {
