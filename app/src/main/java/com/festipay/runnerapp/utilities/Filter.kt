@@ -36,10 +36,14 @@ class Filter<T>(var adapter: IAdapter, var itemList: ArrayList<T>) {
 
                 selectedInstallItems.fill(false)
                 if (option.isEmpty() && text.isNotEmpty()) {
+                    val onlyCodeSearch = text.toCharArray()[0] == '*'
                     filteredList = filteredList.filter {
-                        it.companyName.lowercase().contains(text.lowercase())
-                                ||
-                                it.companyCode.lowercase().contains(text.lowercase())
+                        if (onlyCodeSearch)
+                            it.companyCode.lowercase().contains(text.lowercase())
+                        else
+                            it.companyName.lowercase()
+                                .contains(text.lowercase()) || it.companyCode.lowercase()
+                                .contains(text.lowercase())
                     }
                 } else if (option.isNotEmpty()) {
                     for (filterOption in option) {

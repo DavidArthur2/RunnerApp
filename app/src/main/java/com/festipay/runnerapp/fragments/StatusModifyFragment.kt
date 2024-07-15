@@ -259,7 +259,8 @@ class StatusModifyFragment : Fragment() {
                         sixthItemI.isChecked,
                         seventhItemI.isChecked,
                         eightItemI.isChecked,
-                        ninethItemI.isChecked
+                        ninethItemI.isChecked,
+                        companyCode = ""
                     )
                     modifyButtonListener(exit = false, companyInstallItem = companyInstallItem)
                 }
@@ -274,7 +275,7 @@ class StatusModifyFragment : Fragment() {
                         sixthItemI.isChecked,
                         seventhItemI.isChecked,
                         eightItemI.isChecked,
-                        ninethItemI.isChecked,
+                        ninethItemI.isChecked
                     )
                     modifyButtonListener(exit = true, companyInstallItem = companyInstallItem)
 
