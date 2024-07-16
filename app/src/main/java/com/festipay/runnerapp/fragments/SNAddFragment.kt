@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.festipay.runnerapp.R
 import com.festipay.runnerapp.adapters.SNAddAdapter
+import com.festipay.runnerapp.data.References.Companion.company_ref
 import com.festipay.runnerapp.data.References.Companion.sn_ref
 import com.festipay.runnerapp.data.SN
 import com.festipay.runnerapp.database.Database
@@ -35,6 +36,7 @@ import com.festipay.runnerapp.utilities.OperationType
 import com.festipay.runnerapp.utilities.showError
 import com.festipay.runnerapp.utilities.showWarning
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
 
 class SNAddFragment : Fragment(), IFragment<SN> {
     override lateinit var recyclerView: RecyclerView
@@ -136,12 +138,14 @@ class SNAddFragment : Fragment(), IFragment<SN> {
                 unsuccessfulList.remove(i)
                 if (i == itemList.last()) {
                     launchFragment(context, SNFragment())
-                    if (unsuccessfulCount == 0)
+                    if (unsuccessfulCount == 0){
                         showInfoDialog(context, "Hozzáadás", "SN lista sikeresen hozzáadva!")
+                        company_ref().set(hashMapOf("LastAdded" to Timestamp.now()))
+                    }
                     else
                         showError(
                             context,
-                            "$unsuccessfulCount / $itemList SN sikertelenül hozzáadva!\n$unsuccessfulList"
+                            "$unsuccessfulCount / ${itemList.size} SN sikertelenül hozzáadva!\n$unsuccessfulList"
                         )
                 }
             }
