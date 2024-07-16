@@ -17,7 +17,8 @@ data class CompanyInstall(
     var lastComment: Comment? = null,
     var lastModified: LocalDateTime? = null,
     var quantity: Int = 0,
-    var companyCode: String = ""
+    var companyCode: String = "",
+    var lastAdded: LocalDateTime? = null
 ) : IData
 
 data class CompanyDemolition(
